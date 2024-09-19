@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Models
 {
-public class User
+    public class User
     {
         public int Id { get; set; }
 
@@ -21,5 +21,8 @@ public class User
 
         [Required]
         public string? Password { get; set; }
+
+        public int HospitalId { get; set; }
     }
+
 }
