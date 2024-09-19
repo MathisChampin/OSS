@@ -1,8 +1,17 @@
 import React from "react";
+import { Route, Routes } from "react-router-dom";
+import LoginPage from "./pages/login";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const querryClient = new QueryClient();
 
 const App: React.FC = () => {
 	return (
-		<><h1 className="text-4xl text-blue-500">Welcome to App</h1></>
+		<QueryClientProvider client={querryClient}>
+			<Routes>
+				<Route path="/login" element={<LoginPage />} />
+			</Routes>
+		</QueryClientProvider>
 	);
 };
 
