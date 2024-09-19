@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Backend;
+using Routes;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,9 +38,7 @@ app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthorization();
 
-app.MapControllers();
-
-app.MapGet("/", () => "Hello World!");
+app.MapUserRoutes();
 
 app.Run();
 
