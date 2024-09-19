@@ -1,8 +1,7 @@
-// Controllers/UserController.cs
-using Backend;
-using Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Models;
+using Backend;
 
 namespace Controllers
 {
@@ -22,14 +21,21 @@ namespace Controllers
         public async Task<IActionResult> GetUsers()
         {
             var users = await _context.Users.ToListAsync();
+
+            if (users.Count == 0)
+            {
+                return Ok(new { });
+            }
+
             return Ok(users);
         }
+
 
         // GET: api/User/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUser(int id)
         {
-            var user = await _context.Users.FindAsync(id);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
             if (user == null)
             {
                 return NotFound();
@@ -39,10 +45,25 @@ namespace Controllers
 
         // POST: api/user
         [HttpPost]
-        public async Task<IActionResult> PostUser(User user)
+        public async Task<IActionResult> PostUser([FromBody] User user)
         {
+            var lastHospital = await _context.Hospitals
+                .OrderByDescending(h => h.Id)
+                .FirstOrDefaultAsync();
+
+            if (lastHospital == null)
+            {
+                return BadRequest("Aucun hôpital disponible pour associer à l'utilisateur.");
+            }
+
+            user.HospitalId = lastHospital.Id;
+
             _context.Users.Add(user);
+
+            lastHospital.Users.Add(user);
+
             await _context.SaveChangesAsync();
+
             return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
         }
 
