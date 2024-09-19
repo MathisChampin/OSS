@@ -1,0 +1,70 @@
+# Fichiers binaires et de build
+bin/
+obj/
+
+# Configuration utilisateur
+.vscode/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Logs
+*.log
+logs/
+
+# Packages NuGet
+*.nupkg
+*.snupkg
+packages/
+
+# Fichiers temporaires
+*.tmp
+*.temp
+*.pid
+*.gz
+
+# Fichiers de débogage
+*.pdb
+*.mdb
+
+# Fichiers de verrouillage et caches
+.lock.json
+project.lock.json
+project.fragment.lock.json
+
+# Fichiers générés par le compilateur
+*.dll
+*.exe
+*.so
+*.dylib
+
+# Chiffrement et authentification
+appsettings.Development.json
+appsettings.Local.json
+appsettings.Production.json
+
+# Configurations locales
+launchSettings.json
+
+# Rider et ReSharper
+.idea/
+*.DotSettings.user
+
+# Fichiers de l'éditeur
+*.sln.ide
+.DS_Store
+Thumbs.db
+
+# Fichiers temporaires de tests
+TestResults/
+
+# Cache de NuGet
+.nuget/
+
+# Fichiers de transpilation
+*.swp
+*.tmp
+
+# Swagger et API docs
+swagger/
