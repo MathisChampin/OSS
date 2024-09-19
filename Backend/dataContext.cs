@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Models;
 
 namespace Backend
 {
@@ -6,6 +7,11 @@ namespace Backend
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
+        }
+        public DbSet<User> Users { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>().ToTable("user");
         }
     }
 }
