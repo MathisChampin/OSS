@@ -16,8 +16,13 @@ namespace Controllers
             _context = context;
         }
 
-        // GET: api/patient
+        /// <summary>
+        /// Gets all patients
+        /// </summary>
+        /// <returns>A list of patients</returns>
+        /// <response code="200">Returns the list of patients</response>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetPatients()
         {
             var patients = await _context.Patients
@@ -33,8 +38,16 @@ namespace Controllers
         }
 
 
-        // GET: api/patient/5
+        /// <summary>
+        /// Gets a specific patient by ID
+        /// </summary>
+        /// <param name="id">Patient ID</param>
+        /// <returns>The requested patient</returns>
+        /// <response code="200">Returns the patient</response>
+        /// <response code="404">If the patient is not found</response>
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetPatient(int id)
         {
             var patient = await _context.Patients
@@ -48,8 +61,16 @@ namespace Controllers
             return Ok(patient);
         }
 
-        // POST: api/patient
+        /// <summary>
+        /// Creates a new patient along with their hospitalisation
+        /// </summary>
+        /// <param name="model">Patient and hospitalisation data</param>
+        /// <returns>The created patient</returns>
+        /// <response code="201">Returns the created patient</response>
+        /// <response code="404">If the hospital is not found</response>
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> PostPatient([FromBody] PatientWithHospitalisation model)
         {
             var hospital = await _context.Hospitals
@@ -77,8 +98,18 @@ namespace Controllers
         }
 
 
-        // PUT: api/patient/5
+        /// <summary>
+        /// Updates an existing patient
+        /// </summary>
+        /// <param name="id">Patient ID</param>
+        /// <param name="patient">Updated patient data</param>
+        /// <response code="204">If the update is successful</response>
+        /// <response code="400">If the ID in the URL does not match the patient ID</response>
+        /// <response code="404">If the patient is not found</response>
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> PutPatient(int id, Patient patient)
         {
             if (id != patient.Id)
@@ -107,8 +138,15 @@ namespace Controllers
             return NoContent();
         }
 
-        // DELETE: api/patient/5
+        /// <summary>
+        /// Deletes a specific patient
+        /// </summary>
+        /// <param name="id">Patient ID</param>
+        /// <response code="204">If the patient is successfully deleted</response>
+        /// <response code="404">If the patient is not found</response>
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeletePatient(int id)
         {
             var patient = await _context.Patients.FindAsync(id);

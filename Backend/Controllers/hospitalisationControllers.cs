@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Models; // Assurez-vous d'importer le bon espace de noms pour vos modèles
-using Backend; // Assurez-vous d'importer le bon espace de noms pour votre contexte de base de données
+using Models;
+using Backend;
 
 namespace Controllers
 {
@@ -16,15 +16,29 @@ namespace Controllers
             _context = context;
         }
 
-        // GET: api/hospitalisation
+
+        /// <summary>
+        /// Gets all hospitalisations
+        /// </summary>
+        /// <returns>A list of hospitalisations</returns>
+        /// <response code="200">Returns the list of hospitalisations</response>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<Hospitalisation>>> GetHospitalisations()
         {
             return await _context.Hospitalisations.ToListAsync();
         }
 
-        // GET: api/hospitalisation/{id}
+        /// <summary>
+        /// Get a specific hospitalisation by ID
+        /// </summary>
+        /// <param name="id">Hospitalisation ID</param>
+        /// <returns>The requested hospitalisation</returns>
+        /// <response code="200">Returns the hospitalisation</response>
+        /// <response code="404">If the hospitalisation is not found</response>
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<Hospitalisation>> GetHospitalisation(int id)
         {
             var hospitalisation = await _context.Hospitalisations.FindAsync(id);
@@ -37,8 +51,18 @@ namespace Controllers
             return hospitalisation;
         }
 
-        // PUT: api/hospitalisation/{id}
+        /// <summary>
+        /// Updates an existing hospitalisation
+        /// </summary>
+        /// <param name="id">Hospitalisation ID</param>
+        /// <param name="hospitalisation">The updated hospitalisation</param>
+        /// <response code="204">If the update was successful</response>
+        /// <response code="400">If the ID in the URL and the hospitalisation ID do not match</response>
+        /// <response code="404">If the hospitalisation is not found</response>
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> PutHospitalisation(int id, [FromBody] Hospitalisation hospitalisation)
         {
             if (id != hospitalisation.Id)
@@ -67,8 +91,15 @@ namespace Controllers
             return NoContent();
         }
 
-        // DELETE: api/hospitalisation/{id}
+        /// <summary>
+        /// Deletes a specific hospitalisation
+        /// </summary>
+        /// <param name="id">Hospitalisation ID</param>
+        /// <response code="204">If the hospitalisation was successfully deleted</response>
+        /// <response code="404">If the hospitalisation is not found</response>
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteHospitalisation(int id)
         {
             var hospitalisation = await _context.Hospitalisations.FindAsync(id);
