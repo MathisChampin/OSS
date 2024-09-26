@@ -21,7 +21,8 @@ namespace Controllers
         public async Task<IActionResult> GetHospitals()
         {
             var hospitals = await _context.Hospitals
-                .Include(h => h.Users) // Include users
+                .Include(h => h.Users)
+                .Include(h => h.Patients)
                 .ToListAsync();
             if (hospitals.Count == 0)
             {
@@ -35,7 +36,8 @@ namespace Controllers
         public async Task<IActionResult> GetHospital(int id)
         {
             var hospital = await _context.Hospitals
-                .Include(h => h.Users) // Include users
+                .Include(h => h.Users)
+                .Include(h => h.Patients)
                 .FirstOrDefaultAsync(h => h.Id == id);
 
             if (hospital == null)
