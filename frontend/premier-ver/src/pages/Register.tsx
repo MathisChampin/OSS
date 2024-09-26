@@ -1,81 +1,73 @@
-import React, { useState } from "react";
+import React from "react";
+import { useForm, SubmitHandler } from 'react-hook-form';
+
+type FormData = {
+    nom_centre: string;
+    ville: string;
+    code_postal: string;
+    id_hop: string;
+    rea_usc: string;
+    rea_usc_2: string;
+    rea_sspi: string;
+    rea_sspi_2: string;
+    activite: string;
+    nom: string;
+    prenom: string;
+    email: string;
+    code: string;
+    nb_medu: string;
+    nb_medhosp: string;
+    nb_int: string;
+    nb_medpres: string;
+    nb_etp_abs: string;
+    nb_ide_jour: string;
+    nb_ide_jour_usc: string;
+    nb_ide_nuit: string;
+    nb_ide_nuit_usc: string;
+    nb_ash_jour: string;
+    nb_ash_jour_usc: string;
+    nb_ash_nuit: string;
+    nb_ash_nuit_usc: string;
+    nb_cadre_pres: string;
+    nb_arret_ide: string;
+    nb_arret_ash: string;
+    nb_ide_renf: string;
+    nb_ash_renf: string;
+    nb_lits: string;
+    nb_lits_surv: string;
+    nb_admin: string;
+    evitaII: string;
+    evitaIV: string;
+    evitaXL: string;
+    savina: string;
+    evitaIIdura: string;
+    npb7200: string;
+    galileo: string;
+    G5: string;
+    servoI: string;
+    servo900: string;
+    bird8400: string;
+    Tbird: string;
+    pb840: string;
+    vela: string;
+    npb740760: string;
+    servo300: string;
+    extend: string;
+    horus: string;
+    elisee: string;
+    vision: string;
+    v500: string;
+    avea: string;
+    engst: string;
+    autre: string;
+    ecmo: string;
+};
 
 const RegisterPage: React.FC = () => {
-    const [formData, setFormData] = useState({
-        nom_centre: "",
-        ville: "",
-        code_postal: "",
-        id_hop: "",
-        rea_usc: "",
-        rea_usc_2: "",
-        rea_sspi: "",
-        rea_sspi_2: "",
-        activite: "",
-        nom: "",
-        prenom: "",
-        email: "",
-        code: "",
-        nb_medu: "",
-        nb_medhosp: "",
-        nb_int: "",
-        nb_medpres: "",
-        nb_etp_abs: "",
-        nb_ide_jour: "",
-        nb_ide_jour_usc: "",
-        nb_ide_nuit: "",
-        nb_ide_nuit_usc: "",
-        nb_ash_jour: "",
-        nb_ash_jour_usc: "",
-        nb_ash_nuit: "",
-        nb_ash_nuit_usc: "",
-        nb_cadre_pres: "",
-        nb_arret_ide: "",
-        nb_arret_ash: "",
-        nb_ide_renf: "",
-        nb_ash_renf: "",
-        nb_lits: "",
-        nb_lits_surv: "",
-        nb_admin: "",
-        evitaII: "",
-        evitaIV: "",
-        evitaXL: "",
-        savina: "",
-        evitaIIdura: "",
-        npb7200: "",
-        galileo: "",
-        G5: "",
-        servoI: "",
-        servo900: "",
-        bird8400: "",
-        Tbird: "",
-        pb840: "",
-        vela: "",
-        npb740760: "",
-        servo300: "",
-        extend: "",
-        horus: "",
-        elisee: "",
-        vision: "",
-        v500: "",
-        avea: "",
-        engst: "",
-        autre: "",
-        ecmo: "",
-    });
+    const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
 
-    const handleChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-    ) => {
-        const { name, value } = e.target;
-        setFormData((prevState) => ({
-            ...prevState,
-            [name]: value,
-        }));
-    };
-
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        console.log(formData);
+    const onSubmit: SubmitHandler<FormData> = async (data: FormData) => {
+        console.log(data);
     };
 
     return (
@@ -83,7 +75,7 @@ const RegisterPage: React.FC = () => {
             <h1 className="text-3xl font-bold text-center mb-8 text-gray-800">
                 Enregistrez votre service
             </h1>
-            <form onSubmit={handleSubmit} className="space-y-8">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
                 {/* Hospital Information Section */}
                 <div className="space-y-4">
                     <h2 className="text-2xl font-semibold text-gray-700">Informations sur l'hôpital</h2>
@@ -93,51 +85,55 @@ const RegisterPage: React.FC = () => {
                                 Nom de l'hôpital:
                             </label>
                             <input
-                                name="nom_centre"
                                 type="text"
-                                value={formData.nom_centre}
-                                onChange={handleChange}
-                                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                required
+                                {...register('nom_centre', { required: "Nom de l'hôpital is required" })}
+                                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                                    errors.nom_centre ? 'border-red-500' : 'border-gray-300'
+                                }`}
                             />
+                            {errors.nom_centre && (
+                                <span className="text-sm text-red-500">{errors.nom_centre.message}</span>
+                            )}
                         </div>
                         <div>
                             <label className="block text-gray-700 font-semibold mb-2">
                                 Ville:
                             </label>
                             <input
-                                name="ville"
                                 type="text"
-                                value={formData.ville}
-                                onChange={handleChange}
-                                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                required
+                                {...register('ville', { required: "Ville is required" })}
+                                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                                    errors.ville ? 'border-red-500' : 'border-gray-300'
+                                }`}
                             />
+                            {errors.ville && (
+                                <span className="text-sm text-red-500">{errors.ville.message}</span>
+                            )}
                         </div>
                         <div>
                             <label className="block text-gray-700 font-semibold mb-2">
                                 Département:
                             </label>
                             <input
-                                name="code_postal"
                                 type="text"
-                                value={formData.code_postal}
-                                onChange={handleChange}
-                                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                maxLength={2}
-                                required
+                                {...register('code_postal', { required: "Département is required", maxLength: { value: 2, message: "Max length is 2" } })}
+                                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                                    errors.code_postal ? 'border-red-500' : 'border-gray-300'
+                                }`}
                             />
+                            {errors.code_postal && (
+                                <span className="text-sm text-red-500">{errors.code_postal.message}</span>
+                            )}
                         </div>
                         <div>
                             <label className="block text-gray-700 font-semibold mb-2">
                                 Identité hôpital:
                             </label>
                             <select
-                                name="id_hop"
-                                value={formData.id_hop}
-                                onChange={handleChange}
-                                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                required
+                                {...register('id_hop', { required: "Identité hôpital is required" })}
+                                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                                    errors.id_hop ? 'border-red-500' : 'border-gray-300'
+                                }`}
                             >
                                 <option value=""> </option>
                                 <option value="CHU">CHU</option>
@@ -146,6 +142,9 @@ const RegisterPage: React.FC = () => {
                                 <option value="PSPH">PSPH</option>
                                 <option value="Privé">Privé</option>
                             </select>
+                            {errors.id_hop && (
+                                <span className="text-sm text-red-500">{errors.id_hop.message}</span>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -159,90 +158,96 @@ const RegisterPage: React.FC = () => {
                                 Réanimation et/ou USC-USI médicale:
                             </label>
                             <select
-                                name="rea_usc"
-                                value={formData.rea_usc}
-                                onChange={handleChange}
-                                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                required
+                                {...register('rea_usc', { required: "Ce champ est requis" })}
+                                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                                    errors.rea_usc ? 'border-red-500' : 'border-gray-300'
+                                }`}
                             >
                                 <option value=""></option>
                                 <option value="Non">Non</option>
                                 <option value="Oui">Oui</option>
                             </select>
+                            {errors.rea_usc && (
+                                <span className="text-sm text-red-500">{errors.rea_usc.message}</span>
+                            )}
                         </div>
-                        {formData.rea_usc === "Oui" && (
-                            <div>
-                                <label className="block text-gray-700 font-semibold mb-2">
-                                    Type de réanimation médicale:
-                                </label>
-                                <select
-                                    name="rea_usc_2"
-                                    value={formData.rea_usc_2}
-                                    onChange={handleChange}
-                                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    required
-                                >
-                                    <option value=""></option>
-                                    <option value="Médicale polyvalente">Médicale polyvalente</option>
-                                    <option value="Pneumologique">Pneumologique</option>
-                                    <option value="Nephrologique">Nephrologique</option>
-                                    <option value="Autres">Autres</option>
-                                </select>
-                            </div>
-                        )}
+                        <div>
+                            <label className="block text-gray-700 font-semibold mb-2">
+                                Type de réanimation médicale:
+                            </label>
+                            <select
+                                {...register('rea_usc_2', { required: "Ce champ est requis" })}
+                                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                                    errors.rea_usc_2 ? 'border-red-500' : 'border-gray-300'
+                                }`}
+                            >
+                                <option value=""></option>
+                                <option value="Médicale polyvalente">Médicale polyvalente</option>
+                                <option value="Pneumologique">Pneumologique</option>
+                                <option value="Nephrologique">Nephrologique</option>
+                                <option value="Autres">Autres</option>
+                            </select>
+                            {errors.rea_usc_2 && (
+                                <span className="text-sm text-red-500">{errors.rea_usc_2.message}</span>
+                            )}
+                        </div>
                         <div>
                             <label className="block text-gray-700 font-semibold mb-2">
                                 Réanimation et/ou USC-USI-SSPI chirurgicale:
                             </label>
                             <select
-                                name="rea_sspi"
-                                value={formData.rea_sspi}
-                                onChange={handleChange}
-                                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                required
+                                {...register('rea_sspi', { required: "Ce champ est requis" })}
+                                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                                    errors.rea_sspi ? 'border-red-500' : 'border-gray-300'
+                                }`}
                             >
                                 <option value=""></option>
                                 <option value="Non">Non</option>
                                 <option value="Oui">Oui</option>
                             </select>
+                            {errors.rea_sspi && (
+                                <span className="text-sm text-red-500">{errors.rea_sspi.message}</span>
+                            )}
                         </div>
-                        {formData.rea_sspi === "Oui" && (
-                            <div>
-                                <label className="block text-gray-700 font-semibold mb-2">
-                                    Type de réanimation chirurgicale:
-                                </label>
-                                <select
-                                    name="rea_sspi_2"
-                                    value={formData.rea_sspi_2}
-                                    onChange={handleChange}
-                                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    required
-                                >
-                                    <option value=""></option>
-                                    <option value="Chirurgicale">Chirurgicale</option>
-                                    <option value="Chirurgie cardiaque">Chirurgie cardiaque</option>
-                                    <option value="Digestive">Digestive</option>
-                                    <option value="Neurochirurgie">Neurochirurgie</option>
-                                    <option value="SSPI">SSPI</option>
-                                    <option value="Autre_sspi">Autre</option>
-                                </select>
-                            </div>
-                        )}
+                        <div>
+                            <label className="block text-gray-700 font-semibold mb-2">
+                                Type de réanimation chirurgicale:
+                            </label>
+                            <select
+                                {...register('rea_sspi_2', { required: "Ce champ est requis" })}
+                                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                                    errors.rea_sspi_2 ? 'border-red-500' : 'border-gray-300'
+                                }`}
+                            >
+                                <option value=""></option>
+                                <option value="Chirurgicale">Chirurgicale</option>
+                                <option value="Chirurgie cardiaque">Chirurgie cardiaque</option>
+                                <option value="Digestive">Digestive</option>
+                                <option value="Neurochirurgie">Neurochirurgie</option>
+                                <option value="SSPI">SSPI</option>
+                                <option value="Autre_sspi">Autre</option>
+                            </select>
+                            {errors.rea_sspi_2 && (
+                                <span className="text-sm text-red-500">{errors.rea_sspi_2.message}</span>
+                            )}
+                        </div>
                         <div>
                             <label className="block text-gray-700 font-semibold mb-2">
                                 Activité:
                             </label>
                             <select
-                                name="activite"
-                                value={formData.activite}
-                                onChange={handleChange}
-                                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                required
+                                {...register('activite', { required: "Ce champ est requis" })}
+                                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                                    errors.activite ? 'border-red-500' : 'border-gray-300'
+                                }`}
                             >
                                 <option value=""></option>
                                 <option value="Adulte">Adulte</option>
                                 <option value="Pédiatrique">Pédiatrique</option>
                             </select>
+                            {errors.activite && (
+                                <span className="text-sm text-red-500">{errors.activite.message}</span>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -256,49 +261,59 @@ const RegisterPage: React.FC = () => {
                                 Nom:
                             </label>
                             <input
-                                name="nom"
                                 type="text"
-                                value={formData.nom}
-                                onChange={handleChange}
-                                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                required
+                                {...register('nom', { required: "Le nom est requis" })}
+                                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                                    errors.nom ? 'border-red-500' : 'border-gray-300'
+                                }`}
                             />
+                            {errors.nom && (
+                                <span className="text-sm text-red-500">{errors.nom.message}</span>
+                            )}
                         </div>
                         <div>
                             <label className="block text-gray-700 font-semibold mb-2">
                                 Prénom:
                             </label>
                             <input
-                                name="prenom"
                                 type="text"
-                                value={formData.prenom}
-                                onChange={handleChange}
-                                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                required
+                                {...register('prenom', { required: "Le prénom est requis" })}
+                                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                                    errors.prenom ? 'border-red-500' : 'border-gray-300'
+                                }`}
                             />
+                            {errors.prenom && (
+                                <span className="text-sm text-red-500">{errors.prenom.message}</span>
+                            )}
                         </div>
                         <div>
                             <label className="block text-gray-700 font-semibold mb-2">
                                 E-mail:
                             </label>
                             <input
-                                name="email"
                                 type="email"
-                                value={formData.email}
-                                onChange={handleChange}
-                                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                required
+                                {...register('email', { 
+                                    required: "L'email est requis",
+                                    pattern: {
+                                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                        message: "Adresse email invalide"
+                                    }
+                                })}
+                                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                                    errors.email ? 'border-red-500' : 'border-gray-300'
+                                }`}
                             />
+                            {errors.email && (
+                                <span className="text-sm text-red-500">{errors.email.message}</span>
+                            )}
                         </div>
                         <div>
                             <label className="block text-gray-700 font-semibold mb-2">
                                 Code:
                             </label>
                             <input
-                                name="code"
                                 type="text"
-                                value={formData.code}
-                                onChange={handleChange}
+                                {...register('code')}
                                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                         </div>
@@ -311,230 +326,184 @@ const RegisterPage: React.FC = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="flex items-center">
                             <input
-                                name="evitaII"
                                 type="text"
-                                value={formData.evitaII}
-                                onChange={handleChange}
+                                {...register('evitaII')}
                                 className="w-12 px-2 py-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                             <span className="ml-2">Evita II</span>
                         </div>
                         <div className="flex items-center">
                             <input
-                                name="evitaIV"
                                 type="text"
-                                value={formData.evitaIV}
-                                onChange={handleChange}
+                                {...register('evitaIV')}
                                 className="w-12 px-2 py-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                             <span className="ml-2">Evita IV</span>
                         </div>
                         <div className="flex items-center">
                             <input
-                                name="evitaXL"
                                 type="text"
-                                value={formData.evitaXL}
-                                onChange={handleChange}
+                                {...register('evitaXL')}
                                 className="w-12 px-2 py-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                             <span className="ml-2">Evita XL</span>
                         </div>
                         <div className="flex items-center">
                             <input
-                                name="savina"
                                 type="text"
-                                value={formData.savina}
-                                onChange={handleChange}
+                                {...register('savina')}
                                 className="w-12 px-2 py-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                             <span className="ml-2">Savina</span>
                         </div>
                         <div className="flex items-center">
                             <input
-                                name="evitaIIdura"
                                 type="text"
-                                value={formData.evitaIIdura}
-                                onChange={handleChange}
+                                {...register('evitaIIdura')}
                                 className="w-12 px-2 py-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                             <span className="ml-2">Evita II Dura</span>
                         </div>
                         <div className="flex items-center">
                             <input
-                                name="npb7200"
                                 type="text"
-                                value={formData.npb7200}
-                                onChange={handleChange}
+                                {...register('npb7200')}
                                 className="w-12 px-2 py-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                             <span className="ml-2">NPB 7200</span>
                         </div>
                         <div className="flex items-center">
                             <input
-                                name="galileo"
                                 type="text"
-                                value={formData.galileo}
-                                onChange={handleChange}
+                                {...register('galileo')}
                                 className="w-12 px-2 py-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                             <span className="ml-2">Galileo</span>
                         </div>
                         <div className="flex items-center">
                             <input
-                                name="G5"
                                 type="text"
-                                value={formData.G5}
-                                onChange={handleChange}
+                                {...register('G5')}
                                 className="w-12 px-2 py-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                             <span className="ml-2">G5</span>
                         </div>
                         <div className="flex items-center">
                             <input
-                                name="servoI"
                                 type="text"
-                                value={formData.servoI}
-                                onChange={handleChange}
+                                {...register('servoI')}
                                 className="w-12 px-2 py-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                             <span className="ml-2">Servo I</span>
                         </div>
                         <div className="flex items-center">
                             <input
-                                name="servo900"
                                 type="text"
-                                value={formData.servo900}
-                                onChange={handleChange}
+                                {...register('servo900')}
                                 className="w-12 px-2 py-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                             <span className="ml-2">Servo 900</span>
                         </div>
                         <div className="flex items-center">
                             <input
-                                name="Tbird"
                                 type="text"
-                                value={formData.Tbird}
-                                onChange={handleChange}
+                                {...register('Tbird')}
                                 className="w-12 px-2 py-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                             <span className="ml-2">Tbird</span>
                         </div>
                         <div className="flex items-center">
                             <input
-                                name="pb840"
                                 type="text"
-                                value={formData.pb840}
-                                onChange={handleChange}
+                                {...register('pb840')}
                                 className="w-12 px-2 py-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                             <span className="ml-2">PB 840</span>
                         </div>
                         <div className="flex items-center">
                             <input
-                                name="vela"
                                 type="text"
-                                value={formData.vela}
-                                onChange={handleChange}
+                                {...register('vela')}
                                 className="w-12 px-2 py-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                             <span className="ml-2">Vela</span>
                         </div>
                         <div className="flex items-center">
                             <input
-                                name="npb740760"
                                 type="text"
-                                value={formData.npb740760}
-                                onChange={handleChange}
+                                {...register('npb740760')}
                                 className="w-12 px-2 py-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                             <span className="ml-2">NPB 740-760</span>
                         </div>
                         <div className="flex items-center">
                             <input
-                                name="servo300"
                                 type="text"
-                                value={formData.servo300}
-                                onChange={handleChange}
+                                {...register('servo300')}
                                 className="w-12 px-2 py-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                             <span className="ml-2">Servo 300</span>
                         </div>
                         <div className="flex items-center">
                             <input
-                                name="extend"
                                 type="text"
-                                value={formData.extend}
-                                onChange={handleChange}
+                                {...register('extend')}
                                 className="w-12 px-2 py-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                             <span className="ml-2">Extend</span>
                         </div>
                         <div className="flex items-center">
                             <input
-                                name="horus"
                                 type="text"
-                                value={formData.horus}
-                                onChange={handleChange}
+                                {...register('horus')}
                                 className="w-12 px-2 py-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                             <span className="ml-2">Horus</span>
                         </div>
                         <div className="flex items-center">
                             <input
-                                name="elisee"
                                 type="text"
-                                value={formData.elisee}
-                                onChange={handleChange}
+                                {...register('elisee')}
                                 className="w-12 px-2 py-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                             <span className="ml-2">Elisée</span>
                         </div>
                         <div className="flex items-center">
                             <input
-                                name="vision"
                                 type="text"
-                                value={formData.vision}
-                                onChange={handleChange}
+                                {...register('vision')}
                                 className="w-12 px-2 py-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                             <span className="ml-2">Vision</span>
                         </div>
                         <div className="flex items-center">
                             <input
-                                name="v500"
                                 type="text"
-                                value={formData.v500}
-                                onChange={handleChange}
+                                {...register('v500')}
                                 className="w-12 px-2 py-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                             <span className="ml-2">V500</span>
                         </div>
                         <div className="flex items-center">
                             <input
-                                name="avea"
                                 type="text"
-                                value={formData.avea}
-                                onChange={handleChange}
+                                {...register('avea')}
                                 className="w-12 px-2 py-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                             <span className="ml-2">Avea</span>
                         </div>
                         <div className="flex items-center">
                             <input
-                                name="engst"
                                 type="text"
-                                value={formData.engst}
-                                onChange={handleChange}
+                                {...register('engst')}
                                 className="w-12 px-2 py-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                             <span className="ml-2">Engström Carestation</span>
                         </div>
                         <div className="flex items-center">
                             <input
-                                name="autre"
                                 type="text"
-                                value={formData.autre}
-                                onChange={handleChange}
+                                {...register('autre')}
                                 className="w-12 px-2 py-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                             <span className="ml-2">Autre</span>
@@ -547,19 +516,21 @@ const RegisterPage: React.FC = () => {
                     <h2 className="text-2xl font-semibold text-gray-700">Accès ECMO</h2>
                     <div>
                         <label className="block text-gray-700 font-semibold mb-2">
-                            Un accès à l’ECMO est-il possible dans votre établissement?
+                            Un accès à l'ECMO est-il possible dans votre établissement?
                         </label>
                         <select
-                            name="ecmo"
-                            value={formData.ecmo}
-                            onChange={handleChange}
-                            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            required
+                            {...register('ecmo', { required: "Ce champ est requis" })}
+                            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                                errors.ecmo ? 'border-red-500' : 'border-gray-300'
+                            }`}
                         >
                             <option value=""></option>
                             <option value="non">Non</option>
                             <option value="oui">Oui</option>
                         </select>
+                        {errors.ecmo && (
+                            <span className="text-sm text-red-500">{errors.ecmo.message}</span>
+                        )}
                     </div>
                 </div>
 
@@ -576,5 +547,6 @@ const RegisterPage: React.FC = () => {
         </div>
     );
 };
+
 
 export default RegisterPage;
