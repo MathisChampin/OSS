@@ -4,6 +4,7 @@ import LoginPage from "./pages/login";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Home from "./pages/Home";
 import NavbarComponent from "./components/Navbar";
+import RegisterPage from "./pages/Register";
 
 const querryClient = new QueryClient();
 
@@ -13,6 +14,7 @@ const App: React.FC = () => {
 			<NavbarComponent />
 			<Routes>
 				<Route path="/login" element={<LoginPage />} />
+				<Route path="/register" element={<RegisterPage />} />
 				<Route path="/" element={<Home />} />
 			</Routes>
 		</QueryClientProvider>
