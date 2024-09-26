@@ -20,7 +20,9 @@ namespace Controllers
         [HttpGet]
         public async Task<IActionResult> GetPatients()
         {
-            var patients = await _context.Patients.ToListAsync();
+            var patients = await _context.Patients
+                .Include(p => p.Hospitalisation)
+                .ToListAsync();
 
             if (patients.Count == 0)
             {
@@ -35,7 +37,10 @@ namespace Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetPatient(int id)
         {
-            var patient = await _context.Patients.FirstOrDefaultAsync(u => u.Id == id);
+            var patient = await _context.Patients
+                .Include(p => p.Hospitalisation)
+                .FirstOrDefaultAsync(u => u.Id == id);
+
             if (patient == null)
             {
                 return NotFound();
@@ -45,23 +50,32 @@ namespace Controllers
 
         // POST: api/patient
         [HttpPost]
-        public async Task<IActionResult> PostPatient([FromBody] Patient patient)
+        public async Task<IActionResult> PostPatient([FromBody] PatientWithHospitalisation model)
         {
             var hospital = await _context.Hospitals
-                .FirstOrDefaultAsync(h => h.NomHopital == patient.NomHopital);
+                .FirstOrDefaultAsync(h => h.NomHopital == model.Patient.NomHopital);
 
             if (hospital == null)
                 return NotFound("L'hôpital n'existe pas dans la base de données.");
 
-            patient.HospitalId = hospital.Id;
-            patient.IMC = patient.SetImc(patient.Taille, patient.Poids);
-            _context.Patients.Add(patient);
+            model.Patient.HospitalId = hospital.Id;
+            model.Patient.DateDeNaissance = DateTime.SpecifyKind(model.Patient.DateDeNaissance, DateTimeKind.Utc);
+            model.Patient.IMC = model.Patient.SetImc(model.Patient.Taille, model.Patient.Poids);
+            _context.Patients.Add(model.Patient);
             await _context.SaveChangesAsync();
 
-            hospital.Patients.Add(patient);
+            model.Hospitalisation.PatientId = model.Patient.Id;
+            model.Hospitalisation.DateHospitalisation = DateTime.SpecifyKind(model.Hospitalisation.DateHospitalisation, DateTimeKind.Utc);
+            model.Hospitalisation.DateHospitalisationRéa = DateTime.SpecifyKind(model.Hospitalisation.DateHospitalisationRéa, DateTimeKind.Utc);
+            _context.Hospitalisations.Add(model.Hospitalisation);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetPatient), new { id = patient.Id }, patient);
+
+            hospital.Patients.Add(model.Patient);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetPatient), new { id = model.Patient.Id }, model.Patient);
         }
+
 
         // PUT: api/patient/5
         [HttpPut("{id}")]

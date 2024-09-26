@@ -12,9 +12,15 @@ namespace Backend
 
         public DbSet<Hospital> Hospitals { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Hospitalisation> Hospitalisations { get; set; }
         public DbSet<Patient> Patients {get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Patient>()
+                .HasOne(p => p.Hospitalisation)
+                .WithOne()
+                .HasForeignKey<Hospitalisation>(h => h.PatientId);
+
             modelBuilder.Entity<Hospital>()
                 .HasMany(h => h.Patients)
                 .WithOne()
