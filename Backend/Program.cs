@@ -7,7 +7,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Ajouter CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigins", policy =>
@@ -47,7 +46,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
-
 app.UseCors("AllowSpecificOrigins");
 app.UseAuthorization();
 
@@ -56,4 +54,3 @@ app.MapHospitalRoutes();
 app.MapPatientRoutes();
 
 app.Run();
-

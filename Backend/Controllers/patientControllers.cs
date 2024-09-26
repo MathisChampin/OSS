@@ -54,6 +54,7 @@ namespace Controllers
                 return NotFound("L'hôpital n'existe pas dans la base de données.");
 
             patient.HospitalId = hospital.Id;
+            patient.DateDeNaissance = DateTime.SpecifyKind(patient.DateDeNaissance, DateTimeKind.Utc);
             patient.IMC = patient.SetImc(patient.Taille, patient.Poids);
             _context.Patients.Add(patient);
             await _context.SaveChangesAsync();

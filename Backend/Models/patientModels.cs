@@ -8,7 +8,7 @@ namespace Models
         [Required]
         public string? Genre { get; set; }
         [Required]
-        public string? DateDeNaissance { get; set; }
+        public DateTime DateDeNaissance { get; set; }
         [Required]
         public int Taille { get; set; }
         [Required]
