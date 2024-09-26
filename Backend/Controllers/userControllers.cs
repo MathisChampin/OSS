@@ -53,6 +53,12 @@ namespace Controllers
             if (hospital == null)
                 return NotFound("L'hôpital n'existe pas dans la base de données.");
 
+            var existingUser = await _context.Users
+                    .FirstOrDefaultAsync(u => u.Email == user.Email && u.HospitalId == hospital.Id);
+
+                if (existingUser != null)
+                    return Conflict("L'utilisateur existe déjà dans cet hôpital.");
+
             user.HospitalId = hospital.Id;
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
