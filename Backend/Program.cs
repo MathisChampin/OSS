@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Backend;
 using Routes;
+using Services;
+using Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +30,9 @@ builder.Services.AddSwaggerGen(options =>
         Description = "API for managing patients, hospitalizations, hospitals, users"
     });
 });
+
+builder.Services.AddScoped<IHospitalService, HospitalService>();
+builder.Services.AddScoped<IHospitalRepository, HospitalRepository>();
 
 var app = builder.Build();
 
@@ -61,9 +66,9 @@ app.UseRouting();
 app.UseCors("AllowSpecificOrigins");
 app.UseAuthorization();
 
-app.MapUserRoutes();
+//app.MapUserRoutes();
 app.MapHospitalRoutes();
-app.MapPatientRoutes();
-app.MapHospitalisationRoutes();
+//app.MapPatientRoutes();
+//app.MapHospitalisationRoutes();
 
 app.Run();

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Models;
-using Backend;
+using Services;
 
 namespace Controllers
 {
@@ -9,11 +9,11 @@ namespace Controllers
     [Route("api/[controller]")]
     public class HospitalController : ControllerBase
     {
-        private readonly DataContext _context;
+        private readonly IHospitalService _hospitalService;
 
-        public HospitalController(DataContext context)
+        public HospitalController(IHospitalService hospitalService)
         {
-            _context = context;
+            _hospitalService = hospitalService;
         }
 
         /// <summary>
@@ -25,14 +25,9 @@ namespace Controllers
         [ProducesResponseType(StatusCodes.Status200OK)] 
         public async Task<IActionResult> GetHospitals()
         {
-            var hospitals = await _context.Hospitals
-                .Include(h => h.Users)
-                .Include(h => h.Patients)
-                .ToListAsync();
+            var hospitals = await _hospitalService.GetAllHospitalsAsync();
             if (hospitals.Count == 0)
-            {
                 return Ok(new { });
-            }
             return Ok(hospitals);
         }
 
@@ -49,16 +44,9 @@ namespace Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetHospital(int id)
         {
-            var hospital = await _context.Hospitals
-                .Include(h => h.Users)
-                .Include(h => h.Patients)
-                .FirstOrDefaultAsync(h => h.Id == id);
-
+            var hospital = await _hospitalService.GetHospitalByIdAsync(id);
             if (hospital == null)
-            {
                 return NotFound();
-            }
-
             return Ok(hospital);
         }
 
@@ -72,23 +60,17 @@ namespace Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CreateHospital(Hospital hospital)
+        public async Task<IActionResult> CreateHospital([FromBody] Hospital hospital)
         {
             if (!ModelState.IsValid)
-            {
                 return BadRequest(ModelState);
+
+            try {
+                var createdHospital = await _hospitalService.CreateHospitalAsync(hospital);
+                return CreatedAtAction(nameof(GetHospital), new { id = createdHospital.Id }, createdHospital);
+            } catch (InvalidOperationException ex) {
+                return Conflict(ex.Message);
             }
-
-            var existingHospital = await _context.Hospitals
-                .FirstOrDefaultAsync(h => h.NomHopital == hospital.NomHopital);
-
-            if (existingHospital != null)
-                return Conflict("L'hôpital existe déjà.");
-
-            _context.Hospitals.Add(hospital);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetHospital), new { id = hospital.Id }, hospital);
         }
 
         /// <summary>
@@ -103,32 +85,25 @@ namespace Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UpdateHospital(int id, Hospital hospital)
+        public async Task<IActionResult> UpdateHospital(int id, [FromBody] Hospital hospital)
         {
             if (id != hospital.Id)
-            {
-                return BadRequest();
-            }
+                return BadRequest("ID mismatch");
 
-            _context.Entry(hospital).State = EntityState.Modified;
+            var existingHospital = await _hospitalService.GetHospitalByIdAsync(id);
+            if (existingHospital == null)
+                return NotFound();
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!HospitalExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            existingHospital.NomHopital = hospital.NomHopital ?? existingHospital.NomHopital;
+            existingHospital.Ville = hospital.Ville ?? existingHospital.Ville;
+            existingHospital.Departement = hospital.Departement ?? existingHospital.Departement;
+            existingHospital.IdentiteHopital = hospital.IdentiteHopital ?? existingHospital.IdentiteHopital;
+            existingHospital.ReanimationMedical = hospital.ReanimationMedical ?? existingHospital.ReanimationMedical;
+            existingHospital.ReanimationChirurgical = hospital.ReanimationChirurgical ?? existingHospital.ReanimationChirurgical;
+            existingHospital.Activite = hospital.Activite ?? existingHospital.Activite;
 
-            return NoContent();
+            await _hospitalService.UpdateHospitalAsync(existingHospital);
+            return Ok(existingHospital);
         }
 
         /// <summary>
@@ -142,22 +117,14 @@ namespace Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteHospital(int id)
         {
-            var hospital = await _context.Hospitals.FindAsync(id);
-
-            if (hospital == null)
-            {
+            var existingHospital = await _hospitalService.GetHospitalByIdAsync(id);
+            if (existingHospital == null)
                 return NotFound();
-            }
 
-            _context.Hospitals.Remove(hospital);
-            await _context.SaveChangesAsync();
-
+            var success = await _hospitalService.DeleteHospitalAsync(id);
+            if (!success)
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error deleting hospital.");
             return NoContent();
-        }
-
-        private bool HospitalExists(int id)
-        {
-            return _context.Hospitals.Any(e => e.Id == id);
         }
     }
 }
