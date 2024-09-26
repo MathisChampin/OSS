@@ -53,6 +53,7 @@ app.UseAuthorization();
 
 app.MapUserRoutes();
 app.MapHospitalRoutes();
+app.MapPatientRoutes();
 
 app.Run();
 

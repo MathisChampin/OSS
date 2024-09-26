@@ -47,23 +47,18 @@ namespace Controllers
         [HttpPost]
         public async Task<IActionResult> PostUser([FromBody] User user)
         {
-            var lastHospital = await _context.Hospitals
-                .OrderByDescending(h => h.Id)
-                .FirstOrDefaultAsync();
+            var hospital = await _context.Hospitals
+                .FirstOrDefaultAsync(h => h.NomHopital == user.NomHopital);
 
-            if (lastHospital == null)
-            {
-                return BadRequest("Aucun hôpital disponible pour associer à l'utilisateur.");
-            }
+            if (hospital == null)
+                return NotFound("L'hôpital n'existe pas dans la base de données.");
 
-            user.HospitalId = lastHospital.Id;
-
+            user.HospitalId = hospital.Id;
             _context.Users.Add(user);
-
-            lastHospital.Users.Add(user);
-
             await _context.SaveChangesAsync();
 
+            hospital.Users.Add(user);
+            await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
         }
 
