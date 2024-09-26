@@ -49,7 +49,7 @@ namespace Models
 
     public class PatientWithHospitalisation
     {
-        public Patient Patient { get; set; }
-        public Hospitalisation Hospitalisation { get; set; }
+    public Patient Patient { get; set; } = new Patient();
+    public Hospitalisation Hospitalisation { get; set; } = new Hospitalisation();
     }
 }
