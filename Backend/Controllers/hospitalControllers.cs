@@ -57,6 +57,12 @@ namespace Controllers
                 return BadRequest(ModelState);
             }
 
+            var existingHospital = await _context.Hospitals
+                .FirstOrDefaultAsync(h => h.NomHopital == hospital.NomHopital);
+
+            if (existingHospital != null)
+                return Conflict("L'hôpital existe déjà.");
+
             _context.Hospitals.Add(hospital);
             await _context.SaveChangesAsync();
 
