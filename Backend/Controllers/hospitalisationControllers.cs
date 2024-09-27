@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Models;
-using Backend;
+using Services;
 
 namespace Controllers
 {
@@ -9,11 +9,11 @@ namespace Controllers
     [ApiController]
     public class HospitalisationController : ControllerBase
     {
-        private readonly DataContext _context;
+        private readonly IHospitalisationService _hospitalisationService;
 
-        public HospitalisationController(DataContext context)
+        public HospitalisationController(IHospitalisationService hospitalisationService)
         {
-            _context = context;
+            _hospitalisationService = hospitalisationService;
         }
 
 
@@ -24,9 +24,12 @@ namespace Controllers
         /// <response code="200">Returns the list of hospitalisations</response>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<Hospitalisation>>> GetHospitalisations()
+        public async Task<IActionResult> GetHospitalisations()
         {
-            return await _context.Hospitalisations.ToListAsync();
+            var hospitalisation = await _hospitalisationService.GetAllHospitalisationAsync();
+            if (hospitalisation.Count == 0)
+                return Ok(new { });
+            return Ok(hospitalisation);
         }
 
         /// <summary>
@@ -39,16 +42,13 @@ namespace Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Hospitalisation>> GetHospitalisation(int id)
+        public async Task<IActionResult> GetHospitalisation(int id)
         {
-            var hospitalisation = await _context.Hospitalisations.FindAsync(id);
+            var hospitalisation = await _hospitalisationService.GetHospitalisationByIdAsync(id);
 
             if (hospitalisation == null)
-            {
                 return NotFound();
-            }
-
-            return hospitalisation;
+            return Ok(hospitalisation);
         }
 
         /// <summary>
@@ -66,29 +66,20 @@ namespace Controllers
         public async Task<IActionResult> PutHospitalisation(int id, [FromBody] Hospitalisation hospitalisation)
         {
             if (id != hospitalisation.Id)
-            {
-                return BadRequest();
-            }
+                return BadRequest("ID mismatch");
 
-            _context.Entry(hospitalisation).State = EntityState.Modified;
+            var existingHospitalisation = await _hospitalisationService.GetHospitalisationByIdAsync(id);
+            if (existingHospitalisation == null)
+                return NotFound();
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!HospitalisationExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            existingHospitalisation.DateHospitalisation = hospitalisation.DateHospitalisation ?? existingHospitalisation.DateHospitalisation;
+            existingHospitalisation.HospitalisationRéa = hospitalisation.HospitalisationRéa ?? existingHospitalisation.HospitalisationRéa;
+            existingHospitalisation.DateHospitalisationRéa = hospitalisation.DateHospitalisationRéa ?? existingHospitalisation.DateHospitalisationRéa;
+            existingHospitalisation.TypeDeService = hospitalisation.TypeDeService ?? existingHospitalisation.TypeDeService;
+            existingHospitalisation.ModalitéEntrée = hospitalisation.ModalitéEntrée ?? existingHospitalisation.ModalitéEntrée;
 
-            return NoContent();
+            await _hospitalisationService.UpdateHospitalisationAsync(existingHospitalisation);
+            return Ok(existingHospitalisation);
         }
 
         /// <summary>
@@ -102,21 +93,14 @@ namespace Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteHospitalisation(int id)
         {
-            var hospitalisation = await _context.Hospitalisations.FindAsync(id);
-            if (hospitalisation == null)
-            {
+            var existingHospitalisation = await _hospitalisationService.GetHospitalisationByIdAsync(id);
+            if (existingHospitalisation == null)
                 return NotFound();
-            }
 
-            _context.Hospitalisations.Remove(hospitalisation);
-            await _context.SaveChangesAsync();
-
+            var success = await _hospitalisationService.DeleteHospitalisationAsync(id);
+            if (!success)
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error deleting hospitalisation.");
             return NoContent();
-        }
-
-        private bool HospitalisationExists(int id)
-        {
-            return _context.Hospitalisations.Any(e => e.Id == id);
         }
     }
 }
