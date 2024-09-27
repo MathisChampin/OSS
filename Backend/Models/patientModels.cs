@@ -7,11 +7,11 @@ namespace Models
     {
         public int Id { get; set; }
         [Required]
-        public DateTime DateHospitalisation { get; set; }
+        public DateTime? DateHospitalisation { get; set; }
         [Required]
         public string? HospitalisationRéa {get; set; }
         [Required]
-        public DateTime DateHospitalisationRéa { get; set; }
+        public DateTime? DateHospitalisationRéa { get; set; }
         [Required]
         public string? TypeDeService { get; set; }
         [Required]
