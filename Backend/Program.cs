@@ -33,6 +33,10 @@ builder.Services.AddSwaggerGen(options =>
 
 builder.Services.AddScoped<IHospitalService, HospitalService>();
 builder.Services.AddScoped<IHospitalRepository, HospitalRepository>();
+builder.Services.AddScoped<IHospitalisationService, HospitalisationService>();
+builder.Services.AddScoped<IHospitalisationRepository, HospitalisationRepository>();
+builder.Services.AddScoped<IPatientService, PatientService>();
+builder.Services.AddScoped<IPatientRepository, PatientRepository>();
 
 var app = builder.Build();
 
@@ -68,7 +72,7 @@ app.UseAuthorization();
 
 //app.MapUserRoutes();
 app.MapHospitalRoutes();
-//app.MapPatientRoutes();
-//app.MapHospitalisationRoutes();
+app.MapPatientRoutes();
+app.MapHospitalisationRoutes();
 
 app.Run();

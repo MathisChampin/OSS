@@ -50,5 +50,19 @@ namespace Repositories
             _context.Hospitals.Remove(hospital);
             return await _context.SaveChangesAsync() > 0;
         }
+
+        public async Task<Hospital?> GetByNameAsync(string nomHopital)
+        {
+            return await _context.Hospitals
+                .Include(h => h.Patients)
+                .FirstOrDefaultAsync(h => h.NomHopital == nomHopital);
+        }
+
+        public async Task AddPatientToHospitalAsync(Hospital hospital, Patient patient)
+        {
+            hospital.Patients.Add(patient);
+            await _context.SaveChangesAsync();
+        }
+
     }
 }

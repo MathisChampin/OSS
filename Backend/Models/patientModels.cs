@@ -25,15 +25,15 @@ namespace Models
         [Required]
         public string? Genre { get; set; }
         [Required]
-        public DateTime DateDeNaissance { get; set; }
+        public DateTime? DateDeNaissance { get; set; }
         [Required]
-        public int Taille { get; set; }
+        public int? Taille { get; set; }
         [Required]
-        public int Poids { get; set; }
+        public int? Poids { get; set; }
         [Required]
         public string? NomHopital { get; set; }
         public int HospitalId { get; set; }
-        public double IMC { get; set; }
+        public double? IMC { get; set; }
         public Hospitalisation? Hospitalisation { get; set; }
         public double SetImc(int? taille, int? poids)
         {

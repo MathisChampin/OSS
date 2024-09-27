@@ -23,6 +23,15 @@ namespace Services
         {
             return await _hospitalisationRepository.GetByIdAsync(id);
         }
+
+        public async Task<Hospitalisation> CreateHospitalisationAsync(Hospitalisation hospitalisation)
+        {
+            var existingHospitalisation = await _hospitalisationRepository.GetByIdAsync(hospitalisation.Id);
+            if (existingHospitalisation != null)
+                throw new InvalidOperationException("L'hôpitalisation existe déjà.");
+            return await _hospitalisationRepository.CreateAsync(hospitalisation);
+        }
+
         public async Task UpdateHospitalisationAsync(Hospitalisation hospitalisation)
         {
             await _hospitalisationRepository.UpdateAsync(hospitalisation);

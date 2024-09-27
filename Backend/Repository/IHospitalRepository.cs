@@ -11,5 +11,7 @@ namespace Repositories
         Task<Hospital> CreateAsync(Hospital hospital);
         Task UpdateAsync(Hospital hospital);
         Task<bool> DeleteAsync(int id);
+        Task<Hospital?> GetByNameAsync(string nomHopital);
+        Task AddPatientToHospitalAsync(Hospital hospital, Patient patient);
     }
 }

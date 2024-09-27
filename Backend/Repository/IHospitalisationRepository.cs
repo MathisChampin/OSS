@@ -9,6 +9,7 @@ namespace Repositories
         Task<List<Hospitalisation>> GetAllAsync();
         Task<Hospitalisation?> GetByIdAsync(int id);
         Task UpdateAsync(Hospitalisation hospitalisation);
+        Task<Hospitalisation> CreateAsync(Hospitalisation hospitalisation);
         Task<bool> DeleteAsync(int id);
     }
 }

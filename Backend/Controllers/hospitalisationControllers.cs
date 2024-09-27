@@ -99,7 +99,7 @@ namespace Controllers
 
             var success = await _hospitalisationService.DeleteHospitalisationAsync(id);
             if (!success)
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error deleting hospital.");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error deleting hospitalisation.");
             return NoContent();
         }
     }

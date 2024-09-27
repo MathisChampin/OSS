@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Models;
-using Backend;
+using Services;
 
 namespace Controllers
 {
@@ -9,11 +9,11 @@ namespace Controllers
     [ApiController]
     public class PatientController : ControllerBase
     {
-        private readonly DataContext _context;
+        private readonly IPatientService _patientService;
 
-        public PatientController(DataContext context)
+        public PatientController(IPatientService patientService)
         {
-            _context = context;
+            _patientService = patientService;
         }
 
         /// <summary>
@@ -25,16 +25,10 @@ namespace Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetPatients()
         {
-            var patients = await _context.Patients
-                .Include(p => p.Hospitalisation)
-                .ToListAsync();
-
-            if (patients.Count == 0)
-            {
+            var patient = await _patientService.GetAllPatientsAsync();
+            if (patient.Count == 0)
                 return Ok(new { });
-            }
-
-            return Ok(patients);
+            return Ok(patient);
         }
 
 
@@ -50,14 +44,9 @@ namespace Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetPatient(int id)
         {
-            var patient = await _context.Patients
-                .Include(p => p.Hospitalisation)
-                .FirstOrDefaultAsync(u => u.Id == id);
-
+            var patient = await _patientService.GetPatientByIdAsync(id);
             if (patient == null)
-            {
                 return NotFound();
-            }
             return Ok(patient);
         }
 
@@ -73,28 +62,16 @@ namespace Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> PostPatient([FromBody] PatientWithHospitalisation model)
         {
-            var hospital = await _context.Hospitals
-                .FirstOrDefaultAsync(h => h.NomHopital == model.Patient.NomHopital);
-
-            if (hospital == null)
-                return NotFound("L'hôpital n'existe pas dans la base de données.");
-
-            model.Patient.HospitalId = hospital.Id;
-            model.Patient.DateDeNaissance = DateTime.SpecifyKind(model.Patient.DateDeNaissance, DateTimeKind.Utc);
-            model.Patient.IMC = model.Patient.SetImc(model.Patient.Taille, model.Patient.Poids);
-            _context.Patients.Add(model.Patient);
-            await _context.SaveChangesAsync();
-
-            model.Hospitalisation.PatientId = model.Patient.Id;
-            model.Hospitalisation.DateHospitalisation = DateTime.SpecifyKind(model.Hospitalisation.DateHospitalisation, DateTimeKind.Utc);
-            model.Hospitalisation.DateHospitalisationRéa = DateTime.SpecifyKind(model.Hospitalisation.DateHospitalisationRéa, DateTimeKind.Utc);
-            _context.Hospitalisations.Add(model.Hospitalisation);
-            await _context.SaveChangesAsync();
-
-            hospital.Patients.Add(model.Patient);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetPatient), new { id = model.Patient.Id }, model.Patient);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            try {
+                var createdPatient = await _patientService.CreatePatientAsync(model);
+                return CreatedAtAction(nameof(GetPatient), new { id = createdPatient.Id }, createdPatient);
+            } catch (KeyNotFoundException ex) {
+                return NotFound(ex.Message);
+            } catch (Exception ex) {
+                return StatusCode(500, "Erreur interne du serveur : " + ex.Message);
+            }
         }
 
 
@@ -110,32 +87,25 @@ namespace Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> PutPatient(int id, Patient patient)
+        public async Task<IActionResult> PutPatient(int id, [FromBody] Patient patient)
         {
             if (id != patient.Id)
-            {
-                return BadRequest();
-            }
+                return BadRequest("ID mismatch");
 
-            _context.Entry(patient).State = EntityState.Modified;
+            var existingPatient = await _patientService.GetPatientByIdAsync(id);
+            if (existingPatient == null)
+                return NotFound();
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PatientExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            existingPatient.NomHopital = patient.NomHopital ?? existingPatient.NomHopital;
+            existingPatient.Genre = patient.Genre ?? existingPatient.Genre;
+            existingPatient.DateDeNaissance = patient.DateDeNaissance ?? existingPatient.DateDeNaissance;
+            existingPatient.Taille = patient.Taille ?? existingPatient.Taille;
+            existingPatient.Poids = patient.Poids ?? existingPatient.Poids;
+            existingPatient.IMC = patient.IMC ?? existingPatient.IMC;
+            existingPatient.Hospitalisation = patient.Hospitalisation ?? existingPatient.Hospitalisation;
 
-            return NoContent();
+            await _patientService.UpdatePatientAsync(existingPatient);
+            return Ok(existingPatient);
         }
 
         /// <summary>
@@ -149,21 +119,14 @@ namespace Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeletePatient(int id)
         {
-            var patient = await _context.Patients.FindAsync(id);
-            if (patient == null)
-            {
+            var existingPatient = await _patientService.GetPatientByIdAsync(id);
+            if (existingPatient == null)
                 return NotFound();
-            }
 
-            _context.Patients.Remove(patient);
-            await _context.SaveChangesAsync();
-
+            var success = await _patientService.DeletePatientAsync(id);
+            if (!success)
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error deleting Patient.");
             return NoContent();
-        }
-
-        private bool PatientExists(int id)
-        {
-            return _context.Patients.Any(e => e.Id == id);
         }
     }
 }

@@ -24,6 +24,14 @@ namespace Repositories
         {
             return await _context.Hospitalisations.FindAsync(id);
         }
+
+        public async Task<Hospitalisation> CreateAsync(Hospitalisation hospitalisation)
+        {
+            _context.Hospitalisations.Add(hospitalisation);
+            await _context.SaveChangesAsync();
+            return hospitalisation;
+        }
+
         public async Task UpdateAsync(Hospitalisation hospitalisation)
         {
             _context.Entry(hospitalisation).State = EntityState.Modified;

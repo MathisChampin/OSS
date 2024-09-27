@@ -8,6 +8,7 @@ namespace Services
     {
         Task<List<Hospitalisation>> GetAllHospitalisationAsync();
         Task<Hospitalisation?> GetHospitalisationByIdAsync(int id);
+        Task<Hospitalisation> CreateHospitalisationAsync(Hospitalisation hospitalisation);
         Task UpdateHospitalisationAsync(Hospitalisation hospitalisation);
         Task<bool> DeleteHospitalisationAsync(int id);
     }
