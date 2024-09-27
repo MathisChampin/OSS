@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Repositories;
 using Models;
+using System.Security.Cryptography;
 
 namespace Services
 {
@@ -56,6 +57,22 @@ namespace Services
         public async Task<bool> DeleteUserAsync(int id)
         {
             return await _userRepository.DeleteAsync(id);
+        }
+        public async Task<User?> AuthenticateAsync(string email, string password)
+        {
+            var user = await _userRepository.GetByEmailAsync(email);
+            if (user == null)
+                throw new InvalidOperationException("L'utilisateur n`existe pas.");
+            if (string.IsNullOrWhiteSpace(user.Password))
+                throw new ArgumentException("Le Paswword ne peut pas être nul ou vide.");
+            if (!VerifyPassword(password, user.Password))
+                return null;
+            return user;
+        }
+
+        private bool VerifyPassword(string password, string passwordHash)
+        {
+            return BCrypt.Net.BCrypt.Verify(password, passwordHash);
         }
     }
 }

@@ -20,4 +20,9 @@ namespace Models
         public string? NomHopital { get; set; }
         public int HospitalId { get; set; }
     }
+    public class LoginRequest
+    {
+        public string? Email { get; set; }
+        public string? Password { get; set; }
+    }
 }

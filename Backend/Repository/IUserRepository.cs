@@ -10,6 +10,7 @@ namespace Repositories
         Task<User?> GetByIdAsync(int id);
         Task<User> CreateAsync(User user);
         Task<User?> GetUserByEmailAndHospitalIdAsync(string email, int hospitalId);
+        Task<User?> GetByEmailAsync(string email);
         Task UpdateAsync(User user);
         Task<bool> DeleteAsync(int id);
     }

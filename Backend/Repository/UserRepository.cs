@@ -29,6 +29,13 @@ namespace Repositories
         {
             return await _context.Users.FirstOrDefaultAsync(u => u.Email == email && u.HospitalId == hospitalId);
         }
+
+        public async Task<User?> GetByEmailAsync(string email)
+        {
+            return await _context.Users
+                .FirstOrDefaultAsync(u => u.Email == email);
+        }
+
         public async Task<User> CreateAsync(User user)
         {
             _context.Users.Add(user);

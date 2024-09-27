@@ -1,7 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Models;
 using Services;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System.IdentityModel.Tokens.Jwt;
+using BCrypt.Net;
 
 namespace Controllers
 {
@@ -65,12 +69,13 @@ namespace Controllers
         public async Task<IActionResult> PostUser([FromBody] User user)
         {
             try {
-            var createdUser = await _userService.CreateUserAsync(user);
-            return CreatedAtAction(nameof(GetUser), new { id = createdUser.Id }, createdUser);
+                user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+                var createdUser = await _userService.CreateUserAsync(user);
+                return CreatedAtAction(nameof(GetUser), new { id = createdUser.Id }, createdUser);
             } catch (KeyNotFoundException ex) {
                 return NotFound(ex.Message);
             } catch (InvalidOperationException ex) {
-            return Conflict(ex.Message);
+                return Conflict(ex.Message);
             }
         }
 
@@ -124,6 +129,54 @@ namespace Controllers
             if (!success)
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error deleting Patient.");
             return NoContent();
+        }
+
+        /// <summary>
+        /// Login users
+        /// </summary>
+        /// <returns>A token </returns>
+        /// <response code="200">Returns the token</response>
+        [HttpPost("login")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
+        {
+            if (request.Email == null || request.Password == null)
+                 throw new ArgumentException("Email or password is null");
+            var user = await _userService.AuthenticateAsync(request.Email, request.Password);
+            if (user == null)
+                return Unauthorized("Invalid email or password.");
+
+            var token = GenerateJwtToken(user);
+            return Ok(new { Token = token });
+        }
+
+        private string GenerateJwtToken(User user)
+        {
+            if (user.Email == null)
+                throw new ArgumentException("Email or password is null");7
+    
+            var claims = new[]
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            };
+
+            var jwtSecretKey = Environment.GetEnvironmentVariable("JWT_SECRET_KEY");
+            if (jwtSecretKey == null)
+                throw new InvalidOperationException("JWT secret key not found in .env file");
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecretKey));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                issuer: null,
+                audience: null,
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(30),
+                signingCredentials: creds);
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }

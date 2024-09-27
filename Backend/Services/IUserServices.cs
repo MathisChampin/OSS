@@ -11,5 +11,6 @@ namespace Services
         Task<User> CreateUserAsync(User user);
         Task UpdateUserAsync(User user);
         Task<bool> DeleteUserAsync(int id);
+        Task<User?> AuthenticateAsync(string email, string password);
     }
 }
