@@ -80,6 +80,26 @@ namespace Controllers
         }
 
         /// <summary>
+        /// Login users
+        /// </summary>
+        /// <returns>A token </returns>
+        /// <response code="200">Returns the token</response>
+        [HttpPost("login")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
+        {
+            if (request.Email == null || request.Password == null)
+                 throw new ArgumentException("Email or password is null");
+            var user = await _userService.AuthenticateAsync(request.Email, request.Password);
+            if (user == null)
+                return Unauthorized("Invalid email or password.");
+
+            var token = GenerateJwtToken(user);
+            return Ok(new { Token = token });
+        }
+
+        /// <summary>
         /// Updates an existing user
         /// </summary>
         /// <param name="id">User ID</param>
@@ -131,30 +151,11 @@ namespace Controllers
             return NoContent();
         }
 
-        /// <summary>
-        /// Login users
-        /// </summary>
-        /// <returns>A token </returns>
-        /// <response code="200">Returns the token</response>
-        [HttpPost("login")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Login([FromBody] LoginRequest request)
-        {
-            if (request.Email == null || request.Password == null)
-                 throw new ArgumentException("Email or password is null");
-            var user = await _userService.AuthenticateAsync(request.Email, request.Password);
-            if (user == null)
-                return Unauthorized("Invalid email or password.");
-
-            var token = GenerateJwtToken(user);
-            return Ok(new { Token = token });
-        }
 
         private string GenerateJwtToken(User user)
         {
             if (user.Email == null)
-                throw new ArgumentException("Email or password is null");7
+                throw new ArgumentException("Email or password is null");
     
             var claims = new[]
             {
