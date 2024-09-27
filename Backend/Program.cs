@@ -19,6 +19,12 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Host.UseDefaultServiceProvider((context, options) =>
+{
+    options.ValidateScopes = context.HostingEnvironment.IsDevelopment();
+    options.ValidateOnBuild = false;
+});
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
@@ -37,6 +43,8 @@ builder.Services.AddScoped<IHospitalisationService, HospitalisationService>();
 builder.Services.AddScoped<IHospitalisationRepository, HospitalisationRepository>();
 builder.Services.AddScoped<IPatientService, PatientService>();
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
 
@@ -70,7 +78,7 @@ app.UseRouting();
 app.UseCors("AllowSpecificOrigins");
 app.UseAuthorization();
 
-//app.MapUserRoutes();
+app.MapUserRoutes();
 app.MapHospitalRoutes();
 app.MapPatientRoutes();
 app.MapHospitalisationRoutes();
