@@ -41,5 +41,10 @@ namespace Services
         {
             await _noMedicalRepository.UpdateAsync(noMedical);
         }
+
+        public async Task<bool> DeletePNoMedicalAsync(int id)
+        {
+            return await _noMedicalRepository.DeleteAsync(id);
+        }
     }
 }

@@ -10,6 +10,6 @@ namespace Services
         Task<PNoMedical?> GetPNoMedicalByIdAsync(int id);
         Task<PNoMedical> CreatePNoMedicalAsync(PNoMedical model, int id);
         Task UpdatePNoMedicalAsync(PNoMedical noMedical);
-
+        Task<bool> DeletePNoMedicalAsync(int id);
     }
 }

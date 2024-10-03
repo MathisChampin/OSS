@@ -36,5 +36,14 @@ namespace Repositories
             _context.Entry(noMedical).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
+
+        public async Task<bool> DeleteAsync(int id)
+        {
+            var noMedical = await GetByIdAsync(id);
+            if (noMedical == null)
+                return false;
+            _context.PNoMedicals.Remove(noMedical);
+            return await _context.SaveChangesAsync() > 0;
+        }
     }
 }

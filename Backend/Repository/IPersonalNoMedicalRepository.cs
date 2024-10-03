@@ -10,6 +10,6 @@ namespace Repositories
         Task<PNoMedical?> GetByIdAsync(int id);
         Task<PNoMedical> CreateAsync(PNoMedical pNoMedical);
         Task UpdateAsync(PNoMedical noMedical);
-
+        Task<bool> DeleteAsync(int id);
     }
 }

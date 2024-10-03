@@ -121,5 +121,27 @@ namespace Controllers
             await _noMedicalService.UpdatePNoMedicalAsync(existingNoMedical);
             return Ok(existingNoMedical);
         }
+
+        /// <summary>
+        /// Deletes a specific personal non medical
+        /// </summary>
+        /// <param name="id">Personal non medical ID</param>
+        /// <response code="204">If the personal non medical is successfully deleted</response>
+        /// <response code="404">If the personal non medical is not found</response>
+        [HttpDelete("{id}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> DeletePatient(int id)
+        {
+            var existingNoMedical = await _noMedicalService.GetPNoMedicalByIdAsync(id);
+            if (existingNoMedical == null)
+                return NotFound();
+
+            var success = await _noMedicalService.DeletePNoMedicalAsync(id);
+            if (!success)
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error deleting Personal medical.");
+            return NoContent();
+        }
     }
 }
