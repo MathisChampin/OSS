@@ -1,0 +1,189 @@
+#Global{
+	position: center;
+	width: 800px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+BODY {
+	FONT-SIZE: 12px; 
+	COLOR: #000000; 
+	FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif;
+}
+
+.lien_gris {
+   color: #6666663;
+   text-decoration: none;
+}
+.lien_gris:hover {
+   color: #333333;
+   text-decoration: none;
+}
+.lien_bleu {
+   color: #666666;
+   text-decoration: none;
+}
+.lien_bleu:hover {
+   color: #6666663;
+   text-decoration: none;
+}
+
+a:visited {
+	text-decoration: none;
+}
+a:active {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: none;
+	color: #CCCCCC;
+}
+
+.titrevert {color: #669933}
+
+.titrenoir{font-size: 18px; font-weight: bold; }
+
+.lienblanc {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 16px;
+	color: #FFFFFF;
+text-decoration: none;
+}
+
+.lienblanchead {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #FFFFFF;
+	text-decoration: none;
+}
+
+.lienbleuitalique {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	color: #668BD9;
+	font-style: italic;
+	text-decoration: none;
+}
+
+
+a.info{
+	position:relative; 
+    z-index:24; 
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 16px;
+    color:#FFFFFF;
+		text-decoration: none;
+	font-weight: bold;
+    text-decoration:none}
+ 
+a.info:hover{z-index:25; }
+ 
+a.info span{display: none}
+ 
+a.info:hover span{ 
+/*le contenu de la balise span ne 
+sera visible que pour l'tat a:hover */
+ display:block; 
+ position:absolute;
+    
+    
+    top:2em; left:2em; width:25em;
+    border:1px solid #6699cc;
+    background-color:#FFFFCC; color:#6699cc;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+    text-align: justify;
+    font-weight:none;
+    padding:6px;
+    
+    }
+
+.bouton_bleu{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 18px;
+	font-weight: bold;
+	color: #FFFFFF;
+	background-color: #91ABE3;
+	height: 20px;
+	width: 60px;
+	text-align: center;
+	clear: both;
+	float: right;
+	margin: auto;
+	padding: 5px;
+}
+
+.titre_blanc18{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 18px;
+	font-weight: bold;
+	color: #FFFFFF;
+	background-color: #91ABE3;
+}
+
+.titre_blanc16{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 16px;
+	font-weight: bold;
+	color: #FFFFFF;
+}
+
+.note {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #CC0000;
+	font-weight: bold;
+}
+.O2 {
+	text-transform: lowercase;
+	font-size: xx-small;
+}
+.listemed {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: normal;
+	letter-spacing: 0.1px;
+}
+
+.listmateriel {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-weight: normal;
+}
+.expo {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 9px;
+	font-style: normal;
+	line-height: 10px;
+	font-weight: bold;
+	font-variant: normal;
+}
+
+.inputField {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin: 5px 0;
+  width: 95%;
+}
+
+.inputField:focus {
+  border-color: #4A90E2;
+  box-shadow: 0 0 8px rgba(74, 144, 226, 0.5);
+}
+
+.selectField {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  background-color: white;
+}
+
+.selectField:focus {
+  border-color: #4A90E2;
+  box-shadow: 0 0 8px rgba(74, 144, 226, 0.5);
+}
