@@ -15,6 +15,7 @@ namespace Backend
         public DbSet<Patient> Patients {get; set; }
         public DbSet<PMedical> PMedicals {get; set; }
         public DbSet<PNoMedical> PNoMedicals {get; set; }
+        public DbSet<Device> Devices { get; set; }
         public DbSet<Material> Materials {get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -22,6 +23,11 @@ namespace Backend
                 .HasOne(p => p.Hospitalisation)
                 .WithOne()
                 .HasForeignKey<Hospitalisation>(h => h.PatientId);
+            
+            modelBuilder.Entity<Material>()
+                .HasOne(p => p.Device)
+                .WithOne()
+                .HasForeignKey<Device>(h => h.MaterialId);
 
             modelBuilder.Entity<Hospital>()
                 .HasMany(h => h.Patients)
