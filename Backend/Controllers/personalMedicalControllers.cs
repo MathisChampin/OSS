@@ -103,8 +103,6 @@ namespace Controllers
             
             if (string.IsNullOrEmpty(hospitalIdClaim))
                 return Unauthorized("L'utilisateur n'est pas lié à un hôpital.");
-            if (!int.TryParse(hospitalIdClaim, out int hospitalId))
-                return BadRequest("L'ID de l'hôpital est invalide.");
             if (id != pmedical.Id)
                 return BadRequest("ID mismatch");
 
@@ -137,8 +135,6 @@ namespace Controllers
             
             if (string.IsNullOrEmpty(hospitalIdClaim))
                 return Unauthorized("L'utilisateur n'est pas lié à un hôpital.");
-            if (!int.TryParse(hospitalIdClaim, out int hospitalId))
-                return BadRequest("L'ID de l'hôpital est invalide.");
             var existingPMedical = await _pmedicalService.GetPMedicalByIdAsync(id);
             if (existingPMedical == null)
                 return NotFound();
