@@ -55,7 +55,7 @@ namespace Controllers
         /// <summary>
         /// Creates a new personal medical along with their hospitalisation
         /// </summary>
-        /// <param name="model">Personal data</param>
+        /// <param name="model">Personal medical data</param>
         /// <returns>The created personal medical</returns>
         /// <response code="201">Returns the created personal medical</response>
         /// <response code="404">If the hospital is not found</response>

@@ -25,5 +25,17 @@ namespace Services
         {
             return await _noMedicalRepository.GetByIdAsync(id);
         }
+
+        public async Task<PNoMedical> CreatePNoMedicalAsync(PNoMedical model, int id)
+        {
+            var hospital = await _hospitalRepository.GetByIdAsync(id);
+            if (hospital == null)
+                throw new KeyNotFoundException("L'hôpital n'existe pas dans la base de données.");
+
+            model.HospitalId = hospital.Id;
+            var createdPNoMedical = await _noMedicalRepository.CreateAsync(model);
+            await _hospitalRepository.AddPNoMedicalToHospitalAsync(hospital, createdPNoMedical);
+            return createdPNoMedical;
+        }
     }
 }

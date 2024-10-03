@@ -25,5 +25,11 @@ namespace Repositories
             return await _context.PNoMedicals
                 .FirstOrDefaultAsync(h => h.Id == id);
         }
+        public async Task<PNoMedical> CreateAsync(PNoMedical pNoMedical)
+        {
+            _context.PNoMedicals.Add(pNoMedical);
+            await _context.SaveChangesAsync();
+            return pNoMedical;
+        }
     }
 }

@@ -51,5 +51,35 @@ namespace Controllers
                 return NotFound();
             return Ok(pNoMedical);
         }
+
+        /// <summary>
+        /// Creates a new personal non medical along with their hospitalisation
+        /// </summary>
+        /// <param name="model">Personal non medical data</param>
+        /// <returns>The created personal non medical</returns>
+        /// <response code="201">Returns the created personal non medical</response>
+        /// <response code="404">If the hospital is not found</response>
+        [HttpPost]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> PostPNoMedical([FromBody] PNoMedical model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            try {
+                var hospitalIdClaim = User.FindFirst("HospitalIdHospitalId")?.Value;
+                if (string.IsNullOrEmpty(hospitalIdClaim))
+                    return Unauthorized("L'utilisateur n'est pas lié à un hôpital.");
+                if (!int.TryParse(hospitalIdClaim, out int hospitalId))
+                    return BadRequest("L'ID de l'hôpital est invalide.");
+                var createdPMedical = await _noMedicalService.CreatePNoMedicalAsync(model, hospitalId);
+                return CreatedAtAction(nameof(GetPMedicals), new { id = createdPMedical.Id }, createdPMedical);
+            } catch (KeyNotFoundException ex) {
+                return NotFound(ex.Message);
+            } catch (Exception ex) {
+                return StatusCode(500, "Erreur interne du serveur : " + ex.Message);
+            }
+        }
     }
 }

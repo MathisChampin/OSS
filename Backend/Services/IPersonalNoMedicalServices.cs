@@ -8,5 +8,7 @@ namespace Services
     {
         Task<List<PNoMedical>> GetAllPNoMedicalsAsync();
         Task<PNoMedical?> GetPNoMedicalByIdAsync(int id);
+        Task<PNoMedical> CreatePNoMedicalAsync(PNoMedical model, int id);
+
     }
 }
