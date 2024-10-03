@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using Models;
 using Services;
 
@@ -22,6 +23,7 @@ namespace Controllers
         /// <returns>A list of patients</returns>
         /// <response code="200">Returns the list of patients</response>
         [HttpGet]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetPatients()
         {
@@ -44,6 +46,7 @@ namespace Controllers
         /// <response code="200">Returns the patient</response>
         /// <response code="404">If the patient is not found</response>
         [HttpGet("{id}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetPatient(int id)
@@ -66,6 +69,7 @@ namespace Controllers
         /// <response code="201">Returns the created patient</response>
         /// <response code="404">If the hospital is not found</response>
         [HttpPost]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> PostPatient([FromBody] PatientWithHospitalisation model)
@@ -97,6 +101,7 @@ namespace Controllers
         /// <response code="400">If the ID in the URL does not match the patient ID</response>
         /// <response code="404">If the patient is not found</response>
         [HttpPut("{id}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -131,6 +136,7 @@ namespace Controllers
         /// <response code="204">If the patient is successfully deleted</response>
         /// <response code="404">If the patient is not found</response>
         [HttpDelete("{id}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeletePatient(int id)
