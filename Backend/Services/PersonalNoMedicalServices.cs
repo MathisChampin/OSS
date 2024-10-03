@@ -21,5 +21,9 @@ namespace Services
         {
             return await _noMedicalRepository.GetAllAsync();
         }
+        public async Task<PNoMedical?> GetPNoMedicalByIdAsync(int id)
+        {
+            return await _noMedicalRepository.GetByIdAsync(id);
+        }
     }
 }

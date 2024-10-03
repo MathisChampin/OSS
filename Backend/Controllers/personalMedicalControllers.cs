@@ -27,14 +27,10 @@ namespace Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetPMedicals()
         {
-            var hospitalId = User.FindFirst("HospitalId")?.Value;
-            if (string.IsNullOrEmpty(hospitalId))
-                return Unauthorized("L'utilisateur n'est pas lié à un hôpital.");
-
-            var pmedical = await _pMedicalService.GetAllPMedicalsAsync();
-            if (pmedical.Count == 0)
+            var pMedical = await _pMedicalService.GetAllPMedicalsAsync();
+            if (pMedical.Count == 0)
                 return Ok(new { });
-            return Ok(pmedical);
+            return Ok(pMedical);
         }
 
         /// <summary>
@@ -50,13 +46,10 @@ namespace Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetPMedical(int id)
         {
-            var hospitalId = User.FindFirst("HospitalId")?.Value;
-            if (string.IsNullOrEmpty(hospitalId))
-                return Unauthorized("L'utilisateur n'est pas lié à un hôpital.");
-            var pmedical = await _pMedicalService.GetPMedicalByIdAsync(id);
-            if (pmedical == null)
+            var pMedical = await _pMedicalService.GetPMedicalByIdAsync(id);
+            if (pMedical == null)
                 return NotFound();
-            return Ok(pmedical);
+            return Ok(pMedical);
         }
 
         /// <summary>
@@ -104,10 +97,6 @@ namespace Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> PutPatient(int id, [FromBody] PMedical pmedical)
         {
-            var hospitalIdClaim = User.FindFirst("HospitalIdHospitalId")?.Value;
-            
-            if (string.IsNullOrEmpty(hospitalIdClaim))
-                return Unauthorized("L'utilisateur n'est pas lié à un hôpital.");
             if (id != pmedical.Id)
                 return BadRequest("ID mismatch");
 
@@ -137,10 +126,6 @@ namespace Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeletePatient(int id)
         {
-            var hospitalIdClaim = User.FindFirst("HospitalIdHospitalId")?.Value;
-            
-            if (string.IsNullOrEmpty(hospitalIdClaim))
-                return Unauthorized("L'utilisateur n'est pas lié à un hôpital.");
             var existingPMedical = await _pMedicalService.GetPMedicalByIdAsync(id);
             if (existingPMedical == null)
                 return NotFound();

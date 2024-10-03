@@ -28,9 +28,6 @@ namespace Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetHospitalisations()
         {
-            var hospitalId = User.FindFirst("HospitalId")?.Value;
-            if (string.IsNullOrEmpty(hospitalId))
-                return Unauthorized("L'utilisateur n'est pas lié à un hôpital.");
             var hospitalisation = await _hospitalisationService.GetAllHospitalisationAsync();
             if (hospitalisation.Count == 0)
                 return Ok(new { });
@@ -49,11 +46,7 @@ namespace Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetHospitalisation(int id)
-        {
-            var hospitalId = User.FindFirst("HospitalId")?.Value;
-            if (string.IsNullOrEmpty(hospitalId))
-                return Unauthorized("L'utilisateur n'est pas lié à un hôpital.");
-            
+        {    
             var hospitalisation = await _hospitalisationService.GetHospitalisationByIdAsync(id);
             if (hospitalisation == null)
                 return NotFound();
@@ -75,9 +68,6 @@ namespace Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> PutHospitalisation(int id, [FromBody] Hospitalisation hospitalisation)
         {
-            var hospitalIdClaim = User.FindFirst("HospitalId")?.Value;
-            if (string.IsNullOrEmpty(hospitalIdClaim))
-                return Unauthorized("L'utilisateur n'est pas lié à un hôpital.");
             if (id != hospitalisation.Id)
                 return BadRequest("ID mismatch");
 
@@ -107,9 +97,6 @@ namespace Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteHospitalisation(int id)
         {
-            var hospitalIdClaim = User.FindFirst("HospitalId")?.Value;
-            if (string.IsNullOrEmpty(hospitalIdClaim))
-                return Unauthorized("L'utilisateur n'est pas lié à un hôpital.");
             var existingHospitalisation = await _hospitalisationService.GetHospitalisationByIdAsync(id);
             if (existingHospitalisation == null)
                 return NotFound();

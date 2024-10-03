@@ -21,6 +21,7 @@ namespace Repositories
                 .Include(h => h.Users)
                 .Include(h => h.Patients)
                 .Include(h => h.PMedicals)
+                .Include(h => h.PNoMedicals)
                 .ToListAsync();
         }
 
@@ -30,6 +31,7 @@ namespace Repositories
                 .Include(h => h.Users)
                 .Include(h => h.Patients)
                 .Include(h => h.PMedicals)
+                .Include(h => h.PNoMedicals)
                 .FirstOrDefaultAsync(h => h.Id == id);
         }
 

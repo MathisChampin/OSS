@@ -20,5 +20,10 @@ namespace Repositories
             return await _context.PNoMedicals
                 .ToListAsync();
         }
+        public async Task<PNoMedical?> GetByIdAsync(int id)
+        {
+            return await _context.PNoMedicals
+                .FirstOrDefaultAsync(h => h.Id == id);
+        }
     }
 }

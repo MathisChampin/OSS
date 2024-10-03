@@ -7,5 +7,6 @@ namespace Services
     public interface IPNoMedicalService
     {
         Task<List<PNoMedical>> GetAllPNoMedicalsAsync();
+        Task<PNoMedical?> GetPNoMedicalByIdAsync(int id);
     }
 }
