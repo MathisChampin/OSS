@@ -14,6 +14,7 @@ namespace Backend
         public DbSet<User> Users { get; set; }
         public DbSet<Hospitalisation> Hospitalisations { get; set; }
         public DbSet<Patient> Patients {get; set; }
+        public DbSet<PMedical> PMedicals {get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Patient>()
@@ -33,6 +34,12 @@ namespace Backend
                 .HasForeignKey(u => u.HospitalId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            modelBuilder.Entity<Hospital>()
+                .HasMany(h => h.PMedicals)
+                .WithOne()
+                .HasForeignKey(pm => pm.HospitalId)
+                .OnDelete(DeleteBehavior.Cascade);
+    
             base.OnModelCreating(modelBuilder);
         }
     }
