@@ -20,6 +20,7 @@ namespace Repositories
             return await _context.Hospitals
                 .Include(h => h.Users)
                 .Include(h => h.Patients)
+                .Include(h => h.PMedicals)
                 .ToListAsync();
         }
 
@@ -28,6 +29,7 @@ namespace Repositories
             return await _context.Hospitals
                 .Include(h => h.Users)
                 .Include(h => h.Patients)
+                .Include(h => h.PMedicals)
                 .FirstOrDefaultAsync(h => h.Id == id);
         }
 
@@ -63,6 +65,10 @@ namespace Repositories
             hospital.Patients.Add(patient);
             await _context.SaveChangesAsync();
         }
-
+        public async Task AddPMedicalToHospitalAsync(Hospital hospital, PMedical pmedical)
+        {
+            hospital.PMedicals.Add(pmedical);
+            await _context.SaveChangesAsync();
+        }
     }
 }

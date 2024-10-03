@@ -160,7 +160,7 @@ namespace Controllers
             var claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Email),
-                new Claim("HopitalId", user.HospitalId.ToString()),
+                new Claim("HospitalId", user.HospitalId.ToString()),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 

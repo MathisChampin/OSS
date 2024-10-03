@@ -7,5 +7,9 @@ namespace Services
     public interface IPMedicalService
     {
         Task<List<PMedical>> GetAllPMedicalsAsync();
+        Task<PMedical?> GetPMedicalByIdAsync(int id);
+        Task<PMedical> CreatePMedicalAsync(PMedical model, int id);
+
+
     }
 }

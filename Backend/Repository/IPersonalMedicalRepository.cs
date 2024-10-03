@@ -7,5 +7,7 @@ namespace Repositories
     public interface IPMedicalRepository
     {
         Task<List<PMedical>> GetAllAsync();
+        Task<PMedical?> GetByIdAsync(int id);
+        Task<PMedical> CreateAsync(PMedical pmedical);
     }
 }
