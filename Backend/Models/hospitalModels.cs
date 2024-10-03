@@ -18,5 +18,6 @@ namespace Models
         public ICollection<User> Users { get; set; } = new List<User>();
         public ICollection<Patient> Patients { get; set; } = new List<Patient>();
         public ICollection<PMedical> PMedicals {get; set; } = new List<PMedical>();
+        public ICollection<PNoMedical> PNoMedicals {get; set; } = new List<PNoMedical>();
     }
 }

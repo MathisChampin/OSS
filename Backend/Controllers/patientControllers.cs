@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using Models;
 using Services;
 
@@ -22,9 +23,14 @@ namespace Controllers
         /// <returns>A list of patients</returns>
         /// <response code="200">Returns the list of patients</response>
         [HttpGet]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetPatients()
         {
+            var hospitalId = User.FindFirst("HospitalId")?.Value;
+            if (string.IsNullOrEmpty(hospitalId))
+                return Unauthorized("L'utilisateur n'est pas lié à un hôpital.");
+
             var patient = await _patientService.GetAllPatientsAsync();
             if (patient.Count == 0)
                 return Ok(new { });
@@ -40,10 +46,15 @@ namespace Controllers
         /// <response code="200">Returns the patient</response>
         /// <response code="404">If the patient is not found</response>
         [HttpGet("{id}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetPatient(int id)
         {
+            var hospitalId = User.FindFirst("HospitalId")?.Value;
+            if (string.IsNullOrEmpty(hospitalId))
+                return Unauthorized("L'utilisateur n'est pas lié à un hôpital.");
+
             var patient = await _patientService.GetPatientByIdAsync(id);
             if (patient == null)
                 return NotFound();
@@ -58,6 +69,7 @@ namespace Controllers
         /// <response code="201">Returns the created patient</response>
         /// <response code="404">If the hospital is not found</response>
         [HttpPost]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> PostPatient([FromBody] PatientWithHospitalisation model)
@@ -65,7 +77,12 @@ namespace Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             try {
-                var createdPatient = await _patientService.CreatePatientAsync(model);
+                var hospitalIdClaim = User.FindFirst("HospitalId")?.Value;
+                if (string.IsNullOrEmpty(hospitalIdClaim))
+                    return Unauthorized("L'utilisateur n'est pas lié à un hôpital.");
+                if (!int.TryParse(hospitalIdClaim, out int hospitalId))
+                    return BadRequest("L'ID de l'hôpital est invalide.");
+                var createdPatient = await _patientService.CreatePatientAsync(model, hospitalId);
                 return CreatedAtAction(nameof(GetPatient), new { id = createdPatient.Id }, createdPatient);
             } catch (KeyNotFoundException ex) {
                 return NotFound(ex.Message);
@@ -84,11 +101,15 @@ namespace Controllers
         /// <response code="400">If the ID in the URL does not match the patient ID</response>
         /// <response code="404">If the patient is not found</response>
         [HttpPut("{id}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> PutPatient(int id, [FromBody] Patient patient)
         {
+            var hospitalIdClaim = User.FindFirst("HospitalIdHospitalId")?.Value;
+            if (string.IsNullOrEmpty(hospitalIdClaim))
+                return Unauthorized("L'utilisateur n'est pas lié à un hôpital.");
             if (id != patient.Id)
                 return BadRequest("ID mismatch");
 
@@ -115,10 +136,14 @@ namespace Controllers
         /// <response code="204">If the patient is successfully deleted</response>
         /// <response code="404">If the patient is not found</response>
         [HttpDelete("{id}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeletePatient(int id)
         {
+            var hospitalIdClaim = User.FindFirst("HospitalIdHospitalId")?.Value;
+            if (string.IsNullOrEmpty(hospitalIdClaim))
+                return Unauthorized("L'utilisateur n'est pas lié à un hôpital.");
             var existingPatient = await _patientService.GetPatientByIdAsync(id);
             if (existingPatient == null)
                 return NotFound();

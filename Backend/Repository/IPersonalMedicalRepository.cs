@@ -8,8 +8,8 @@ namespace Repositories
     {
         Task<List<PMedical>> GetAllAsync();
         Task<PMedical?> GetByIdAsync(int id);
-        Task<PMedical> CreateAsync(PMedical pmedical);
-        Task UpdateAsync(PMedical pmedical);
+        Task<PMedical> CreateAsync(PMedical pMedical);
+        Task UpdateAsync(PMedical pMedical);
         Task<bool> DeleteAsync(int id);
     }
 }

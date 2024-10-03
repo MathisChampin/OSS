@@ -21,6 +21,7 @@ namespace Repositories
                 .Include(h => h.Users)
                 .Include(h => h.Patients)
                 .Include(h => h.PMedicals)
+                .Include(h => h.PNoMedicals)
                 .ToListAsync();
         }
 
@@ -30,6 +31,7 @@ namespace Repositories
                 .Include(h => h.Users)
                 .Include(h => h.Patients)
                 .Include(h => h.PMedicals)
+                .Include(h => h.PNoMedicals)
                 .FirstOrDefaultAsync(h => h.Id == id);
         }
 
@@ -68,6 +70,12 @@ namespace Repositories
         public async Task AddPMedicalToHospitalAsync(Hospital hospital, PMedical pmedical)
         {
             hospital.PMedicals.Add(pmedical);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task AddPNoMedicalToHospitalAsync(Hospital hospital, PNoMedical noMedical)
+        {
+            hospital.PNoMedicals.Add(noMedical);
             await _context.SaveChangesAsync();
         }
     }

@@ -14,5 +14,6 @@ namespace Repositories
         Task<Hospital?> GetByNameAsync(string nomHopital);
         Task AddPatientToHospitalAsync(Hospital hospital, Patient patient);
         Task AddPMedicalToHospitalAsync(Hospital hospital, PMedical pmedical);
+        Task AddPNoMedicalToHospitalAsync(Hospital hospital, PNoMedical noMedical);
     }
 }

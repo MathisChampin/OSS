@@ -8,7 +8,7 @@ namespace Services
     {
         Task<List<Patient>> GetAllPatientsAsync();
         Task<Patient?> GetPatientByIdAsync(int id);
-        Task<Patient> CreatePatientAsync(PatientWithHospitalisation model);
+        Task<Patient> CreatePatientAsync(PatientWithHospitalisation model, int hospitalId);
         Task UpdatePatientAsync(Patient patient);
         Task<bool> DeletePatientAsync(int id);
     }

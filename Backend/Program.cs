@@ -20,8 +20,9 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowSpecificOrigins", policy =>
     {
         policy.WithOrigins("http://localhost:5173")
-              .AllowAnyHeader()
-              .AllowAnyMethod();
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
     });
 });
 
@@ -39,11 +40,11 @@ builder.Services.AddAuthentication(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
     {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecretKey)),
         ValidateIssuer = false,
         ValidateAudience = false,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecretKey))
+        ValidateLifetime = true
     };
 });
 
@@ -75,6 +76,8 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IPMedicalService, PMedicalService>();
 builder.Services.AddScoped<IPMedicalRepository, PMedicalRepository>();
+builder.Services.AddScoped<IPNoMedicalService, PNoMedicalService>();
+builder.Services.AddScoped<IPNoMedicalRepository, PNoMedicalRepository>();
 
 var app = builder.Build();
 
@@ -116,5 +119,6 @@ app.MapHospitalRoutes();
 app.MapPatientRoutes();
 app.MapHospitalisationRoutes();
 app.MapPMedicalRoutes();
+app.MapPNoMedicalRoutes();
 
 app.Run();

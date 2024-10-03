@@ -28,11 +28,9 @@ namespace Services
         {
             return await _patientRepository.GetByIdAsync(id);
         }
-        public async Task<Patient> CreatePatientAsync(PatientWithHospitalisation model)
+        public async Task<Patient> CreatePatientAsync(PatientWithHospitalisation model, int hospitalId)
         {
-            if (string.IsNullOrWhiteSpace(model.Patient.NomHopital))
-                throw new ArgumentException("Le nom de l'hôpital ne peut pas être nul ou vide.");
-            var hospital = await _hospitalRepository.GetByNameAsync(model.Patient.NomHopital);
+            var hospital = await _hospitalRepository.GetByIdAsync(hospitalId);
             if (hospital == null)
                 throw new KeyNotFoundException("L'hôpital n'existe pas dans la base de données.");
 

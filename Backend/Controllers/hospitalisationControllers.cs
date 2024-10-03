@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using Models;
 using Services;
 
@@ -23,6 +24,7 @@ namespace Controllers
         /// <returns>A list of hospitalisations</returns>
         /// <response code="200">Returns the list of hospitalisations</response>
         [HttpGet]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetHospitalisations()
         {
@@ -40,12 +42,12 @@ namespace Controllers
         /// <response code="200">Returns the hospitalisation</response>
         /// <response code="404">If the hospitalisation is not found</response>
         [HttpGet("{id}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetHospitalisation(int id)
-        {
+        {    
             var hospitalisation = await _hospitalisationService.GetHospitalisationByIdAsync(id);
-
             if (hospitalisation == null)
                 return NotFound();
             return Ok(hospitalisation);
@@ -60,6 +62,7 @@ namespace Controllers
         /// <response code="400">If the ID in the URL and the hospitalisation ID do not match</response>
         /// <response code="404">If the hospitalisation is not found</response>
         [HttpPut("{id}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -89,6 +92,7 @@ namespace Controllers
         /// <response code="204">If the hospitalisation was successfully deleted</response>
         /// <response code="404">If the hospitalisation is not found</response>
         [HttpDelete("{id}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteHospitalisation(int id)
