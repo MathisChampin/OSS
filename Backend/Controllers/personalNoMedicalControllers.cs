@@ -81,5 +81,45 @@ namespace Controllers
                 return StatusCode(500, "Erreur interne du serveur : " + ex.Message);
             }
         }
+
+        /// <summary>
+        /// Updates an existing personal non medical
+        /// </summary>
+        /// <param name="id">Personal non medical ID</param>
+        /// <param name="personal non medical">Updated personal non medical data</param>
+        /// <response code="204">If the update is successful</response>
+        /// <response code="400">If the ID in the URL does not match the personal medical ID</response>
+        /// <response code="404">If the personal non medical is not found</response>
+        [HttpPut("{id}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> PutPatient(int id, [FromBody] PNoMedical noMedical)
+        {
+            if (id != noMedical.Id)
+                return BadRequest("ID mismatch");
+
+            var existingNoMedical = await _noMedicalService.GetPNoMedicalByIdAsync(id);
+            if (existingNoMedical == null)
+                return NotFound();
+
+            existingNoMedical.NbIdeDay = noMedical.NbIdeDay ?? existingNoMedical.NbIdeDay;
+            existingNoMedical.NbIdeNight = noMedical.NbIdeNight ?? existingNoMedical.NbIdeNight;
+            existingNoMedical.NbIdeDayUsc = noMedical.NbIdeDayUsc ?? existingNoMedical.NbIdeDayUsc;
+            existingNoMedical.NbIdeNightUsc = noMedical.NbIdeNightUsc ?? existingNoMedical.NbIdeNightUsc;
+            existingNoMedical.NbAsDay = noMedical.NbAsDay ?? existingNoMedical.NbAsDay;
+            existingNoMedical.NbAsNight = noMedical.NbAsNight ?? existingNoMedical.NbAsNight;
+            existingNoMedical.NbAsDayUsc = noMedical.NbAsDayUsc ?? existingNoMedical.NbAsDayUsc;
+            existingNoMedical.NbAsNightUsc = noMedical.NbAsNightUsc ?? existingNoMedical.NbAsNightUsc;
+            existingNoMedical.NbExecDay = noMedical.NbExecDay ?? existingNoMedical.NbExecDay;
+            existingNoMedical.NbIdeSick = noMedical.NbIdeSick ?? existingNoMedical.NbIdeSick;
+            existingNoMedical.NbAsSick = noMedical.NbAsSick ?? existingNoMedical.NbAsSick;
+            existingNoMedical.NbAppIde = noMedical.NbAppIde ?? existingNoMedical.NbAppIde;
+            existingNoMedical.NbAppIde = noMedical.NbAppIde ?? existingNoMedical.NbAppIde;
+    
+            await _noMedicalService.UpdatePNoMedicalAsync(existingNoMedical);
+            return Ok(existingNoMedical);
+        }
     }
 }

@@ -9,5 +9,7 @@ namespace Repositories
         Task<List<PNoMedical>> GetAllAsync();
         Task<PNoMedical?> GetByIdAsync(int id);
         Task<PNoMedical> CreateAsync(PNoMedical pNoMedical);
+        Task UpdateAsync(PNoMedical noMedical);
+
     }
 }

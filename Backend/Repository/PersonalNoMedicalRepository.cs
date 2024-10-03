@@ -31,5 +31,10 @@ namespace Repositories
             await _context.SaveChangesAsync();
             return pNoMedical;
         }
+        public async Task UpdateAsync(PNoMedical noMedical)
+        {
+            _context.Entry(noMedical).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+        }
     }
 }

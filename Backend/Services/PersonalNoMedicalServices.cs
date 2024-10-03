@@ -37,5 +37,9 @@ namespace Services
             await _hospitalRepository.AddPNoMedicalToHospitalAsync(hospital, createdPNoMedical);
             return createdPNoMedical;
         }
+        public async Task UpdatePNoMedicalAsync(PNoMedical noMedical)
+        {
+            await _noMedicalRepository.UpdateAsync(noMedical);
+        }
     }
 }
