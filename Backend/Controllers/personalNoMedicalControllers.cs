@@ -68,7 +68,7 @@ namespace Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             try {
-                var hospitalIdClaim = User.FindFirst("HospitalIdHospitalId")?.Value;
+                var hospitalIdClaim = User.FindFirst("HospitalId")?.Value;
                 if (string.IsNullOrEmpty(hospitalIdClaim))
                     return Unauthorized("L'utilisateur n'est pas lié à un hôpital.");
                 if (!int.TryParse(hospitalIdClaim, out int hospitalId))
