@@ -36,5 +36,13 @@ namespace Services
             await _hospitalRepository.AddPMedicalToHospitalAsync(hospital, createdPMedical);
             return createdPMedical;
         }
+        public async Task UpdatePMedicalAsync(PMedical pmedical)
+        {
+            await _pmedicalRepository.UpdateAsync(pmedical);
+        }
+        public async Task<bool> DeletePMedicalAsync(int id)
+        {
+            return await _pmedicalRepository.DeleteAsync(id);
+        }
     }
 }
