@@ -10,11 +10,11 @@ namespace Controllers
     [ApiController]
     public class PMedicalController : ControllerBase
     {
-        private readonly IPMedicalService _pmedicalService;
+        private readonly IPMedicalService _pMedicalService;
 
-        public PMedicalController(IPMedicalService pmedicalService)
+        public PMedicalController(IPMedicalService pMedicalService)
         {
-            _pmedicalService = pmedicalService;
+            _pMedicalService = pMedicalService;
         }
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace Controllers
             if (string.IsNullOrEmpty(hospitalId))
                 return Unauthorized("L'utilisateur n'est pas lié à un hôpital.");
 
-            var pmedical = await _pmedicalService.GetAllPMedicalsAsync();
+            var pmedical = await _pMedicalService.GetAllPMedicalsAsync();
             if (pmedical.Count == 0)
                 return Ok(new { });
             return Ok(pmedical);
@@ -53,7 +53,7 @@ namespace Controllers
             var hospitalId = User.FindFirst("HospitalId")?.Value;
             if (string.IsNullOrEmpty(hospitalId))
                 return Unauthorized("L'utilisateur n'est pas lié à un hôpital.");
-            var pmedical = await _pmedicalService.GetPMedicalByIdAsync(id);
+            var pmedical = await _pMedicalService.GetPMedicalByIdAsync(id);
             if (pmedical == null)
                 return NotFound();
             return Ok(pmedical);
@@ -80,7 +80,7 @@ namespace Controllers
                     return Unauthorized("L'utilisateur n'est pas lié à un hôpital.");
                 if (!int.TryParse(hospitalIdClaim, out int hospitalId))
                     return BadRequest("L'ID de l'hôpital est invalide.");
-                var createdPMedical = await _pmedicalService.CreatePMedicalAsync(model, hospitalId);
+                var createdPMedical = await _pMedicalService.CreatePMedicalAsync(model, hospitalId);
                 return CreatedAtAction(nameof(GetPMedicals), new { id = createdPMedical.Id }, createdPMedical);
             } catch (KeyNotFoundException ex) {
                 return NotFound(ex.Message);
@@ -111,7 +111,7 @@ namespace Controllers
             if (id != pmedical.Id)
                 return BadRequest("ID mismatch");
 
-            var existingPMedical = await _pmedicalService.GetPMedicalByIdAsync(id);
+            var existingPMedical = await _pMedicalService.GetPMedicalByIdAsync(id);
             if (existingPMedical == null)
                 return NotFound();
 
@@ -121,7 +121,7 @@ namespace Controllers
             existingPMedical.NbDoctor = pmedical.NbDoctor ?? existingPMedical.NbDoctor;
             existingPMedical.NbPersonalAbs = pmedical.NbPersonalAbs ?? existingPMedical.NbPersonalAbs;
 
-            await _pmedicalService.UpdatePMedicalAsync(existingPMedical);
+            await _pMedicalService.UpdatePMedicalAsync(existingPMedical);
             return Ok(existingPMedical);
         }
 
@@ -141,11 +141,11 @@ namespace Controllers
             
             if (string.IsNullOrEmpty(hospitalIdClaim))
                 return Unauthorized("L'utilisateur n'est pas lié à un hôpital.");
-            var existingPMedical = await _pmedicalService.GetPMedicalByIdAsync(id);
+            var existingPMedical = await _pMedicalService.GetPMedicalByIdAsync(id);
             if (existingPMedical == null)
                 return NotFound();
 
-            var success = await _pmedicalService.DeletePMedicalAsync(id);
+            var success = await _pMedicalService.DeletePMedicalAsync(id);
             if (!success)
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error deleting Personal medical.");
             return NoContent();

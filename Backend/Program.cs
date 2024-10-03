@@ -76,6 +76,8 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IPMedicalService, PMedicalService>();
 builder.Services.AddScoped<IPMedicalRepository, PMedicalRepository>();
+builder.Services.AddScoped<IPNoMedicalService, PNoMedicalService>();
+builder.Services.AddScoped<IPNoMedicalRepository, PNoMedicalRepository>();
 
 var app = builder.Build();
 
@@ -117,5 +119,6 @@ app.MapHospitalRoutes();
 app.MapPatientRoutes();
 app.MapHospitalisationRoutes();
 app.MapPMedicalRoutes();
+app.MapPNoMedicalRoutes();
 
 app.Run();

@@ -8,22 +8,22 @@ namespace Services
 {
     public class PMedicalService : IPMedicalService
     {
-        private readonly IPMedicalRepository _pmedicalRepository;
+        private readonly IPMedicalRepository _pMedicalRepository;
         private readonly IHospitalRepository _hospitalRepository;
 
-        public PMedicalService(IPMedicalRepository pmedicalRepository, IHospitalRepository hospitalRepository)
+        public PMedicalService(IPMedicalRepository pMedicalRepository, IHospitalRepository hospitalRepository)
         {
-            _pmedicalRepository = pmedicalRepository;
+            _pMedicalRepository = pMedicalRepository;
             _hospitalRepository = hospitalRepository;
         }
 
         public async Task<List<PMedical>> GetAllPMedicalsAsync()
         {
-            return await _pmedicalRepository.GetAllAsync();
+            return await _pMedicalRepository.GetAllAsync();
         }
         public async Task<PMedical?> GetPMedicalByIdAsync(int id)
         {
-            return await _pmedicalRepository.GetByIdAsync(id);
+            return await _pMedicalRepository.GetByIdAsync(id);
         }
         public async Task<PMedical> CreatePMedicalAsync(PMedical model, int id)
         {
@@ -32,17 +32,17 @@ namespace Services
                 throw new KeyNotFoundException("L'hôpital n'existe pas dans la base de données.");
 
             model.HospitalId = hospital.Id;
-            var createdPMedical = await _pmedicalRepository.CreateAsync(model);
+            var createdPMedical = await _pMedicalRepository.CreateAsync(model);
             await _hospitalRepository.AddPMedicalToHospitalAsync(hospital, createdPMedical);
             return createdPMedical;
         }
-        public async Task UpdatePMedicalAsync(PMedical pmedical)
+        public async Task UpdatePMedicalAsync(PMedical pMedical)
         {
-            await _pmedicalRepository.UpdateAsync(pmedical);
+            await _pMedicalRepository.UpdateAsync(pMedical);
         }
         public async Task<bool> DeletePMedicalAsync(int id)
         {
-            return await _pmedicalRepository.DeleteAsync(id);
+            return await _pMedicalRepository.DeleteAsync(id);
         }
     }
 }
