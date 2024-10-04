@@ -9,7 +9,46 @@ Technologies Utilisées
 - **PostgreSQL** : Base de données utilisée pour stocker les entités.
 - **JWT (JSON Web Tokens)** : Pour la gestion des authentifications via accessToken et refreshToken.
 - **CORS (Cross-Origin Resource Sharing)** : Pour permettre l'accès à l'API depuis des domaines spécifiques.
-- **Swagger** : Documentation automatique de l'API.
+- **Swagger** : Documentation automatique de l'API. Vous pouvez accéder à la documentation Swagger via ce [lien Swagger](http://localhost:5058/index.html).
+
+## Architecture
+
+L'API est construite selon une **architecture en couches** qui favorise une séparation claire des préoccupations, facilitant ainsi la maintenance et l'évolutivité de l'application. Voici les principales couches de l'architecture :
+
+1. **Controllers**
+   - Les contrôleurs sont responsables de la gestion des requêtes HTTP. Ils reçoivent les demandes des clients, interagissent avec la couche de services, et renvoient les réponses appropriées.
+   - Exemple de route : `GET /patients` pour obtenir la liste des patients.
+
+2. **Services**
+   - La couche de services contient la logique métier. Elle interagit avec les repositories pour récupérer ou modifier les données.
+   - Les services encapsulent la logique de validation et les règles métier, garantissant que les contrôleurs restent légers et centrés sur la gestion des requêtes.
+
+3. **Repositories**
+   - Les repositories sont responsables de l'accès aux données. Ils interagissent avec la base de données via Entity Framework Core pour effectuer des opérations CRUD (Créer, Lire, Mettre à jour, Supprimer).
+   - Cette couche permet d'isoler les détails d'implémentation de la base de données de la logique métier et des contrôleurs.
+
+### Schéma de l'Architecture
+
+Voici un schéma illustrant l'architecture en couches de l'application :
+
+```plaintext
++-----------------+
+|   Controllers   |
+|  (API Endpoints)|
++-----------------+
+         |
+         v
++-----------------+
+|    Services     |
+|  (Business Logic)|
++-----------------+
+         |
+         v
++-----------------+
+|   Repositories   |
+|   (Data Access)  |
++-----------------+
+```
 
 ## Modèles de Données (Models)
 
@@ -246,3 +285,10 @@ builder.Services.AddSwaggerGen(options =>
         Description = "API for managing hospitals and patients"
     });
 });
+
+## Documentation Complémentaire
+
+Pour plus de détails, vous pouvez consulter la documentation au format PDF disponible ici : [Documentation PDF](URL_DU_PDF).
+
+### Détails du PDF
+Le document PDF est un schéma créé avec **Draw.io** qui explique les tables de la base de données ainsi que leurs relations. Ce schéma illustre comment les différentes entités sont connectées entre elles, fournissant une vue d'ensemble de la structure de la base de données. Cela peut être particulièrement utile pour comprendre la conception et les interactions au sein de l'API.
