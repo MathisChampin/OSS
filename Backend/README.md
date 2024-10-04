@@ -285,10 +285,11 @@ builder.Services.AddSwaggerGen(options =>
         Description = "API for managing hospitals and patients"
     });
 });
+```
 
 ## Documentation Complémentaire
 
-Pour plus de détails, vous pouvez consulter la documentation au format PDF disponible ici : [Documentation PDF](URL_DU_PDF).
+Pour plus de détails, vous pouvez consulter la documentation au format PDF disponible ici : [Documentation PDF](./docs/OSS.drawio.pdf).
 
 ### Détails du PDF
 Le document PDF est un schéma créé avec **Draw.io** qui explique les tables de la base de données ainsi que leurs relations. Ce schéma illustre comment les différentes entités sont connectées entre elles, fournissant une vue d'ensemble de la structure de la base de données. Cela peut être particulièrement utile pour comprendre la conception et les interactions au sein de l'API.
