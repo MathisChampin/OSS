@@ -96,9 +96,26 @@ namespace Controllers
                 return Unauthorized("Invalid email or password.");
 
             var token = GenerateJwtToken(user);
-            return Ok(new { Token = token });
+            var refreshToken = await _userService.GenerateRefreshTokenAsync(user.Id);
+            return Ok(new { Token = token, RefreshToken = refreshToken });
         }
 
+        [HttpPost("refresh")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> RefreshToken([FromBody] string refreshToken)
+            {
+                var (userId, hospitalId) = await _userService.ValidateRefreshTokenAsync(refreshToken);
+                if (userId == null)
+                    return Unauthorized("Invalid refresh token.");
+
+                var user = await _userService.GetUserByIdAsync(userId.Value);
+                if (user == null)
+                    return NotFound();
+                var newAccessToken = GenerateJwtToken(user);
+
+                return Ok(new { Token = newAccessToken, HospitalId = hospitalId, UserId = userId });
+            }
         /// <summary>
         /// Updates an existing user
         /// </summary>

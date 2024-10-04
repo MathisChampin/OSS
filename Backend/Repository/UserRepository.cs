@@ -55,5 +55,34 @@ namespace Repositories
             _context.Users.Remove(user);
             return await _context.SaveChangesAsync() > 0;
         }
+
+        public async Task<string> GenerateRefreshTokenAsync(int userId)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+                throw new Exception("User not found");
+
+            var refreshToken = Guid.NewGuid().ToString();
+            var expiration = DateTime.UtcNow.AddDays(7);
+
+            var tokenEntity = new RefreshToken
+            {
+                UserId = userId,
+                HospitalId = user.HospitalId,
+                Token = refreshToken,
+                Expiration = expiration
+            };
+
+            await _context.RefreshTokens.AddAsync(tokenEntity);
+            await _context.SaveChangesAsync();
+
+            return refreshToken;
+        }
+        public async Task<(int? userId, int? hospitalId)> ValidateRefreshTokenAsync(string refreshToken)
+        {
+            var token = await _context.RefreshTokens
+                .FirstOrDefaultAsync(rt => rt.Token == refreshToken && rt.Expiration > DateTime.UtcNow);
+            return (token?.UserId, token?.HospitalId);
+        }
     }
 }

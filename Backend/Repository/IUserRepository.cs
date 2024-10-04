@@ -13,5 +13,7 @@ namespace Repositories
         Task<User?> GetByEmailAsync(string email);
         Task UpdateAsync(User user);
         Task<bool> DeleteAsync(int id);
+        Task<string> GenerateRefreshTokenAsync(int userId);
+        Task<(int? userId, int? hospitalId)> ValidateRefreshTokenAsync(string refreshToken);
     }
 }

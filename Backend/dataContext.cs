@@ -17,6 +17,7 @@ namespace Backend
         public DbSet<PNoMedical> PNoMedicals {get; set; }
         public DbSet<Material> Materials {get; set; }
         public DbSet<Device> Devices { get; set; }
+        public DbSet<RefreshToken> RefreshTokens {get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Patient>()
