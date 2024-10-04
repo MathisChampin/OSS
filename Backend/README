@@ -30,6 +30,7 @@ public class Hospital
     public ICollection<PNoMedical> PNoMedicals {get; set; }
     public ICollection<Material> Materials {get; set; }
 }
+```
 
 Chaque hôpital peut avoir plusieurs utilisateurs, patients, et des informations sur le personnel médical et non médical, ainsi que des matériaux.
 
@@ -48,6 +49,7 @@ public class Patient
     public int? Taille { get; set; }
     public double SetImc(int? taille, int? poids);
 }
+```
 
 Le modèle gère aussi des méthodes comme le calcul de l'IMC pour les patients.
 
@@ -70,6 +72,7 @@ public class Hospitalisation
     public string? ModalitéEntrée { get; set; }
     public int PatientId { get; set; }
 }
+```
 
 ### 4. User
 Représente un utilisateur avec des informations d'authentification et son rôle dans l'hôpital.
@@ -93,6 +96,7 @@ public class User
     public string? NomHopital { get; set; }
     public int HospitalId { get; set; }
 }
+```
 
 Les utilisateurs peuvent avoir des rôles comme médecins, infirmiers, administrateurs, etc.
 
@@ -110,6 +114,7 @@ public class PMedical
     public int? NbPersonalAbs { get; set; }
     public int? HospitalId { get; set; }
 }
+```
 
 Ce modèle permet de suivre les effectifs du personnel médical dans un hôpital donné.
 
@@ -128,6 +133,7 @@ public class PNoMedical
     public int? NbAsNight { get; set; }
     public int? HospitalId { get; set; }
 }
+```
 
 Ce modèle est similaire au modèle PMedical, mais concerne le personnel non médical.
 
@@ -147,6 +153,7 @@ public class Material
     public int? HospitalId { get; set; }
     public List<Device> Devices { get; set; }
 }
+```
 
 Le modèle Material inclut une liste de devices (appareils).
 
@@ -161,6 +168,7 @@ public class Device
     public string? Name { get; set; }
     public int MaterialId { get; set; }
 }
+```
 
 ### 9. RefreshToken
 Ce modèle gère les refresh tokens pour renouveler les accessToken des utilisateurs.
@@ -174,6 +182,8 @@ public class RefreshToken
     public string? Token { get; set; }
     public DateTime Expiration { get; set; }
 }
+```
+
 ---
 ## Configuration du fichier Program.cs
 
@@ -183,6 +193,7 @@ L'API utilise Entity Framework Core pour interagir avec la base de données Post
 ```csharp
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+```
 
 ### 2. CORS (Cross-Origin Resource Sharing)
 La politique CORS permet d'autoriser des requêtes venant de domaines spécifiques comme un frontend local :
@@ -198,6 +209,7 @@ builder.Services.AddCors(options =>
             .AllowCredentials();
     });
 });
+```
 
 ### 3. Authentification JWT
 L'authentification est gérée par JWT pour sécuriser l'API, et valider les utilisateurs avec des tokens :
@@ -219,6 +231,7 @@ builder.Services.AddAuthentication(options =>
         ValidateLifetime = true
     };
 });
+```
 
 ### 4. Swagger
 Pour la documentation automatique de l'API :
