@@ -293,3 +293,6 @@ Pour plus de détails, vous pouvez consulter la documentation au format PDF disp
 
 ### Détails du PDF
 Le document PDF est un schéma créé avec **Draw.io** qui explique les tables de la base de données ainsi que leurs relations. Ce schéma illustre comment les différentes entités sont connectées entre elles, fournissant une vue d'ensemble de la structure de la base de données. Cela peut être particulièrement utile pour comprendre la conception et les interactions au sein de l'API.
+
+
+### Confidentiale Entreprise MAUNN | Octobre 2024
