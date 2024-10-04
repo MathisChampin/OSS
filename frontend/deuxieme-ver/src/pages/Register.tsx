@@ -1,31 +1,124 @@
+
 import left from "../assets/images/left.jpg";
+import { postHospital, postMaterial, postPersonelMdeical, postPnoMedical } from "../api/hospital.requests";
+import { postUser } from "../api/user.request";
 import "./style.css";
+import { redirect } from "react-router-dom";
+import { useState } from "react";
+import { joinData, Activity } from "../utils/hospital.d";
 
-enum Activity {
-    ADULT = "ADULT",
-    PEDIATRIC = "PEDIATRIC",
-}
-
-export interface RegisterPropsInfo {
-    hospitalName: string;
-    city: string;
-    department: string;
-    hospitalId: string;
-    serviceType: string;
-    reaUsc: string;
-    activity: Activity;
-    email: string;
-    firstName: string;
-    lastName: string;
-    nbMedU: number;
-    nbMedHosp: number;
-    nbIntern: number;
-    nbMedPres: number;
-    nbMedAbs: number;
-}
 
 function Register() {
-    
+  const [hspData, setHspData] = useState<joinData>({
+    NomHospital: "",
+    ville: "",
+    Departement: "",
+    IdentiteHopital: "",
+    ReanimationMedical: "",
+    ReanimationChirurgical: "",
+    Activite: Activity.ADULT,
+    nom: "",
+    prenom: "",
+    role: "",
+    email: "",
+    password: "",
+    NbDoctorUniv: 0,
+    NbDoctorHosp: 0,
+    NbInternal: 0,
+    NbDoctor: 0,
+    NbPersonalAbs: 0,
+    NbIdeDay: 0,
+    NbIdeNight: 0,
+    NbIdeDayUsc: 0,
+    NbIdeNightUsc: 0,
+    NbAsDay: 0,
+    NbAsNight: 0,
+    NbAsDayUsc: 0,
+    NbAsNightUsc: 0,
+    NbExecDay: 0,
+    NbIdeSick: 0,
+    NbAsSick: 0,
+    NbAppIde: 0,
+    NbAppAs: 0,
+    material: {
+        nbBedRea: 0,
+        nbBedInRoom: 0,
+        nbBedMntr: 0,
+        nbAdmis: 0,
+        nbPersonalAbs: 0,
+        ecmo: false
+    },
+    devices: [{ quantity: 0, name: "" }],
+    ecmo: false
+  });
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const [resData, resUser, resPmedical, resPnoMedical, resMaterial] = await Promise.all([
+        postHospital({
+          NomHospital: hspData.NomHospital,
+          ville: hspData.ville,
+          Departement: hspData.Departement,
+          IdentiteHopital: hspData.IdentiteHopital,
+          ReanimationMedical: hspData.ReanimationMedical,
+          ReanimationChirurgical: hspData.ReanimationChirurgical,
+          Activite: hspData.Activite
+        }),
+        postUser({
+          nom: hspData.nom,
+          prenom: hspData.prenom,
+          role: hspData.role = "user",
+          email: hspData.email,
+          password: hspData.password,
+          NomHospital: hspData.NomHospital
+        }),
+        postPersonelMdeical({
+          NbDoctorUniv: hspData.NbDoctorUniv,
+          NbDoctorHosp: hspData.NbDoctorHosp,
+          NbInternal: hspData.NbInternal,
+          NbDoctor: hspData.NbDoctor,
+          NbPersonalAbs: hspData.NbPersonalAbs
+        }),
+        postPnoMedical({
+          NbIdeDay: hspData.NbIdeDay,
+          NbIdeNight: hspData.NbIdeNight,
+          NbIdeDayUsc: hspData.NbIdeDayUsc,
+          NbIdeNightUsc: hspData.NbIdeNightUsc,
+          NbAsDay: hspData.NbAsDay,
+          NbAsNight: hspData.NbAsNight,
+          NbAsDayUsc: hspData.NbAsDayUsc,
+          NbAsNightUsc: hspData.NbAsNightUsc,
+          NbExecDay: hspData.NbExecDay,
+          NbIdeSick: hspData.NbIdeSick,
+          NbAsSick: hspData.NbAsSick,
+          NbAppIde: hspData.NbAppIde,
+          NbAppAs: hspData.NbAppAs
+        }),
+        postMaterial({
+          material: {
+            nbBedRea: hspData.material.nbBedRea,
+            nbBedInRoom: hspData.material.nbBedInRoom,
+            nbBedMntr: hspData.material.nbBedMntr,
+            nbAdmis: hspData.material.nbAdmis,
+            nbPersonalAbs: hspData.material.nbPersonalAbs,
+            ecmo: hspData.material.ecmo
+          },
+          devices: hspData.devices
+        })
+      ]);
+
+      if (resData.status === 200 && resUser.status === 200 && resPmedical.status === 200 && resPnoMedical.status === 200 && resMaterial.status === 200) {
+        redirect("/");
+      }
+      console.log(resData, resUser, resPmedical, resPnoMedical, resMaterial);
+    } catch (error: any) {
+      alert("Internal Server Error");
+      throw new Error(error);
+    }
+  }
+
+
   return (
     <div id="Global">
       <table
@@ -45,8 +138,7 @@ function Register() {
             <div style={{ textAlign: "center" }}>
               <form
                 name="form1"
-                method="post"
-                action="add_donnees_service.php3?id=<? echo $id ?>"
+                onSubmit={handleSubmit}
               >
                 <table
                   width="603"
@@ -122,11 +214,10 @@ function Register() {
                     <td colSpan={5}>
                       <div style={{ textAlign: "left" }}>
                         <input
-                          name="nom_centre"
                           type="text"
                           id="nom_centre"
-                          size={30}
-                          style={{opacity: 5}}
+                          style={{ opacity: 5 }}
+                          onChange={(e) => setHspData({ ...hspData, NomHospital: e.target.value })}
                         />
                         *
                       </div>
@@ -138,7 +229,7 @@ function Register() {
                     </td>
                     <td colSpan={5}>
                       <div style={{ textAlign: "left" }}>
-                        <input name="ville" type="text" size={30} />*
+                        <input name="ville" type="text" size={30} onChange={(e) => setHspData({ ...hspData, ville: e.target.value })} />*
                       </div>
                       <div style={{ textAlign: "left" }}></div>
                     </td>
@@ -157,6 +248,7 @@ function Register() {
                           id="code_postal"
                           size={2}
                           maxLength={2}
+                          onChange={(e) => setHspData({ ...hspData, Departement: e.target.value })}
                         />
                         *
                       </div>
@@ -170,7 +262,7 @@ function Register() {
                     </td>
                     <td colSpan={5}>
                       <div style={{ textAlign: "left" }}>
-                        <select name="id_hop" id="select7">
+                        <select name="id_hop" id="select7" onChange={(e) => setHspData({ ...hspData, IdentiteHopital: e.target.value })}>
                           <option value=" "></option>
                           <option value="CHU">CHU</option>
                           <option value="CHG">CHG</option>
@@ -198,7 +290,7 @@ function Register() {
                     <td colSpan={6}>
                       <div style={{ textAlign: "left" }}>
                         R&eacute;animation et/ou USC-USI m&eacute;dicale :
-                        <select name="rea_usc" id="rea_usc">
+                        <select name="rea_usc" id="rea_usc" onChange={(e) => setHspData({ ...hspData, ReanimationMedical: e.target.value })}>
                           <option value=""></option>
                           <option value="Non">Non</option>
                           <option value="Oui">Oui</option>
@@ -218,7 +310,7 @@ function Register() {
                           width="150"
                           height="10"
                         />
-                        <select name="rea_usc_2" id="select2">
+                        <select name="rea_usc_2" id="select2" onChange={(e) => setHspData({ ...hspData, ReanimationMedical: e.target.value })}>
                           <option value=""></option>
                           <option value="Mdicale polyvalente">
                             Mdicale polyvalente
@@ -243,7 +335,7 @@ function Register() {
                       <div style={{ textAlign: "left" }}>
                         R&eacute;animation et/ou USC-USI-SSPI chirurgicale&nbsp;
                         :
-                        <select name="rea_sspi" id="select4">
+                        <select name="rea_sspi" id="select4" onChange={(e) => setHspData({ ...hspData, ReanimationChirurgical: e.target.value })}>
                           <option value=""></option>
                           <option value="Non">Non</option>
                           <option value="Oui">Oui</option>
@@ -263,7 +355,7 @@ function Register() {
                           width="150"
                           height="10"
                         />
-                        <select name="rea_sspi_2" id="select8">
+                        <select name="rea_sspi_2" id="select8" onChange={(e) => setHspData({ ...hspData, ReanimationChirurgical: e.target.value })}>
                           <option value=""></option>
                           <option value="Chirurgicale">Chirurgicale</option>
                           <option value="Chirurgie cardiaque">
@@ -289,7 +381,7 @@ function Register() {
                     </td>
                     <td colSpan={5}>
                       <div style={{ textAlign: "left" }}>
-                        <select name="activite" id="select">
+                        <select name="activite" id="select" onChange={(e) => setHspData({ ...hspData, Activite: e.target.value === "Adulte" ? Activity.ADULT : Activity.PEDIATRIC })}>
                           <option value=""></option>
                           <option value="Adulte">Adulte</option>
                           <option value="P&eacute;diatrique">
@@ -336,7 +428,7 @@ function Register() {
                     </td>
                     <td colSpan={5}>
                       <div style={{ textAlign: "left" }}>
-                        <input name="nom" type="text" id="nom" size={30} />*
+                        <input name="nom" type="text" id="nom" size={30} onChange={(e) => setHspData({ ...hspData, nom: e.target.value })} />*
                       </div>
                     </td>
                   </tr>
@@ -351,6 +443,7 @@ function Register() {
                           type="text"
                           id="prenom"
                           size={30}
+                          onChange={(e) => setHspData({ ...hspData, prenom: e.target.value })}
                         />
                         *
                       </div>
@@ -362,7 +455,7 @@ function Register() {
                     </td>
                     <td colSpan={5}>
                       <div style={{ textAlign: "left" }}>
-                        <input name="email" type="text" id="email" size={30} />*
+                        <input name="email" type="text" id="email" size={30} onChange={(e) => setHspData({ ...hspData, email: e.target.value })} />*
                       </div>
                     </td>
                   </tr>
@@ -458,6 +551,7 @@ function Register() {
                                       type="text"
                                       id="nb_medu2"
                                       size={1}
+                                      onChange={(e) => setHspData({ ...hspData, NbDoctorUniv: parseInt(e.target.value) })}
                                     />
                                     *
                                   </div>
@@ -485,6 +579,7 @@ function Register() {
                                       type="text"
                                       id="nb_medhosp"
                                       size={1}
+                                      onChange={(e) => setHspData({ ...hspData, NbDoctorHosp: parseInt(e.target.value) })}
                                     />
                                     *
                                   </div>
@@ -512,6 +607,7 @@ function Register() {
                                       type="text"
                                       id="nb_int"
                                       size={1}
+                                      onChange={(e) => setHspData({ ...hspData, NbInternal: parseInt(e.target.value) })}
                                     />
                                     *
                                   </div>
@@ -538,6 +634,7 @@ function Register() {
                                       type="text"
                                       id="nb_medpres"
                                       size={1}
+                                      onChange={(e) => setHspData({ ...hspData, NbDoctor: parseInt(e.target.value) })}
                                     />
                                     *
                                   </div>
@@ -565,6 +662,7 @@ function Register() {
                                       type="text"
                                       id="nb_etp_abs2"
                                       size={1}
+                                      onChange={(e) => setHspData({ ...hspData, NbPersonalAbs: parseInt(e.target.value) })}
                                     />
                                     *
                                   </div>
@@ -644,6 +742,7 @@ function Register() {
                                       type="text"
                                       id="nb_ide_jour"
                                       size={1}
+                                      onChange={(e) => setHspData({ ...hspData, NbIdeDay: parseInt(e.target.value) })}
                                     />
                                     *
                                   </div>
@@ -666,6 +765,7 @@ function Register() {
                                       type="text"
                                       id="nb_ide_jour_usc"
                                       size={1}
+                                      onChange={(e) => setHspData({ ...hspData, NbIdeDayUsc: parseInt(e.target.value) })}
                                     />
                                     *
                                   </div>
@@ -688,6 +788,7 @@ function Register() {
                                       type="text"
                                       id="nb_ide_nuit"
                                       size={1}
+                                      onChange={(e) => setHspData({ ...hspData, NbIdeNight: parseInt(e.target.value) })}
                                     />
                                     *
                                   </div>
@@ -709,7 +810,7 @@ function Register() {
                                       name="nb_ide_nuit_usc"
                                       type="text"
                                       id="nb_ide_nuit_usc"
-                                      size={1}
+                                      onChange={(e) => setHspData({ ...hspData, NbIdeNightUsc: parseInt(e.target.value) })}
                                     />
                                     *
                                   </div>
@@ -737,6 +838,7 @@ function Register() {
                                       type="text"
                                       id="nb_ash_jour"
                                       size={1}
+                                      onChange={(e) => setHspData({ ...hspData, NbAsDay: parseInt(e.target.value) })}
                                     />
                                     *
                                   </div>
@@ -758,7 +860,7 @@ function Register() {
                                       name="nb_ash_jour_usc"
                                       type="text"
                                       id="nb_ash_jour_usc"
-                                      size={1}
+                                      onChange={(e) => setHspData({ ...hspData, NbAsDayUsc: parseInt(e.target.value) })}
                                     />
                                     *
                                   </div>
@@ -780,7 +882,7 @@ function Register() {
                                       name="nb_ash_nuit"
                                       type="text"
                                       id="nb_ash_nuit"
-                                      size={1}
+                                      onChange={(e) => setHspData({ ...hspData, NbAsNight: parseInt(e.target.value) })}
                                     />
                                     *
                                   </div>
@@ -802,7 +904,7 @@ function Register() {
                                       name="nb_ash_nuit_usc"
                                       type="text"
                                       id="nb_ash_nuit_usc"
-                                      size={1}
+                                      onChange={(e) => setHspData({ ...hspData, NbAsNightUsc: parseInt(e.target.value) })}
                                     />
                                     *
                                   </div>
@@ -829,7 +931,7 @@ function Register() {
                                       name="nb_cadre_pres"
                                       type="text"
                                       id="nb_cadre_pres"
-                                      size={1}
+                                      onChange={(e) => setHspData({ ...hspData, NbExecDay: parseInt(e.target.value) })}
                                     />
                                     *
                                   </div>
@@ -859,7 +961,7 @@ function Register() {
                                       name="nb_arret_ide"
                                       type="text"
                                       id="nb_arret_ide"
-                                      size={1}
+                                      onChange={(e) => setHspData({ ...hspData, NbIdeSick: parseInt(e.target.value) })}
                                     />
                                     *
                                   </div>
@@ -881,7 +983,7 @@ function Register() {
                                       name="nb_arret_ash"
                                       type="text"
                                       id="nb_arret_ash"
-                                      size={1}
+                                      onChange={(e) => setHspData({ ...hspData, NbAsSick: parseInt(e.target.value) })}
                                     />
                                     *
                                   </div>
@@ -910,7 +1012,7 @@ function Register() {
                                       name="nb_ide_renf"
                                       type="text"
                                       id="nb_ide_renf"
-                                      size={1}
+                                      onChange={(e) => setHspData({ ...hspData, NbAppIde: parseInt(e.target.value) })}
                                     />
                                     *
                                   </div>
@@ -939,7 +1041,7 @@ function Register() {
                                       name="nb_ash_renf"
                                       type="text"
                                       id="nb_ash_renf2"
-                                      size={1}
+                                      onChange={(e) => setHspData({ ...hspData, NbAppAs: parseInt(e.target.value) })}
                                     />
                                     *
                                   </div>
@@ -983,7 +1085,7 @@ function Register() {
                           </td>
                           <td colSpan={2}>
                             <div style={{ textAlign: "left" }}>
-                              <input size={2} type="text" name="nb_lits" />*
+                              <input size={2} type="text" name="nb_lits" onChange={(e) => setHspData({ ...hspData, material: { ...hspData.material, nbBedRea: parseInt(e.target.value) } })}/>*
                             </div>
                           </td>
                         </tr>
@@ -998,49 +1100,25 @@ function Register() {
                         </tr>
                         <tr>
                           <td colSpan={5}>
-                            <table
-                              width={80}
-                              border={0}
-                              align="left"
-                              cellPadding={0}
-                              cellSpacing={0}
-                            >
-                              <tr>
-                                <td>
-                                  <div style={{ textAlign: "left" }}>
-                                    1 lit :
-                                    <input
-                                      name="lit1_rea"
-                                      type="text"
-                                      id="lit1_rea"
-                                      size={2}
-                                    />
-                                  </div>
-                                </td>
-                                <td>
-                                  <div style={{ textAlign: "left" }}>
-                                    2 lits :
-                                    <input
-                                      name="lit2_rea"
-                                      type="text"
-                                      id="lit2_rea"
-                                      size={2}
-                                    />
-                                  </div>
-                                </td>
-                                <td>
-                                  <div style={{ textAlign: "left" }}>
-                                    plus de 2 lits :
-                                    <input
-                                      name="litplus_rea"
-                                      type="text"
-                                      id="litplus_rea"
-                                      size={2}
-                                    />
-                                  </div>
-                                </td>
-                              </tr>
-                            </table>
+                          <table width="80%" border={0} align="left" cellPadding="0" cellSpacing="0">
+                        <tr>
+                          <td>
+                            <div style={{ alignItems: "left"}}>1 lit :
+                              <input name="lit1_rea" type="text" id="lit1_rea" size={2} onChange={(e) => setHspData({ ...hspData, material: { ...hspData.material, nbBedInRoom: parseInt(e.target.value) } })}/>
+                            </div>
+                          </td>
+                          <td>
+                            <div style={{ alignItems: "left"}}>2 lits :
+                              <input name="lit2_rea" type="text" id="lit2_rea" size={2} onChange={(e) => setHspData({ ...hspData, material: { ...hspData.material, nbBedInRoom: parseInt(e.target.value) } })}/>
+                            </div>
+                          </td>
+                          <td>
+                            <div style={{ alignItems: "left"}}>plus de 2 lits :
+                              <input name="litplus_rea" type="text" id="litplus_rea" size={2} onChange={(e) => setHspData({ ...hspData, material: { ...hspData.material, nbBedInRoom: parseInt(e.target.value) } })}/>
+                            </div>
+                          </td>
+                        </tr>
+                      </table>
                           </td>
                         </tr>
                         <tr>
@@ -1058,7 +1136,7 @@ function Register() {
                                 Nombre de lits de surveillance continue ouverts
                                 &agrave; ce jour :
                               </span>
-                              <input type="text" name="nb_lits_surv" size={2} />
+                              <input type="text" name="nb_lits_surv" size={2} onChange={(e) => setHspData({ ...hspData, material: { ...hspData.material, nbBedMntr: parseInt(e.target.value) } })}/>
                               *
                             </div>
                           </td>
@@ -1077,49 +1155,25 @@ function Register() {
                         </tr>
                         <tr>
                           <td colSpan={5}>
-                            <table
-                              width={80}
-                              border={0}
-                              align="left"
-                              cellPadding={0}
-                              cellSpacing={0}
-                            >
-                              <tr>
-                                <td>
-                                  <div style={{ textAlign: "left" }}>
-                                    1 lit :
-                                    <input
-                                      name="lit1_usc"
-                                      type="text"
-                                      id="lit1_usc2"
-                                      size={2}
-                                    />
-                                  </div>
-                                </td>
-                                <td>
-                                  <div style={{ textAlign: "left" }}>
-                                    2 lits :
-                                    <input
-                                      name="lit2_usc"
-                                      type="text"
-                                      id="lit2_usc2"
-                                      size={2}
-                                    />
-                                  </div>
-                                </td>
-                                <td>
-                                  <div style={{ textAlign: "left" }}>
-                                    plus de 2 lits :
-                                    <input
-                                      name="litplus_usc"
-                                      type="text"
-                                      id="litplus_usc2"
-                                      size={2}
-                                    />
-                                  </div>
-                                </td>
-                              </tr>
-                            </table>
+                          <table width="80%" border={0} align="left" cellPadding="0" cellSpacing="0">
+                        <tr>
+                          <td>
+                            <div style={{alignItems: "left"}}>1 lit :
+                              <input name="lit1_usc" type="text" id="lit1_usc2" size={2} onChange={(e) => setHspData({ ...hspData, material: { ...hspData.material, nbBedMntr: parseInt(e.target.value) } })}/>
+                            </div>
+                          </td>
+                          <td>
+                            <div style={{alignItems: "left"}}>2 lits :
+                              <input name="lit2_usc" type="text" id="lit2_usc2" size={2} onChange={(e) => setHspData({ ...hspData, material: { ...hspData.material, nbBedMntr: parseInt(e.target.value) } })}/>
+                            </div>
+                          </td>
+                          <td>
+                            <div style={{alignItems: "left"}}>plus de 2 lits :
+                              <input name="litplus_usc" type="text" id="litplus_usc2" size={2} onChange={(e) => setHspData({ ...hspData, material: { ...hspData.material, nbBedMntr: parseInt(e.target.value) } })}/>
+                            </div>
+                          </td>
+                        </tr>
+                      </table>
                           </td>
                         </tr>
                         <tr>
@@ -1145,6 +1199,7 @@ function Register() {
                                 type="text"
                                 id="nb_admin4"
                                 size={6}
+                                onChange={(e) => setHspData({ ...hspData, material: { ...hspData.material, nbAdmis: parseInt(e.target.value) } })}
                               />
                               *
                             </div>
@@ -1170,6 +1225,7 @@ function Register() {
                                         type="hidden"
                                         id="nb_lits_uscrea"
                                         size={6}
+                                        onChange={(e) => setHspData({ ...hspData, material: { ...hspData.material, nbAdmis: parseInt(e.target.value) } })}  
                                       />
                                     </div>
                                   </td>
@@ -1207,6 +1263,7 @@ function Register() {
                                         id="evitaII"
                                         size={1}
                                         maxLength={2}
+                                        onChange={(e) => setHspData({ ...hspData, devices: [...hspData.devices, { quantity: parseInt(e.target.value), name: "EvitaII" }] })}
                                       />
                                     </span>
                                   </td>
@@ -1237,6 +1294,7 @@ function Register() {
                                         type="text"
                                         id="evitaIV"
                                         size={1}
+                                        onChange={(e) => setHspData({ ...hspData, devices: [...hspData.devices, { quantity: parseInt(e.target.value), name: "EvitaIV" }] })}
                                       />
                                     </span>
                                   </td>
@@ -1267,6 +1325,7 @@ function Register() {
                                         type="text"
                                         id="nb_admin233"
                                         size={1}
+                                        onChange={(e) => setHspData({ ...hspData, devices: [...hspData.devices, { quantity: parseInt(e.target.value), name: "EvitaXL" }] })}
                                       />
                                     </span>
                                   </td>
@@ -1297,8 +1356,9 @@ function Register() {
                                       <input
                                         name="savina"
                                         type="text"
-                                        id="savina"
+                                        id="savina" 
                                         size={1}
+                                        onChange={(e) => setHspData({ ...hspData, devices: [...hspData.devices, { quantity: parseInt(e.target.value), name: "Savina" }] })}
                                       />
                                     </span>
                                   </td>
@@ -1329,6 +1389,7 @@ function Register() {
                                         type="text"
                                         id="evitaIIdura"
                                         size={1}
+                                        onChange={(e) => setHspData({ ...hspData, devices: [...hspData.devices, { quantity: parseInt(e.target.value), name: "EvitaIIdura" }] })}
                                       />
                                     </span>
                                   </td>
@@ -1359,6 +1420,7 @@ function Register() {
                                         type="text"
                                         id="npb7200"
                                         size={1}
+                                        onChange={(e) => setHspData({ ...hspData, devices: [...hspData.devices, { quantity: parseInt(e.target.value), name: "NPB7200" }] })}
                                       />
                                     </span>
                                   </td>
@@ -1389,6 +1451,7 @@ function Register() {
                                         type="text"
                                         id="galileo"
                                         size={1}
+                                        onChange={(e) => setHspData({ ...hspData, devices: [...hspData.devices, { quantity: parseInt(e.target.value), name: "Galileo" }] })}
                                       />
                                     </span>
                                   </td>
@@ -1419,6 +1482,7 @@ function Register() {
                                         type="text"
                                         id="G5"
                                         size={1}
+                                        onChange={(e) => setHspData({ ...hspData, devices: [...hspData.devices, { quantity: parseInt(e.target.value), name: "G5" }] })}
                                       />
                                     </span>
                                   </td>
@@ -1449,6 +1513,7 @@ function Register() {
                                         type="text"
                                         id="servoI"
                                         size={1}
+                                        onChange={(e) => setHspData({ ...hspData, devices: [...hspData.devices, { quantity: parseInt(e.target.value), name: "ServoI" }] })}
                                       />
                                     </span>
                                   </td>
@@ -1481,6 +1546,7 @@ function Register() {
                                         type="text"
                                         id="servo9002"
                                         size={1}
+                                        onChange={(e) => setHspData({ ...hspData, devices: [...hspData.devices, { quantity: parseInt(e.target.value), name: "Servo900" }] })}
                                       />
                                     </span>
                                   </td>
@@ -1511,6 +1577,7 @@ function Register() {
                                         type="text"
                                         id="bird8400"
                                         size={1}
+                                        onChange={(e) => setHspData({ ...hspData, devices: [...hspData.devices, { quantity: parseInt(e.target.value), name: "Bird8400" }] })}
                                       />
                                     </span>
                                   </td>
@@ -1539,6 +1606,7 @@ function Register() {
                                         type="text"
                                         id="Tbird"
                                         size={1}
+                                        onChange={(e) => setHspData({ ...hspData, devices: [...hspData.devices, { quantity: parseInt(e.target.value), name: "Tbird" }] })}
                                       />
                                     </span>
                                   </td>
@@ -1568,6 +1636,7 @@ function Register() {
                                         type="text"
                                         id="pb8402"
                                         size={1}
+                                        onChange={(e) => setHspData({ ...hspData, devices: [...hspData.devices, { quantity: parseInt(e.target.value), name: "PB840" }] })}
                                       />
                                     </span>
                                   </td>
@@ -1589,6 +1658,7 @@ function Register() {
                                   type="text"
                                   id="vela3"
                                   size={1}
+                                  onChange={(e) => setHspData({ ...hspData, devices: [...hspData.devices, { quantity: parseInt(e.target.value), name: "Vela" }] })}
                                 />
                               </span>
                             </div>
@@ -1606,6 +1676,7 @@ function Register() {
                                   type="text"
                                   id="npb7407604"
                                   size={1}
+                                  onChange={(e) => setHspData({ ...hspData, devices: [...hspData.devices, { quantity: parseInt(e.target.value), name: "NPB740760" }] })}
                                 />
                               </span>
                             </div>
@@ -1628,6 +1699,7 @@ function Register() {
                                       id="nb_admin2193"
                                       value=""
                                       size={1}
+                                      onChange={(e) => setHspData({ ...hspData, devices: [...hspData.devices, { quantity: parseInt(e.target.value), name: "Servo300" }] })}
                                     />
                                   </span>{" "}
                                 </span>
@@ -1652,6 +1724,7 @@ function Register() {
                                         type="text"
                                         id="extend"
                                         size={1}
+                                        onChange={(e) => setHspData({ ...hspData, devices: [...hspData.devices, { quantity: parseInt(e.target.value), name: "Extend" }] })}
                                       />
                                     </span>
                                   </td>
@@ -1682,6 +1755,7 @@ function Register() {
                                         type="text"
                                         id="horus"
                                         size={1}
+                                        onChange={(e) => setHspData({ ...hspData, devices: [...hspData.devices, { quantity: parseInt(e.target.value), name: "Horus" }] })}
                                       />
                                     </span>
                                   </td>
@@ -1715,6 +1789,7 @@ function Register() {
                                         type="text"
                                         id="elisee"
                                         size={1}
+                                        onChange={(e) => setHspData({ ...hspData, devices: [...hspData.devices, { quantity: parseInt(e.target.value), name: "Elisee" }] })}
                                       />
                                     </span>
                                   </td>
@@ -1745,6 +1820,7 @@ function Register() {
                                         type="text"
                                         id="vision"
                                         size={1}
+                                        onChange={(e) => setHspData({ ...hspData, devices: [...hspData.devices, { quantity: parseInt(e.target.value), name: "Vision" }] })}
                                       />
                                     </span>
                                   </td>
@@ -1776,6 +1852,7 @@ function Register() {
                                         type="text"
                                         id="evitaXL"
                                         size={1}
+                                        onChange={(e) => setHspData({ ...hspData, devices: [...hspData.devices, { quantity: parseInt(e.target.value), name: "V500" }] })}
                                       />
                                     </span>
                                   </td>
@@ -1807,6 +1884,7 @@ function Register() {
                                       type="text"
                                       id="npb7407602"
                                       size={1}
+                                      onChange={(e) => setHspData({ ...hspData, devices: [...hspData.devices, { quantity: parseInt(e.target.value), name: "Avea" }] })}
                                     />
                                   </span>
                                 </td>
@@ -1834,6 +1912,7 @@ function Register() {
                                       type="text"
                                       id="engst"
                                       size={1}
+                                      onChange={(e) => setHspData({ ...hspData, devices: [...hspData.devices, { quantity: parseInt(e.target.value), name: "Engstrom" }] })}
                                     />
                                   </span>
                                 </td>
@@ -1856,6 +1935,7 @@ function Register() {
                                   type="text"
                                   id="autre2"
                                   size={1}
+                                  onChange={(e) => setHspData({ ...hspData, devices: [...hspData.devices, { quantity: parseInt(e.target.value), name: "Autre" }] })}
                                 />
                               </span>
                             </div>
@@ -1877,7 +1957,7 @@ function Register() {
                       <div style={{ textAlign: "left" }}>
                         Un acc&egrave;s &agrave; l&rsquo;ECMO est-il possible
                         dans votre &eacute;tablissement ?
-                        <select name="ecmo" id="ecmo">
+                        <select name="ecmo" id="ecmo" onChange={(e) => setHspData({ ...hspData, ecmo: e.target.value === "oui" })}>
                           <option value={0} selected></option>
                           <option value="non">Non</option>
                           <option value="oui">Oui</option>

@@ -1,19 +1,67 @@
-enum Activity {
+export enum Activity {
     ADULT = "ADULT",
     PEDIATRIC = "PEDIATRIC",
 }
 
-type HospitalRegister = {
+export type joinData = {
     NomHospital: string;
     ville: string;
     Departement: string;
-    IdHospital: string;
+    IdentiteHopital: string;
+    ReanimationMedical: string;
+    ReanimationChirurgical: string;
+    Activite: Activity;
+    // User
+    nom: string;
+    prenom: string;
+    role: string;
+    email: string;
+    password: string;
+    NomHospital: string;
+    // pmedical
+    NbDoctorUniv: number;
+    NbDoctorHosp: number;
+    NbInternal: number;
+    NbDoctor: number;
+    NbPersonalAbs: number;
+    // pnomedical
+    NbIdeDay: number;
+    NbIdeNight: number;
+    NbIdeDayUsc: number;
+    NbIdeNightUsc: number;
+    NbAsDay: number;
+    NbAsNight: number;
+    NbAsDayUsc: number;
+    NbAsNightUsc: number;
+    NbExecDay: number;
+    NbIdeSick: number;
+    NbAsSick: number;
+    NbAppIde: number;
+    NbAppAs: number;
+    // material
+    material: {
+        nbBedRea: number;
+        nbBedInRoom: number;
+        nbBedMntr: number;
+        nbAdmis: number;
+        nbPersonalAbs: number;
+        ecmo: boolean;
+    },
+    devices: Array<{ quantity: number; name: string; }>
+    ecmo: boolean;
+};
+
+export type HospitalRegister = {
+    NomHospital: string;
+    ville: string;
+    Departement: string;
+    IdentiteHopital: string;
     ReanimationMedical: string;
     ReanimationChirurgical: string;
     Activite: Activity;
 }
 
-type UserRegister = {
+export type UserRegister = {
     nom: string;
     prenom: string;
     role: string;
@@ -22,12 +70,12 @@ type UserRegister = {
     NomHospital: string;
 }
 
-type UserLogin = {
+export type UserLogin = {
     email: string;
     password: string;
 };
 
-type Patient = {
+export type Patient = {
     patient: {
         gender: string;
         age: number;
@@ -45,7 +93,7 @@ type Patient = {
     }
 };
 
-type pmedical = {
+export type pmedical = {
     NbDoctorUniv: number;
     NbDoctorHosp: number;
     NbInternal: number;
@@ -53,7 +101,7 @@ type pmedical = {
     NbPersonalAbs: number;
 };
 
-type pnomedical = {
+export type pnomedical = {
     NbIdeDay: number;
     NbIdeNight: number;
     NbIdeDayUsc: number;
@@ -69,7 +117,7 @@ type pnomedical = {
     NbAppAs: number;
 };
 
-type material = {
+export type material = {
     material: {
         nbBedRea: number;
         nbBedInRoom: number;
@@ -78,12 +126,7 @@ type material = {
         nbPersonalAbs: number;
         ecmo: boolean;
     },
-    devices: [
-        {
-            quantity: number;
-            name: string;
-        }
-    ]
+    devices: Array<{ quantity: number; name: string; }>
 }
 
 

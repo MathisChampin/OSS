@@ -7,7 +7,7 @@ function Login() {
 
   const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // Here you would typically handle the login logic, possibly sending a request to your backend
+    
     console.log('Attempting to login with:', username, password);
   };
 
@@ -16,10 +16,10 @@ function Login() {
       <form onSubmit={handleLogin} className="login-form">
         <h2>Login</h2>
         <div className="form-group">
-          <label htmlFor="username">Username</label>
+          <label htmlFor="email">Email</label>
           <input
             type="text"
-            id="username"
+            id="email"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required

@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
-import { HospitalRegister, pmedical, UserRegister, pnomedical } from "../utils/hospital";
+import { HospitalRegister, pmedical, UserRegister, pnomedical, material } from "../utils/hospital";
 
 export const getHospitals = async (): Promise<AxiosResponse<any | any> | AxiosError>=> {
     try {
@@ -28,7 +28,7 @@ export const postUser =  async (userData: UserRegister): Promise<AxiosResponse<a
     }
 }
 
-export const personelMdeical = async (pmedical: pmedical): Promise<AxiosResponse<any | any>> => {
+export const postPersonelMdeical = async (pmedical: pmedical): Promise<AxiosResponse<any | any>> => {
     try {
         const data = await axios.post("http://localhost:5058/api/PMedical", { ...pmedical }, { headers: { "Content-Type": "application/json" } });
         return data;
@@ -37,7 +37,7 @@ export const personelMdeical = async (pmedical: pmedical): Promise<AxiosResponse
     }
 };
 
-export const pnoMedical = async (pnomedical: pnomedical): Promise<AxiosResponse<any | any>> => {
+export const postPnoMedical = async (pnomedical: pnomedical): Promise<AxiosResponse<any | any>> => {
     try {
         const data = await axios.post("http://localhost:5058/api/PNoMedical", { ...pnomedical }, { headers: { "Content-Type": "application/json" } });
         return data;
@@ -45,3 +45,12 @@ export const pnoMedical = async (pnomedical: pnomedical): Promise<AxiosResponse<
         return error;
     }
 };
+
+export const postMaterial = async (material: material): Promise<AxiosResponse<any | any>> => {
+    try {
+        const data = await axios.post("http://localhost:5058/api/Material", { ...material }, { headers: { "Content-Type": "application/json" } });
+        return data;
+    } catch (error: any) {
+        return error;
+    }
+}
