@@ -1,7 +1,7 @@
 # OneScientificStudy OSS V2 2024 | API Documentation
 ## Description
 
-Ce projet est une API permettant de gérer des patients, des hospitalisations, des hôpitaux, des utilisateurs, ainsi que des informations liées au personnel médical et non médical. Elle utilise .NET Core avec Entity Framework pour l'accès à la base de données PostgreSQL et JWT pour l'authentification. Ce guide explique les principaux modèles et la configuration du fichier Program.cs.
+Ce projet est une application permettant de créer une étude scientifique multicentrique sur 6 mois de pendémie a l'hopital. Elle utilise .NET Core avec Entity Framework pour l'accès à la base de données PostgreSQL et JWT pour l'authentification. Ce guide explique les principaux modèles et la configuration du fichier Program.cs.
 Technologies Utilisées
 
 - **ASP.NET Core 7.0** : Framework web pour construire l'API.
