@@ -12,5 +12,7 @@ namespace Services
         Task UpdateUserAsync(User user);
         Task<bool> DeleteUserAsync(int id);
         Task<User?> AuthenticateAsync(string email, string password);
+        Task<string> GenerateRefreshTokenAsync(int userId);
+        Task<(int? userId, int? hospitalId)> ValidateRefreshTokenAsync(string refreshToken);
     }
 }

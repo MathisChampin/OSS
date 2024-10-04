@@ -74,5 +74,15 @@ namespace Services
         {
             return BCrypt.Net.BCrypt.Verify(password, passwordHash);
         }
+
+        public async Task<string> GenerateRefreshTokenAsync(int userId)
+        {
+            return await _userRepository.GenerateRefreshTokenAsync(userId);
+        }
+
+        public async Task<(int? userId, int? hospitalId)> ValidateRefreshTokenAsync(string refreshToken)
+        {
+            return await _userRepository.ValidateRefreshTokenAsync(refreshToken);
+        }
     }
 }
