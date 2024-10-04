@@ -63,18 +63,21 @@ namespace Controllers
         [Authorize]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> PostPMaterial([FromBody] MaterialWithDevice model)
+        public async Task<IActionResult> PostMaterial([FromBody] MaterialWithDevice model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+
             try {
                 var hospitalIdClaim = User.FindFirst("HospitalId")?.Value;
                 if (string.IsNullOrEmpty(hospitalIdClaim))
                     return Unauthorized("L'utilisateur n'est pas lié à un hôpital.");
+                
                 if (!int.TryParse(hospitalIdClaim, out int hospitalId))
                     return BadRequest("L'ID de l'hôpital est invalide.");
+
                 var createdMaterial = await _materialService.CreateMaterialAsync(model, hospitalId);
-                return CreatedAtAction(nameof(GetMaterials), new { id = createdMaterial.Id }, createdMaterial);
+                return CreatedAtAction(nameof(GetMaterial), new { id = createdMaterial.Id }, createdMaterial);
             } catch (KeyNotFoundException ex) {
                 return NotFound(ex.Message);
             } catch (Exception ex) {
@@ -109,7 +112,7 @@ namespace Controllers
             existingMaterial.NbBedMntr = material.NbBedMntr ?? existingMaterial.NbBedMntr;
             existingMaterial.NbAdmis = material.NbAdmis ?? existingMaterial.NbAdmis;
             existingMaterial.NbPersonalAbs = material.NbPersonalAbs ?? existingMaterial.NbPersonalAbs;
-            existingMaterial.Device = material.Device ?? existingMaterial.Device;
+            existingMaterial.Devices = material.Devices ?? existingMaterial.Devices;
             existingMaterial.Ecmo = material.Ecmo ?? existingMaterial.Ecmo;
 
             await _materialService.UpdateMaterialAsync(existingMaterial);

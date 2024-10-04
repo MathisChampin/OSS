@@ -18,13 +18,13 @@ namespace Repositories
         public async Task<List<Material>> GetAllAsync()
         {
             return await _context.Materials
-                .Include(m => m.Device)
+                .Include(m => m.Devices)
                 .ToListAsync();
         }
         public async Task<Material?> GetByIdAsync(int id)
         {
             return await _context.Materials
-                .Include(p => p.Device)
+                .Include(p => p.Devices)
                 .FirstOrDefaultAsync(h => h.Id == id);
         }
 

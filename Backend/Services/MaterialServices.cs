@@ -9,14 +9,14 @@ namespace Services
     public class MaterialService : IMaterialService
     {
         private readonly IMaterialRepository _materialRepository;
-        private readonly IHospitalRepository _hospitalRepository;
         private readonly IDeviceRepository _deviceRepository;
+        private readonly IHospitalRepository _hospitalRepository;
 
-        public MaterialService(IMaterialRepository materialRepository, IHospitalRepository hospitalRepository, IDeviceRepository deviceRepository)
+        public MaterialService(IMaterialRepository materialRepository, IDeviceRepository deviceRepository, IHospitalRepository hospitalRepository)
         {
             _materialRepository = materialRepository;
-            _hospitalRepository = hospitalRepository;
             _deviceRepository = deviceRepository;
+            _hospitalRepository = hospitalRepository;
         }
 
         public async Task<List<Material>> GetAllMaterialsAsync()
@@ -36,13 +36,12 @@ namespace Services
             model.Material.HospitalId = hospital.Id;
 
             var createdMaterial = await _materialRepository.CreateAsync(model.Material);
-
-            model.Device.MaterialId = createdMaterial.Id;
-
-            await _deviceRepository.CreateAsync(model.Device);
-
+            foreach (var device in model.Devices)
+            {
+                device.MaterialId = createdMaterial.Id;
+                await _deviceRepository.CreateAsync(device);
+            }
             await _hospitalRepository.AddMaterialToHospitalAsync(hospital, createdMaterial);
-
             return createdMaterial;
         }
         public async Task UpdateMaterialAsync(Material material)

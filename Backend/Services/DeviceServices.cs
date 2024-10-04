@@ -29,7 +29,7 @@ namespace Services
             var existingDevice = await _deviceRepository.GetByIdAsync(device.Id);
             if (existingDevice != null)
                 throw new InvalidOperationException("L'équipement existe déjà.");
-            return await _deviceRepository.CreateAsync(existingDevice);
+            return await _deviceRepository.CreateAsync(device);
         }
 
         public async Task UpdateDeviceAsync(Device device)
