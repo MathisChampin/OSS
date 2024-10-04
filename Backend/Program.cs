@@ -1,44 +1,124 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Backend;
+using Routes;
+using Services;
+using Repositories;
+using DotNetEnv;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+Env.Load();
+
+builder.Services.AddDbContext<DataContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigins", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
+});
+
+string? jwtSecretKey = Environment.GetEnvironmentVariable("JWT_SECRET_KEY");
+
+if (jwtSecretKey == null)
+    throw new InvalidOperationException("JWT secret key not found in .env file");
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecretKey)),
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        ValidateLifetime = true
+    };
+});
+
+builder.Host.UseDefaultServiceProvider((context, options) =>
+{
+    options.ValidateScopes = context.HostingEnvironment.IsDevelopment();
+    options.ValidateOnBuild = false;
+});
+
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+        Version = "v1",
+        Title = "API Documentation OSS",
+        Description = "API for managing patients, hospitalizations, hospitals, users"
+    });
+});
+
+builder.Services.AddScoped<IHospitalService, HospitalService>();
+builder.Services.AddScoped<IHospitalRepository, HospitalRepository>();
+builder.Services.AddScoped<IHospitalisationService, HospitalisationService>();
+builder.Services.AddScoped<IHospitalisationRepository, HospitalisationRepository>();
+builder.Services.AddScoped<IPatientService, PatientService>();
+builder.Services.AddScoped<IPatientRepository, PatientRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IPMedicalService, PMedicalService>();
+builder.Services.AddScoped<IPMedicalRepository, PMedicalRepository>();
+builder.Services.AddScoped<IPNoMedicalService, PNoMedicalService>();
+builder.Services.AddScoped<IPNoMedicalRepository, PNoMedicalRepository>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+app.UseAuthentication();
+app.UseAuthorization();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();
+    try
+    {
+        dbContext.Database.OpenConnection();
+        Console.WriteLine("Connexion à la base de données réussie !");
+        dbContext.Database.CloseConnection();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Échec de la connexion à la base de données : {ex.Message}");
+    }
+}
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1");
+        c.RoutePrefix = string.Empty;
+    });
 }
 
 app.UseHttpsRedirection();
+app.UseRouting();
+app.UseCors("AllowSpecificOrigins");
+app.UseAuthorization();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
+app.MapUserRoutes();
+app.MapHospitalRoutes();
+app.MapPatientRoutes();
+app.MapHospitalisationRoutes();
+app.MapPMedicalRoutes();
+app.MapPNoMedicalRoutes();
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

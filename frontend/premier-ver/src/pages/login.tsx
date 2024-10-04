@@ -16,10 +16,10 @@ const LoginPage: React.FC = () => {
     return (
         <div className="flex justify-center items-center h-screen bg-gray-100">
             <div className="w-full max-w-md p-8 space-y-4 bg-white shadow-md rounded-lg">
-                <h1 className="text-2xl font-bold text-center text-gray-700">Login</h1>
+                <h1 className="text-3xl font-bold text-center text-gray-800">Login</h1>
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                     <div>
-                        <label className="block text-gray-600">Email:</label>
+                        <label className="block text-gray-700 font-semibold mb-2">Email:</label>
                         <input
                             className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                                 errors.email ? 'border-red-500' : 'border-gray-300'
@@ -40,7 +40,7 @@ const LoginPage: React.FC = () => {
                     </div>
 
                     <div>
-                        <label className="block text-gray-600">Password:</label>
+                        <label className="block text-gray-700 font-semibold mb-2">Password:</label>
                         <input
                             className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                                 errors.password ? 'border-red-500' : 'border-gray-300'
@@ -64,6 +64,12 @@ const LoginPage: React.FC = () => {
                         className="w-full py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
                     />
                 </form>
+                <div className="text-center mt-4">
+                    <a href="/reset-password" className="text-blue-500 hover:underline">Reset Password</a>
+                </div>
+                <div className="text-center mt-2">
+                    <a href="/signup" className="text-blue-500 hover:underline">Sign Up</a>
+                </div>
             </div>
         </div>
     );
