@@ -1,4 +1,3 @@
-// Routes/UserRoutes.cs
 using Controllers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;

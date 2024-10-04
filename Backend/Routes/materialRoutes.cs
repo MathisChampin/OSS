@@ -4,9 +4,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Routes
 {
-    public static class UserRoutes
+    public static class MaterialRoutes
     {
-        public static void MapUserRoutes(this IEndpointRouteBuilder endpoints)
+        public static void MapMaterialRoutes(this IEndpointRouteBuilder endpoints)
         {
             endpoints.MapControllers();
         }

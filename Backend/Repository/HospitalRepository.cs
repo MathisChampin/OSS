@@ -78,5 +78,11 @@ namespace Repositories
             hospital.PNoMedicals.Add(noMedical);
             await _context.SaveChangesAsync();
         }
+
+        public async Task AddMaterialToHospitalAsync(Hospital hospital, Material material)
+        {
+            hospital.Materials.Add(material);
+            await _context.SaveChangesAsync();
+        }
     }
 }

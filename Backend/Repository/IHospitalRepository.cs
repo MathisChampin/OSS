@@ -15,5 +15,7 @@ namespace Repositories
         Task AddPatientToHospitalAsync(Hospital hospital, Patient patient);
         Task AddPMedicalToHospitalAsync(Hospital hospital, PMedical pmedical);
         Task AddPNoMedicalToHospitalAsync(Hospital hospital, PNoMedical noMedical);
+        Task AddMaterialToHospitalAsync(Hospital hospital, Material material);
+
     }
 }
