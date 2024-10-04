@@ -4,12 +4,12 @@
 Ce projet est une API permettant de gérer des patients, des hospitalisations, des hôpitaux, des utilisateurs, ainsi que des informations liées au personnel médical et non médical. Elle utilise .NET Core avec Entity Framework pour l'accès à la base de données PostgreSQL et JWT pour l'authentification. Ce guide explique les principaux modèles et la configuration du fichier Program.cs.
 Technologies Utilisées
 
-    ASP.NET Core 7.0 : Framework web pour construire l'API.
-    Entity Framework Core : ORM pour interagir avec une base de données PostgreSQL.
-    PostgreSQL : Base de données utilisée pour stocker les entités.
-    JWT (JSON Web Tokens) : Pour la gestion des authentifications via accessToken et refreshToken.
-    CORS (Cross-Origin Resource Sharing) : Pour permettre l'accès à l'API depuis des domaines spécifiques.
-    Swagger : Documentation automatique de l'API.
+- **ASP.NET Core 7.0** : Framework web pour construire l'API.
+- **Entity Framework Core** : ORM pour interagir avec une base de données PostgreSQL.
+- **PostgreSQL** : Base de données utilisée pour stocker les entités.
+- **JWT (JSON Web Tokens)** : Pour la gestion des authentifications via accessToken et refreshToken.
+- **CORS (Cross-Origin Resource Sharing)** : Pour permettre l'accès à l'API depuis des domaines spécifiques.
+- **Swagger** : Documentation automatique de l'API.
 
 ## Modèles de Données (Models)
 
