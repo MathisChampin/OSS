@@ -55,8 +55,8 @@ function Register() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const [resData, resUser, resPmedical, resPnoMedical, resMaterial] = await Promise.all([
-        postHospital({
+      //const [resData, resUser, resPmedical, resPnoMedical, resMaterial] = await Promise.all([
+        const resData = await postHospital({
           NomHospital: hspData.NomHospital,
           ville: hspData.ville,
           Departement: hspData.Departement,
@@ -64,23 +64,23 @@ function Register() {
           ReanimationMedical: hspData.ReanimationMedical,
           ReanimationChirurgical: hspData.ReanimationChirurgical,
           Activite: hspData.Activite
-        }),
-        postUser({
+        })
+        const resUser = await postUser({
           nom: hspData.nom,
           prenom: hspData.prenom,
           role: hspData.role = "user",
           email: hspData.email,
           password: hspData.password,
           NomHospital: hspData.NomHospital
-        }),
-        postPersonelMdeical({
+        })
+        const resPmedical = await postPersonelMdeical({
           NbDoctorUniv: hspData.NbDoctorUniv,
           NbDoctorHosp: hspData.NbDoctorHosp,
           NbInternal: hspData.NbInternal,
           NbDoctor: hspData.NbDoctor,
           NbPersonalAbs: hspData.NbPersonalAbs
-        }),
-        postPnoMedical({
+        })
+        const resPnoMedical = await postPnoMedical({
           NbIdeDay: hspData.NbIdeDay,
           NbIdeNight: hspData.NbIdeNight,
           NbIdeDayUsc: hspData.NbIdeDayUsc,
@@ -94,8 +94,8 @@ function Register() {
           NbAsSick: hspData.NbAsSick,
           NbAppIde: hspData.NbAppIde,
           NbAppAs: hspData.NbAppAs
-        }),
-        postMaterial({
+        })
+        const resMaterial = await postMaterial({
           material: {
             nbBedRea: hspData.material.nbBedRea,
             nbBedInRoom: hspData.material.nbBedInRoom,
@@ -106,7 +106,7 @@ function Register() {
           },
           devices: hspData.devices
         })
-      ]);
+      //]);
 
       if (resData.status === 200 && resUser.status === 200 && resPmedical.status === 200 && resPnoMedical.status === 200 && resMaterial.status === 200) {
         redirect("/");
