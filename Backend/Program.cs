@@ -17,9 +17,9 @@ builder.Services.AddDbContext<DataContext>(options =>
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAnyOrigin", policy =>
+    options.AddPolicy("AllowSpecificOrigins", policy =>
     {
-        policy.AllowAnyOrigin()
+        policy.WithOrigins("http://localhost:5173", "http://192.168.1.138:5173")
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials();
@@ -115,7 +115,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
-app.UseCors("AllowAnyOrigin");
+app.UseCors("AllowSpecificOrigins");
 app.UseAuthorization();
 
 app.MapUserRoutes();
@@ -127,4 +127,4 @@ app.MapPNoMedicalRoutes();
 app.MapMaterialRoutes();
 app.MapDeviceRoutes();
 
-app.Run();
+app.Run("http://192.168.1.101:5058");
