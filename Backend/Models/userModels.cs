@@ -17,7 +17,7 @@ namespace Models
         [Required]
         public string? Password { get; set; }
         [Required]
-        public string? NomHopital { get; set; }
+        public string? NomHospital { get; set; }
         public int HospitalId { get; set; }
     }
     public class LoginRequest

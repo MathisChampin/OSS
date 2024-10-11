@@ -137,7 +137,7 @@ namespace Controllers
             if (existingUser == null)
                 return NotFound();
 
-            existingUser.NomHopital = user.NomHopital ?? existingUser.NomHopital;
+            existingUser.NomHospital = user.NomHospital ?? existingUser.NomHospital;
             existingUser.Prenom = user.Prenom ?? existingUser.Prenom;
             existingUser.Nom = user.Nom ?? existingUser.Nom;
             existingUser.Email = user.Email ?? existingUser.Email;

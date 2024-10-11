@@ -8,7 +8,7 @@ namespace Models
     {
         public int Id { get; set; }
         [Required]
-        public string? NomHopital { get; set; }
+        public string? NomHospital { get; set; }
         public string? Ville { get; set; }
         public string? Departement { get; set; }
         public string? IdentiteHopital { get; set; }

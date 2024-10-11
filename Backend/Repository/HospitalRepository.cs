@@ -59,7 +59,7 @@ namespace Repositories
         {
             return await _context.Hospitals
                 .Include(h => h.Patients)
-                .FirstOrDefaultAsync(h => h.NomHopital == nomHopital);
+                .FirstOrDefaultAsync(h => h.NomHospital == nomHopital);
         }
 
         public async Task AddPatientToHospitalAsync(Hospital hospital, Patient patient)

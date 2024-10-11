@@ -31,7 +31,7 @@ namespace Models
         [Required]
         public int? Poids { get; set; }
         [Required]
-        public string? NomHopital { get; set; }
+        public string? NomHospital { get; set; }
         public int HospitalId { get; set; }
         public double? IMC { get; set; }
         public Hospitalisation? Hospitalisation { get; set; }

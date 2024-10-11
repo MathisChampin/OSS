@@ -28,9 +28,9 @@ namespace Services
         }
         public async Task<User> CreateUserAsync(User user)
         {
-            if (string.IsNullOrWhiteSpace(user.NomHopital))
+            if (string.IsNullOrWhiteSpace(user.NomHospital))
                 throw new ArgumentException("Le nom de l'hôpital ne peut pas être nul ou vide.");
-            var hospital = await _hospitalRepository.GetByNameAsync(user.NomHopital);
+            var hospital = await _hospitalRepository.GetByNameAsync(user.NomHospital);
             if (hospital == null)
                 throw new KeyNotFoundException("L'hôpital n'existe pas dans la base de données.");
 

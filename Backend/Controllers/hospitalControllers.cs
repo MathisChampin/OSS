@@ -94,7 +94,7 @@ namespace Controllers
             if (existingHospital == null)
                 return NotFound();
 
-            existingHospital.NomHopital = hospital.NomHopital ?? existingHospital.NomHopital;
+            existingHospital.NomHospital = hospital.NomHospital ?? existingHospital.NomHospital;
             existingHospital.Ville = hospital.Ville ?? existingHospital.Ville;
             existingHospital.Departement = hospital.Departement ?? existingHospital.Departement;
             existingHospital.IdentiteHopital = hospital.IdentiteHopital ?? existingHospital.IdentiteHopital;

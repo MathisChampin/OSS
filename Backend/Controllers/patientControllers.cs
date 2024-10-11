@@ -117,7 +117,7 @@ namespace Controllers
             if (existingPatient == null)
                 return NotFound();
 
-            existingPatient.NomHopital = patient.NomHopital ?? existingPatient.NomHopital;
+            existingPatient.NomHospital = patient.NomHospital ?? existingPatient.NomHospital;
             existingPatient.Genre = patient.Genre ?? existingPatient.Genre;
             existingPatient.DateDeNaissance = patient.DateDeNaissance ?? existingPatient.DateDeNaissance;
             existingPatient.Taille = patient.Taille ?? existingPatient.Taille;

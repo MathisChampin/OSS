@@ -19,7 +19,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigins", policy =>
     {
-        policy.WithOrigins("http://localhost:5173", "http://192.168.1.138:5173")
+        policy.WithOrigins("http://localhost:5173")
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials();
@@ -127,4 +127,4 @@ app.MapPNoMedicalRoutes();
 app.MapMaterialRoutes();
 app.MapDeviceRoutes();
 
-app.Run("http://192.168.1.101:5058");
+app.Run();
