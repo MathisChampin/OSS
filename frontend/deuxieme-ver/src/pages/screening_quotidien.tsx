@@ -1,20 +1,41 @@
 import { useState } from "react";
-import './screening_quotidien.css'; // Importing external styles
+import './screening_quotidien.css';
 
-function ScreeningQuotidien() {
-    // State variables
-    const [hospitalName, setHospitalName] = useState<string>("Hôpital");
-    const [screeningDate, setScreeningDate] = useState<string>("2024-10-17");
-    const [openICUBeds, setOpenICUBeds] = useState<number>(10);
-    const [openUSCBeds, setOpenUSCBeds] = useState<number>(5);
-    const [fluConfirmedPatientsRefused, setFluConfirmedPatientsRefused] = useState<number>(3);
-    const [nonFluPatientsRefused, setNonFluPatientsRefused] = useState<number>(2);
-    const [lackOfEquipmentRefused, setLackOfEquipmentRefused] = useState<number>(1);
-    const [geoIsolationRefused, setGeoIsolationRefused] = useState<number>(0);
+interface HospitalData {
+    hospitalName: string;
+    screeningDate: string;
+    openICUBeds: number;
+    openUSCBeds: number;
+    fluConfirmedPatientsRefused: number;
+    nonFluPatientsRefused: number;
+    lackOfEquipmentRefused: number;
+    geoIsolationRefused: number;
+}
+
+function ScreeningQuotidien({ hospitalData }: { hospitalData: HospitalData }) {
+    const [hospitalName, setHospitalName] = useState<string>(hospitalData.hospitalName || "Hôpital");
+    const [screeningDate, setScreeningDate] = useState<string>(hospitalData.screeningDate || "2024-10-17");
+    const [openICUBeds, setOpenICUBeds] = useState<number>(hospitalData.openICUBeds || 10);
+    const [openUSCBeds, setOpenUSCBeds] = useState<number>(hospitalData.openUSCBeds || 5);
+    const [fluConfirmedPatientsRefused, setFluConfirmedPatientsRefused] = useState<number>(hospitalData.fluConfirmedPatientsRefused || 3);
+    const [nonFluPatientsRefused, setNonFluPatientsRefused] = useState<number>(hospitalData.nonFluPatientsRefused || 2);
+    const [lackOfEquipmentRefused, setLackOfEquipmentRefused] = useState<number>(hospitalData.lackOfEquipmentRefused || 1);
+    const [geoIsolationRefused, setGeoIsolationRefused] = useState<number>(hospitalData.geoIsolationRefused || 0);
+
+    const [currentWeek, setCurrentWeek] = useState<number>(1);
+
+    const weeks = Array.from({ length: 52 }, (_, i) => i + 1);
+
+    const handlePreviousWeek = () => {
+        if (currentWeek > 1) setCurrentWeek(currentWeek - 1);
+    };
+
+    const handleNextWeek = () => {
+        if (currentWeek < weeks.length) setCurrentWeek(currentWeek + 1);
+    };
 
     return (
         <div className="screening-container">
-            {/* Header Section */}
             <div className="header">
                 <h1>Screening quotidien des malades présents et non admis</h1>
                 <p>
@@ -27,7 +48,6 @@ function ScreeningQuotidien() {
                 </p>
             </div>
 
-            {/* Form Section */}
             <div className="form-section">
                 <h2>Modifier le nombre de lits ouverts en réanimation</h2>
 
@@ -49,6 +69,10 @@ function ScreeningQuotidien() {
                         onChange={(e) => setOpenUSCBeds(parseInt(e.target.value))}
                         className="input-field"
                     />
+                </div>
+
+                <div className="red-text">
+                    Screening des malades refusés semaine 44 du <b>26/10/2009 au 01/11/2009</b>
                 </div>
 
                 <div className="form-group">
@@ -80,14 +104,12 @@ function ScreeningQuotidien() {
                         Certains malades ont-ils été refusés alors qu'une chambre était disponible
                         à cause d'un manque de matériel ?:
                     </label>
-                    <select
-                        value={lackOfEquipmentRefused ? "oui" : "non"}
-                        onChange={(e) => setLackOfEquipmentRefused(e.target.value === "oui" ? 1 : 0)}
+                    <input
+                        type="number"
+                        value={lackOfEquipmentRefused}
+                        onChange={(e) => setLackOfEquipmentRefused(parseInt(e.target.value))}
                         className="input-field"
-                    >
-                        <option value="oui">Oui</option>
-                        <option value="non">Non</option>
-                    </select>
+                    />
                 </div>
 
                 <div className="form-group">
@@ -95,17 +117,50 @@ function ScreeningQuotidien() {
                         Certaines malades ont-ils été refusés en raison d'une impossibilité d'isolement
                         géographique ?:
                     </label>
-                    <select
-                        value={geoIsolationRefused ? "oui" : "non"}
-                        onChange={(e) => setGeoIsolationRefused(e.target.value === "oui" ? 1 : 0)}
+                    <input
+                        type="number"
+                        value={geoIsolationRefused}
+                        onChange={(e) => setGeoIsolationRefused(parseInt(e.target.value))}
                         className="input-field"
-                    >
-                        <option value="oui">Oui</option>
-                        <option value="non">Non</option>
-                    </select>
+                    />
                 </div>
 
-                <button className="submit-button">Envoyer</button>
+                <button className="submit-button">Enregistrer</button>
+            </div>
+
+            {/* Navigation for week switching */}
+            <div className="week-navigation">
+                <button className="week-nav-button" onClick={handlePreviousWeek}>Semaine précédente</button>
+                <span className="current-week">Semaine {currentWeek}</span>
+                <button className="week-nav-button" onClick={handleNextWeek}>Semaine suivante</button>
+            </div>
+
+            {/* Displaying the board for the selected week */}
+            <div className="board-section">
+                <table className="week-table">
+                    <thead>
+                        <tr>
+                            <th>Lundi</th>
+                            <th>Mardi</th>
+                            <th>Mercredi</th>
+                            <th>Jeudi</th>
+                            <th>Vendredi</th>
+                            <th>Samedi</th>
+                            <th>Dimanche</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     );
