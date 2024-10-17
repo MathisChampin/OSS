@@ -223,6 +223,20 @@ public class RefreshToken
 }
 ```
 
+### 10. Treatments
+Ce modèle représente un traitement médical avec ses détails.
+
+```csharp
+public class RefreshToken
+{
+    public int Id { get; set; }
+    public int? UserId { get; set; }
+    public int? HospitalId { get; set; }
+    public string? Token { get; set; }
+    public DateTime Expiration { get; set; }
+}
+```
+
 ---
 ## Configuration du fichier Program.cs
 
@@ -286,6 +300,82 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 ```
+
+## Statistiques
+
+### Calcul des Statistiques
+
+Cette section fournit une vue d'ensemble des différentes statistiques disponibles dans l'API pour analyser les traitements et leurs effets sur les patients.
+
+---
+
+#### 1. Patients guéris par un traitement spécifique
+
+- **Description** : Retourne les statistiques des patients guéris grâce à un traitement spécifique.
+- **Route** : `GET /statistics/{name}/healed`
+
+---
+
+#### 2. Patients décédés sous un traitement spécifique
+
+- **Description** : Retourne les statistiques des patients décédés sous un traitement spécifique.
+- **Route** : `GET /statistics/{name}/deceased`
+
+---
+
+#### 3. Patients actuellement sous un traitement spécifique
+
+- **Description** : Retourne les statistiques des patients actuellement sous un traitement spécifique.
+- **Route** : `GET /statistics/{name}/current`
+
+---
+
+#### 4. Pourcentage des patients sous traitement par rapport à l'ensemble
+
+- **Description** : Retourne le pourcentage de patients sous un traitement spécifique comparé à tous les patients.
+- **Route** : `GET /statistics/{name}`
+
+---
+
+#### 5. Pourcentage des patients actuellement sous traitement
+
+- **Description** : Retourne le pourcentage de patients actuellement sous traitement comparé à l'ensemble des patients.
+- **Route** : `GET /statistics/current`
+
+---
+
+#### 6. Pourcentage des patients guéris
+
+- **Description** : Retourne le pourcentage des patients guéris par rapport à tous les patients.
+- **Route** : `GET /statistics/healed`
+
+---
+
+#### 7. Pourcentage des patients décédés
+
+- **Description** : Retourne le pourcentage des patients décédés par rapport à tous les patients.
+- **Route** : `GET /statistics/deceased`
+
+---
+
+#### 8. Pourcentage des patients actuellement sous un traitement spécifique
+
+- **Description** : Retourne le pourcentage des patients actuellement sous un traitement spécifique par rapport à tous les patients.
+- **Route** : `GET /statistics/current/{name}`
+
+---
+
+#### 9. Pourcentage des patients guéris sous un traitement spécifique
+
+- **Description** : Retourne le pourcentage des patients guéris sous un traitement spécifique par rapport à tous les patients.
+- **Route** : `GET /statistics/healed/{name}`
+
+---
+
+#### 10. Pourcentage des patients décédés sous un traitement spécifique
+
+- **Description** : Retourne le pourcentage des patients décédés sous un traitement spécifique par rapport à tous les patients.
+- **Route** : `GET /statistics/deceased/{name}`
 
 ## Documentation Complémentaire
 
