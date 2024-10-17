@@ -1,26 +1,114 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import './screening_quotidien.css'; // Importing external styles
 
 function ScreeningQuotidien() {
-    const [username,    setUsername] = useState<string>("");
-    const [hospitalName, setHospitalName] = useState<string>("");
+    // State variables
+    const [hospitalName, setHospitalName] = useState<string>("Hôpital");
+    const [screeningDate, setScreeningDate] = useState<string>("2024-10-17");
+    const [openICUBeds, setOpenICUBeds] = useState<number>(10);
+    const [openUSCBeds, setOpenUSCBeds] = useState<number>(5);
+    const [fluConfirmedPatientsRefused, setFluConfirmedPatientsRefused] = useState<number>(3);
+    const [nonFluPatientsRefused, setNonFluPatientsRefused] = useState<number>(2);
+    const [lackOfEquipmentRefused, setLackOfEquipmentRefused] = useState<number>(1);
+    const [geoIsolationRefused, setGeoIsolationRefused] = useState<number>(0);
 
-    useEffect(() => {
-        setUsername("hello");
-        setHospitalName("ede")
-        console.log("Screening Quotidien");
-    }, []);
     return (
-        <div>
-           <div>
+        <div className="screening-container">
+            {/* Header Section */}
+            <div className="header">
                 <h1>Screening quotidien des malades présents et non admis</h1>
-           </div>
-           <div>
-                <h1>Nombre de lits "réanimation" ouverts</h1>
-                <p>Nom: {username}</p>
-                <p>Nom de l'hospital: {hospitalName}</p>
-           </div>
+                <p>
+                    La screening des malades a pour but de repérer les malades
+                    positifs et réaliser leur transfert vers les secteurs d’isolement.
+                </p>
+                <p className="hospital-info">
+                    <b>Tableau reçu de l’hôpital:</b> {hospitalName}<br />
+                    <b>Semaines:</b> du {screeningDate}
+                </p>
+            </div>
+
+            {/* Form Section */}
+            <div className="form-section">
+                <h2>Modifier le nombre de lits ouverts en réanimation</h2>
+
+                <div className="form-group">
+                    <label>Nombre de lits "réanimation" ouverts:</label>
+                    <input
+                        type="number"
+                        value={openICUBeds}
+                        onChange={(e) => setOpenICUBeds(parseInt(e.target.value))}
+                        className="input-field"
+                    />
+                </div>
+
+                <div className="form-group">
+                    <label>Nombre de lits USC et/ou USI et/ou SSPI ouverts:</label>
+                    <input
+                        type="number"
+                        value={openUSCBeds}
+                        onChange={(e) => setOpenUSCBeds(parseInt(e.target.value))}
+                        className="input-field"
+                    />
+                </div>
+
+                <div className="form-group">
+                    <label>
+                        Nombre de malades grippés confirmés ou fortement suspects refusés la semaine 44:
+                    </label>
+                    <input
+                        type="number"
+                        value={fluConfirmedPatientsRefused}
+                        onChange={(e) => setFluConfirmedPatientsRefused(parseInt(e.target.value))}
+                        className="input-field"
+                    />
+                </div>
+
+                <div className="form-group">
+                    <label>
+                        Nombre de malades non grippés ou peu suspects refusés la semaine 44:
+                    </label>
+                    <input
+                        type="number"
+                        value={nonFluPatientsRefused}
+                        onChange={(e) => setNonFluPatientsRefused(parseInt(e.target.value))}
+                        className="input-field"
+                    />
+                </div>
+
+                <div className="form-group">
+                    <label>
+                        Certains malades ont-ils été refusés alors qu'une chambre était disponible
+                        à cause d'un manque de matériel ?:
+                    </label>
+                    <select
+                        value={lackOfEquipmentRefused ? "oui" : "non"}
+                        onChange={(e) => setLackOfEquipmentRefused(e.target.value === "oui" ? 1 : 0)}
+                        className="input-field"
+                    >
+                        <option value="oui">Oui</option>
+                        <option value="non">Non</option>
+                    </select>
+                </div>
+
+                <div className="form-group">
+                    <label>
+                        Certaines malades ont-ils été refusés en raison d'une impossibilité d'isolement
+                        géographique ?:
+                    </label>
+                    <select
+                        value={geoIsolationRefused ? "oui" : "non"}
+                        onChange={(e) => setGeoIsolationRefused(e.target.value === "oui" ? 1 : 0)}
+                        className="input-field"
+                    >
+                        <option value="oui">Oui</option>
+                        <option value="non">Non</option>
+                    </select>
+                </div>
+
+                <button className="submit-button">Envoyer</button>
+            </div>
         </div>
-    )
+    );
 }
 
 export default ScreeningQuotidien;
