@@ -82,6 +82,8 @@ builder.Services.AddScoped<IMaterialService, MaterialService>();
 builder.Services.AddScoped<IMaterialRepository, MaterialRepository>();
 builder.Services.AddScoped<IDeviceService, DeviceService>();
 builder.Services.AddScoped<IDeviceRepository, DeviceRepository>();
+builder.Services.AddScoped<ITreatmentService, TreatmentService>();
+builder.Services.AddScoped<ITreatmentRepository, TreatmentRepository>();
 
 var app = builder.Build();
 
@@ -126,5 +128,5 @@ app.MapPMedicalRoutes();
 app.MapPNoMedicalRoutes();
 app.MapMaterialRoutes();
 app.MapDeviceRoutes();
-
+app.MapTreatmentRoutes();
 app.Run();
