@@ -16,5 +16,8 @@ namespace Services
         Task<Object?> GetTreatmentStatisticsHealAsync();
         Task<Object?> GetTreatmentStatisticsDieAsync();
         Task<Object?> GetTreatmentStatisticsCurrentAsync();
+        Task<Object?> GetPercentageOfCurrentPatientsByTreatmentAsync(string name);
+        Task<Object?> GetPercentageOfDiePatientsByTreatmentAsync(string name);
+        Task<Object?> GetPercentageOfHealPatientsByTreatmentAsync(string name);
     }
 }

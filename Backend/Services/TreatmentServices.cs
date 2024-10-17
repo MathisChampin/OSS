@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Repositories;
 using Models;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using System.Runtime.CompilerServices;
 
 namespace Services
 {
@@ -137,6 +138,57 @@ namespace Services
 
             var totalPatients = treatment.Count();
             var currentPatients = treatment.Count(t => t.Status == 0);
+            var stats = (double)currentPatients / totalPatients * 100;
+
+            return stats;
+        }
+
+        public async Task<Object?> GetPercentageOfCurrentPatientsByTreatmentAsync(string name)
+        {
+            var allTreatment = await _treatmentRepository.GetAllAsync();
+            var speTreatment = await _treatmentRepository.GetByNameAsync(name);
+
+            if (allTreatment == null || !allTreatment.Any() || speTreatment == null || !speTreatment.Any())
+            {
+                return null;
+            }
+
+            var totalPatients = allTreatment.Count();
+            var currentPatients = speTreatment.Count(t => t.Status == 0);
+            var stats = (double)currentPatients / totalPatients * 100;
+
+            return stats;
+        }
+
+        public async Task<Object?> GetPercentageOfDiePatientsByTreatmentAsync(string name)
+        {
+            var allTreatment = await _treatmentRepository.GetAllAsync();
+            var speTreatment = await _treatmentRepository.GetByNameAsync(name);
+
+            if (allTreatment == null || !allTreatment.Any() || speTreatment == null || !speTreatment.Any())
+            {
+                return null;
+            }
+
+            var totalPatients = allTreatment.Count();
+            var currentPatients = speTreatment.Count(t => t.Status == 1);
+            var stats = (double)currentPatients / totalPatients * 100;
+
+            return stats;
+        }
+
+        public async Task<Object?> GetPercentageOfHealPatientsByTreatmentAsync(string name)
+        {
+            var allTreatment = await _treatmentRepository.GetAllAsync();
+            var speTreatment = await _treatmentRepository.GetByNameAsync(name);
+
+            if (allTreatment == null || !allTreatment.Any() || speTreatment == null || !speTreatment.Any())
+            {
+                return null;
+            }
+
+            var totalPatients = allTreatment.Count();
+            var currentPatients = speTreatment.Count(t => t.Status == 2);
             var stats = (double)currentPatients / totalPatients * 100;
 
             return stats;
