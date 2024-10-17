@@ -84,13 +84,13 @@ namespace Controllers
         /// <returns>Statistics about the healed patients</returns>
         /// <response code="200">Returns the statistics of healed patients</response>
         /// <response code="404">If the treatment is not found</response>
-        [HttpGet("{name}/healed")]
+        [HttpGet("statistics/{name}/healed")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetStatisticsByTreatmentNameHeal(string name)
         {
-            var statistics = await _treatmentService.GetTreatmentStatisticsHealAsync(name);
+            var statistics = await _treatmentService.GetTreatmentStatisticsByNameHealAsync(name);
             if (statistics == null)
             {
                 return NotFound($"Treatment with name '{name}' not found.");
@@ -105,13 +105,13 @@ namespace Controllers
         /// <returns>Statistics about the deceased patients</returns>
         /// <response code="200">Returns the statistics of deceased patients</response>
         /// <response code="404">If the treatment is not found</response>
-        [HttpGet("{name}/deceased")]
+        [HttpGet("statistics/{name}/deceased")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetStatisticsByTreatmentNameDie(string name)
         {
-            var statistics = await _treatmentService.GetTreatmentStatisticsDieAsync(name);
+            var statistics = await _treatmentService.GetTreatmentStatisticsByNameDieAsync(name);
             if (statistics == null)
             {
                 return NotFound($"Treatment with name '{name}' not found.");
@@ -126,16 +126,97 @@ namespace Controllers
         /// <returns>Statistics about patients currently undergoing treatment</returns>
         /// <response code="200">Returns the statistics of patients currently undergoing treatment</response>
         /// <response code="404">If the treatment is not found</response>
-        [HttpGet("{name}/current")]
+        [HttpGet("statistics/{name}/current")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetStatisticsByTreatmentNameCurrent(string name)
         {
-            var statistics = await _treatmentService.GetTreatmentStatisticsCurrentAsync(name);
+            var statistics = await _treatmentService.GetTreatmentStatisticsByNameCurrentAsync(name);
             if (statistics == null)
             {
                 return NotFound($"Treatment with name '{name}' not found.");
+            }
+            return Ok(statistics);
+        }
+
+        /// <summary>
+        /// Gets statistics for the number of patients currently undergoing a specific treatment compared to the total number of patients.
+        /// </summary>
+        /// <param name="name">The name of the treatment for which statistics are requested.</param>
+        /// <returns>A percentage of patients currently using the treatment compared to all patients.</returns>
+        /// <response code="200">Returns the statistics of patients currently undergoing the specified treatment.</response>
+        /// <response code="404">If the treatment is not found.</response>
+        [HttpGet("statistics/{name}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetStatisticsByTreatmentName(string name)
+        {
+            var statistics = await _treatmentService.GetTreatmentStatisticsByNameAsync(name);
+            if (statistics == null)
+            {
+                return NotFound($"Treatment with name '{name}' not found.");
+            }
+            return Ok(statistics);
+        }
+
+        /// <summary>
+        /// Gets statistics for the percentage of patients currently undergoing treatment compared to the total number of patients.
+        /// </summary>
+        /// <returns>A percentage of patients currently undergoing treatment compared to all patients.</returns>
+        /// <response code="200">Returns the statistics of patients currently undergoing treatment.</response>
+        /// <response code="404">If no statistics are found.</response>
+        [HttpGet("statistics/current")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetStatisticsByTreatmentCurrent()
+        {
+            var statistics = await _treatmentService.GetTreatmentStatisticsCurrentAsync();
+            if (statistics == null)
+            {
+                return NotFound($"Treatment not found.");
+            }
+            return Ok(statistics);
+        }
+
+        /// <summary>
+        /// Gets statistics for the percentage of patients who have healed compared to the total number of patients.
+        /// </summary>
+        /// <returns>A percentage of patients who have healed compared to all patients.</returns>
+        /// <response code="200">Returns the statistics of healed patients.</response>
+        /// <response code="404">If no statistics are found.</response>
+        [HttpGet("statistics/healed")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetStatisticsByTreatmentHeal()
+        {
+            var statistics = await _treatmentService.GetTreatmentStatisticsHealAsync();
+            if (statistics == null)
+            {
+                return NotFound($"Treatment not found.");
+            }
+            return Ok(statistics);
+        }
+
+        /// <summary>
+        /// Gets statistics for the percentage of patients who have deceased compared to the total number of patients.
+        /// </summary>
+        /// <returns>A percentage of patients who have deceased compared to all patients.</returns>
+        /// <response code="200">Returns the statistics of deceased patients.</response>
+        /// <response code="404">If no statistics are found.</response>
+        [HttpGet("statistics/deceased")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetStatisticsByTreatmentDie()
+        {
+            var statistics = await _treatmentService.GetTreatmentStatisticsDieAsync();
+            if (statistics == null)
+            {
+                return NotFound($"Treatment not found.");
             }
             return Ok(statistics);
         }

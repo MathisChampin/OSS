@@ -33,7 +33,7 @@ namespace Services
             var createdTreatment = await _treatmentRepository.CreateAsync(model);
             return createdTreatment;
         }
-        public async Task<Object?> GetTreatmentStatisticsCurrentAsync(string name)
+        public async Task<Object?> GetTreatmentStatisticsByNameCurrentAsync(string name)
         {
             var treatment = await _treatmentRepository.GetByNameAsync(name);
 
@@ -48,7 +48,7 @@ namespace Services
 
             return stats;
         }
-        public async Task<Object?> GetTreatmentStatisticsDieAsync(string name)
+        public async Task<Object?> GetTreatmentStatisticsByNameDieAsync(string name)
         {
             var treatment = await _treatmentRepository.GetByNameAsync(name);
 
@@ -63,7 +63,7 @@ namespace Services
 
             return stats;
         }
-        public async Task<Object?> GetTreatmentStatisticsHealAsync(string name)
+        public async Task<Object?> GetTreatmentStatisticsByNameHealAsync(string name)
         {
             var treatment = await _treatmentRepository.GetByNameAsync(name);
 
@@ -75,6 +75,69 @@ namespace Services
             var totalPatients = treatment.Count();
             var DiePatients = treatment.Count(t => t.Status == 2);
             var stats = (double)DiePatients / totalPatients * 100;
+
+            return stats;
+        }
+
+        public async Task<Object?> GetTreatmentStatisticsByNameAsync(string name)
+        {
+            var speTreatment = await _treatmentRepository.GetByNameAsync(name);
+            var treatment = await _treatmentRepository.GetAllAsync();
+    
+            if (treatment == null || !treatment.Any() || speTreatment == null || !speTreatment.Any())
+            {
+                return null;
+            }
+
+            var totalPatients = treatment.Count();
+            var SpePatient = speTreatment.Count();
+            var stats = (double)SpePatient / totalPatients * 100;
+
+            return stats;
+        }
+
+        public async Task<Object?> GetTreatmentStatisticsHealAsync()
+        {
+            var treatment = await _treatmentRepository.GetAllAsync();
+            if (treatment == null || !treatment.Any())
+            {
+                return null;
+            }
+
+            var totalPatients = treatment.Count();
+            var healPatients = treatment.Count(t => t.Status == 2);
+            var stats = (double)healPatients / totalPatients * 100;
+
+            return stats;
+        }
+
+        public async Task<Object?> GetTreatmentStatisticsDieAsync()
+        {
+            var treatment = await _treatmentRepository.GetAllAsync();
+            if (treatment == null || !treatment.Any())
+            {
+                return null;
+            }
+
+            var totalPatients = treatment.Count();
+            var DiePatients = treatment.Count(t => t.Status == 1);
+            var stats = (double)DiePatients / totalPatients * 100;
+
+            return stats;
+        }
+
+        public async Task<Object?> GetTreatmentStatisticsCurrentAsync()
+        {
+            var treatment = await _treatmentRepository.GetAllAsync();
+
+            if (treatment == null || !treatment.Any())
+            {
+                return null;
+            }
+
+            var totalPatients = treatment.Count();
+            var currentPatients = treatment.Count(t => t.Status == 0);
+            var stats = (double)currentPatients / totalPatients * 100;
 
             return stats;
         }
