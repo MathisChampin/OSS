@@ -59,7 +59,7 @@ a:visited, a:active {
     border-radius: 6px;
 }
 
-/* Input Fields */
+/* Input Fields and Dropdowns */
 .inputField, .selectField {
     width: 100%;
     padding: 10px;
@@ -72,6 +72,27 @@ a:visited, a:active {
 .inputField:focus, .selectField:focus {
     border-color: #4A90E2;
     box-shadow: 0 0 8px rgba(74, 144, 226, 0.5);
+}
+
+/* Dropdown Styling */
+select {
+    appearance: none;
+    background: #fff url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMCIgaGVpZ2h0PSI2Ij4gPHBvbHlsaW5lIHBvaW50cz0iMCAwIDUgNSAxMCAwIiBzdHJva2U9IiM0QTkwRTIiIHN0cm9rZS13aWR0aD0iMiIgZmlsbD0ibm9uZSIgLz4gPC9zdmc+') no-repeat right 10px center;
+    background-size: 12px 6px;
+    padding-right: 30px;
+    cursor: pointer;
+}
+
+/* Side-by-Side Layout */
+.form-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.form-column {
+    flex: 1;
 }
 
 /* Yellow Background Box */
@@ -263,5 +284,9 @@ form {
     .submit-button {
         width: 100%;
         margin: 15px 0;
+    }
+
+    .form-row {
+        flex-direction: column;
     }
 }

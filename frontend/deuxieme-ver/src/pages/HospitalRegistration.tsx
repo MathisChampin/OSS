@@ -463,39 +463,38 @@ function HospitalRegister() {
                             <div style={{ textAlign: "left" }}></div>
                         </td>
                     </tr>
-                    <tr>
-                        <td>1 lit:</td>
-                        <td>
+                    <div className="form-row">
+                        <div className="form-column">
+                            <label>1 lit:</label>
                             <input
                                 type="number"
+                                className="inputField"
                                 value={hospitalData.material.nbBedInRoom}
                                 onChange={(e) => setHospitalData({ ...hospitalData, material: { ...hospitalData.material, nbBedInRoom: parseInt(e.target.value) } })}
                                 required
                             />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2 lits:</td>
-                        <td>
+                        </div>
+                        <div className="form-column">
+                            <label>2 lits:</label>
                             <input
                                 type="number"
+                                className="inputField"
                                 value={hospitalData.material.nbBedInRoom}
                                 onChange={(e) => setHospitalData({ ...hospitalData, material: { ...hospitalData.material, nbBedInRoom: parseInt(e.target.value) } })}
                                 required
                             />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Plus de 2 lits:</td>
-                        <td>
+                        </div>
+                        <div className="form-column">
+                            <label>Plus de 2 lits:</label>
                             <input
                                 type="number"
+                                className="inputField"
                                 value={hospitalData.material.nbBedInRoom}
                                 onChange={(e) => setHospitalData({ ...hospitalData, material: { ...hospitalData.material, nbBedInRoom: parseInt(e.target.value) } })}
                                 required
                             />
-                        </td>
-                    </tr>
+                        </div>
+                    </div>
                     <tr>
                         <td>Nombre de lits de surveillance continue ouverts à ce jour:</td>
                         <td>
@@ -516,39 +515,38 @@ function HospitalRegister() {
                             <div style={{ textAlign: "left" }}></div>
                         </td>
                     </tr>
-                    <tr>
-                        <td>1 lit:</td>
-                        <td>
+                    <div className="form-row">
+                        <div className="form-column">
+                            <label>1 lit:</label>
                             <input
                                 type="number"
+                                className="inputField"
                                 value={hospitalData.material.nbBedInRoom}
                                 onChange={(e) => setHospitalData({ ...hospitalData, material: { ...hospitalData.material, nbBedInRoom: parseInt(e.target.value) } })}
                                 required
                             />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2 lits:</td>
-                        <td>
+                        </div>
+                        <div className="form-column">
+                            <label>2 lits:</label>
                             <input
                                 type="number"
+                                className="inputField"
                                 value={hospitalData.material.nbBedInRoom}
                                 onChange={(e) => setHospitalData({ ...hospitalData, material: { ...hospitalData.material, nbBedInRoom: parseInt(e.target.value) } })}
                                 required
                             />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Plus de 2 lits:</td>
-                        <td>
+                        </div>
+                        <div className="form-column">
+                            <label>Plus de 2 lits:</label>
                             <input
                                 type="number"
+                                className="inputField"
                                 value={hospitalData.material.nbBedInRoom}
                                 onChange={(e) => setHospitalData({ ...hospitalData, material: { ...hospitalData.material, nbBedInRoom: parseInt(e.target.value) } })}
                                 required
                             />
-                        </td>
-                    </tr>
+                        </div>
+                    </div>
                     <tr>
                         <td>Nombre approximatif d'admissions par an:</td>
                         <td>
@@ -562,36 +560,65 @@ function HospitalRegister() {
                     </tr>
 
                     {/* Ventilators Section */}
-                    <tr>
-                        <td>Evita 2 <br />(Drager):</td>
-                        <td>
+                    <div className="form-row">
+                        <div className="form-column">
+                            <label>Evita 2 <br />(Drager):</label>
                             <input
                                 type="number"
+                                className="inputField"
                                 value={hospitalData.material.ventilators.evita2}
-                                onChange={(e) => setHospitalData({ ...hospitalData, material: { ...hospitalData.material, ventilators: { ...hospitalData.material.ventilators, evita2: parseInt(e.target.value) } } })}
+                                onChange={(e) => setHospitalData({
+                                    ...hospitalData,
+                                    material: {
+                                        ...hospitalData.material,
+                                        ventilators: {
+                                            ...hospitalData.material.ventilators,
+                                            evita2: parseInt(e.target.value)
+                                        }
+                                    }
+                                })}
+                                required
                             />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Evita IV <br />(Drager):</td>
-                        <td>
+                        </div>
+                        <div className="form-column">
+                            <label>Evita IV <br />(Drager):</label>
                             <input
                                 type="number"
+                                className="inputField"
                                 value={hospitalData.material.ventilators.evitaIV}
-                                onChange={(e) => setHospitalData({ ...hospitalData, material: { ...hospitalData.material, ventilators: { ...hospitalData.material.ventilators, evitaIV: parseInt(e.target.value) } } })}
+                                onChange={(e) => setHospitalData({
+                                    ...hospitalData,
+                                    material: {
+                                        ...hospitalData.material,
+                                        ventilators: {
+                                            ...hospitalData.material.ventilators,
+                                            evitaIV: parseInt(e.target.value)
+                                        }
+                                    }
+                                })}
+                                required
                             />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Evita XL <br />(Drager):</td>
-                        <td>
+                        </div>
+                        <div className="form-column">
+                            <label>Evita XL <br />(Drager):</label>
                             <input
                                 type="number"
+                                className="inputField"
                                 value={hospitalData.material.ventilators.evitaXL}
-                                onChange={(e) => setHospitalData({ ...hospitalData, material: { ...hospitalData.material, ventilators: { ...hospitalData.material.ventilators, evitaXL: parseInt(e.target.value) } } })}
+                                onChange={(e) => setHospitalData({
+                                    ...hospitalData,
+                                    material: {
+                                        ...hospitalData.material,
+                                        ventilators: {
+                                            ...hospitalData.material.ventilators,
+                                            evitaXL: parseInt(e.target.value)
+                                        }
+                                    }
+                                })}
+                                required
                             />
-                        </td>
-                    </tr>
+                        </div>
+                    </div>
                     <tr>
                         <td>SAVINA <br />(Drager):</td>
                         <td>
