@@ -121,15 +121,21 @@ function HospitalRegister() {
 
     return (
         <div id="Global">
+            <div className="blue-box-title">Enregistrez votre service</div>
             <form onSubmit={handleSubmit}>
                 <table width="800" border="0" align="center" cellPadding="0" cellSpacing="0">
                     <tr>
-                        <td colSpan={6} style={{ textAlign: "center" }}>
-                            <h2>Enregistrez votre hôpital</h2>
-                        </td>
                     </tr>
-
-                    {/* Hospital Information Section */}
+                    <td>
+                        <div className="yellow-background">
+                            <div className="note">
+                                Si vous &ecirc;tes impliqu&eacute; dans le suivi de ce registre veuillez renseigner les champs suivants&nbsp;
+                                qui vous donneront acc&egrave;s &agrave; la fiche d'enregistrement des donn&eacute;es gr&acirc;ce &agrave; un code confidentiel.
+                                <br />
+                                Pour un m&ecirc;me service plusieurs codes correspondant &agrave; plusieurs identit&eacute;s peuvent &ecirc;tre d&eacute;livr&eacute;s.
+                            </div>
+                        </div>
+                        </td>
                     <tr>
                         <td>Nom de l'hôpital:</td>
                         <td colSpan={5}>
@@ -227,6 +233,8 @@ function HospitalRegister() {
 
 
                     {/* Personnel Médical Section */}
+                    <div className="blue-box-sub">Description du service</div>
+                    <div className="blue-box-sub">Personnel médical affecté (Octobre 2009)</div>
                     <tr>
                         <td>Nombre moyen de médecins Universitaires(CCA,PHU,MCUPH,PUPH)présents dans le service:</td>
                         <td>
@@ -283,7 +291,13 @@ function HospitalRegister() {
                         </td>
                     </tr>
 
-                    {/* Personnel Non Médical Section */}
+                    <div className="blue-box-sub">Personnel non médical affecté</div>
+                    <div className="yellow-background">
+                        <div className="note">
+                            Entrez le nombre moyen d'IDE/AS présents la journée<br />
+                            (indépendamment de l'organisation en 3x8 et 2x12 heures)
+                        </div>
+                    </div>
                     <tr>
                         <td>Nombre moyen d'IDE présents la journée en réanimation:</td>
                         <td>
