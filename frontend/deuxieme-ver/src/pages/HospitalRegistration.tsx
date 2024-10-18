@@ -1,580 +1,757 @@
 import { useState } from "react";
 import { postHospital, postPersonelMdeical, postPnoMedical, postMaterial } from "../api/hospital.requests";
-import "./style.css"; // Keep your existing styles
+import "./style.css"; // Assuming this has the required styles
 
 function HospitalRegister() {
-  const [hospitalData, setHospitalData] = useState({
-    NomHospital: "",
-    ville: "",
-    Departement: "",
-    IdentiteHopital: "",
-    ReanimationMedical: "",
-    ReanimationChirurgical: "",
-    NbDoctorUniv: 0,
-    NbDoctorHosp: 0,
-    NbInternal: 0,
-    NbDoctor: 0,
-    NbPersonalAbs: 0,
-    NbIdeDay: 0,
-    NbIdeNight: 0,
-    NbIdeDayUsc: 0,
-    NbIdeNightUsc: 0,
-    NbAsDay: 0,
-    NbAsNight: 0,
-    NbAsDayUsc: 0,
-    NbAsNightUsc: 0,
-    NbExecDay: 0,
-    NbIdeSick: 0,
-    NbAsSick: 0,
-    NbAppIde: 0,
-    NbAppAs: 0,
-    material: {
-      nbBedRea: 0,
-      nbBedInRoom: 0,
-      nbBedMntr: 0,
-      nbAdmis: 0,
-      nbPersonalAbs: 0,
-      ecmo: false,
-    },
-    devices: [{ quantity: 0, name: "" }],
-  });
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      const resHospital = await postHospital({
-        NomHospital: hospitalData.NomHospital,
-        ville: hospitalData.ville,
-        Departement: hospitalData.Departement,
-        IdentiteHopital: hospitalData.IdentiteHopital,
-        ReanimationMedical: hospitalData.ReanimationMedical,
-        ReanimationChirurgical: hospitalData.ReanimationChirurgical,
-      });
-
-      const resPmedical = await postPersonelMdeical({
-        NbDoctorUniv: hospitalData.NbDoctorUniv,
-        NbDoctorHosp: hospitalData.NbDoctorHosp,
-        NbInternal: hospitalData.NbInternal,
-        NbDoctor: hospitalData.NbDoctor,
-        NbPersonalAbs: hospitalData.NbPersonalAbs,
-      });
-
-      const resPnoMedical = await postPnoMedical({
-        NbIdeDay: hospitalData.NbIdeDay,
-        NbIdeNight: hospitalData.NbIdeNight,
-        NbIdeDayUsc: hospitalData.NbIdeDayUsc,
-        NbIdeNightUsc: hospitalData.NbIdeNightUsc,
-        NbAsDay: hospitalData.NbAsDay,
-        NbAsNight: hospitalData.NbAsNight,
-        NbAsDayUsc: hospitalData.NbAsDayUsc,
-        NbAsNightUsc: hospitalData.NbAsNightUsc,
-        NbExecDay: hospitalData.NbExecDay,
-        NbIdeSick: hospitalData.NbIdeSick,
-        NbAsSick: hospitalData.NbAsSick,
-        NbAppIde: hospitalData.NbAppIde,
-        NbAppAs: hospitalData.NbAppAs,
-      });
-
-      const resMaterial = await postMaterial({
+    const [hospitalData, setHospitalData] = useState({
+        NomHospital: "",
+        ville: "",
+        Departement: "",
+        IdentiteHopital: "",
+        ReanimationMedical: "",
+        ReanimationChirurgical: "",
+        NbDoctorUniv: 0,
+        NbDoctorHosp: 0,
+        NbInternal: 0,
+        NbDoctor: 0,
+        NbPersonalAbs: 0,
+        NbIdeDay: 0,
+        NbIdeNight: 0,
+        NbIdeDayUsc: 0,
+        NbIdeNightUsc: 0,
+        NbAsDay: 0,
+        NbAsNight: 0,
+        NbAsDayUsc: 0,
+        NbAsNightUsc: 0,
+        NbExecDay: 0,
+        NbIdeSick: 0,
+        NbAsSick: 0,
+        NbAppIde: 0,
+        NbAppAs: 0,
         material: {
-          nbBedRea: hospitalData.material.nbBedRea,
-          nbBedInRoom: hospitalData.material.nbBedInRoom,
-          nbBedMntr: hospitalData.material.nbBedMntr,
-          nbAdmis: hospitalData.material.nbAdmis,
-          nbPersonalAbs: hospitalData.material.nbPersonalAbs,
-          ecmo: hospitalData.material.ecmo,
+            nbBedRea: 0,
+            nbBedInRoom: 0,
+            nbBedMntr: 0,
+            nbAdmis: 0,
+            nbPersonalAbs: 0,
+            ecmo: false,
+            ventilators: {
+                evita2: 0,
+                evitaIV: 0,
+                evitaXL: 0,
+                savina: 0,
+                evitaDura: 0,
+                npb7200: 0,
+                galileo: 0,
+                G5: 0,
+                servoI: 0,
+                servo900: 0,
+                bird8400: 0,
+                tBird: 0,
+                vela: 0,
+                npb740760: 0,
+                servo300: 0,
+                extend: 0,
+                horus: 0,
+                elisee: 0,
+                vision: 0,
+                V500: 0,
+                avea: 0,
+                engstrom: 0,
+            },
         },
-        devices: hospitalData.devices,
-      });
+    });
 
-      if (resHospital.status === 200 && resPmedical.status === 200 && resPnoMedical.status === 200 && resMaterial.status === 200) {
-        alert("Hospital registered successfully!");
-      }
-    } catch (error) {
-      alert("Internal Server Error");
-      throw new Error(error);
-    }
-  };
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        try {
+            const resHospital = await postHospital({
+                NomHospital: hospitalData.NomHospital,
+                ville: hospitalData.ville,
+                Departement: hospitalData.Departement,
+                IdentiteHopital: hospitalData.IdentiteHopital,
+                ReanimationMedical: hospitalData.ReanimationMedical,
+                ReanimationChirurgical: hospitalData.ReanimationChirurgical,
+            });
 
-  return (
-    <div id="Global">
-      <table width={800} border={0} align="center" cellPadding={0} cellSpacing={0}>
-        <tbody>
-          <tr>
-            <td valign="top">
-              <div style={{ textAlign: "center" }}>
-                <form name="form1" onSubmit={handleSubmit}>
-                  <table
-                    width="603"
-                    border={0}
-                    align="center"
-                    cellPadding={0}
-                    cellSpacing={3}
-                    id="tableForm"
-                  >
-                    <tbody>
-                      <tr>
-                        <td height="25" colSpan={7}>
-                          <div style={{ textAlign: "center" }}>
-                            <span className="titre_blanc18">Enregistrez votre hôpital</span>
-                          </div>
+            const resPmedical = await postPersonelMdeical({
+                NbDoctorUniv: hospitalData.NbDoctorUniv,
+                NbDoctorHosp: hospitalData.NbDoctorHosp,
+                NbInternal: hospitalData.NbInternal,
+                NbDoctor: hospitalData.NbDoctor,
+                NbPersonalAbs: hospitalData.NbPersonalAbs,
+            });
+
+            const resPnoMedical = await postPnoMedical({
+                NbIdeDay: hospitalData.NbIdeDay,
+                NbIdeNight: hospitalData.NbIdeNight,
+                NbIdeDayUsc: hospitalData.NbIdeDayUsc,
+                NbIdeNightUsc: hospitalData.NbIdeNightUsc,
+                NbAsDay: hospitalData.NbAsDay,
+                NbAsNight: hospitalData.NbAsNight,
+                NbAsDayUsc: hospitalData.NbAsDayUsc,
+                NbAsNightUsc: hospitalData.NbAsNightUsc,
+                NbExecDay: hospitalData.NbExecDay,
+                NbIdeSick: hospitalData.NbIdeSick,
+                NbAsSick: hospitalData.NbAsSick,
+                NbAppIde: hospitalData.NbAppIde,
+                NbAppAs: hospitalData.NbAppAs,
+            });
+
+            const resMaterial = await postMaterial({
+                material: {
+                    nbBedRea: hospitalData.material.nbBedRea,
+                    nbBedInRoom: hospitalData.material.nbBedInRoom,
+                    nbBedMntr: hospitalData.material.nbBedMntr,
+                    nbAdmis: hospitalData.material.nbAdmis,
+                    nbPersonalAbs: hospitalData.material.nbPersonalAbs,
+                    ecmo: hospitalData.material.ecmo,
+                    ventilators: hospitalData.material.ventilators,
+                },
+            });
+
+            if (resHospital.status === 200 && resPmedical.status === 200 && resPnoMedical.status === 200 && resMaterial.status === 200) {
+                alert("Hospital registered successfully!");
+            }
+        } catch (error) {
+            alert("Internal Server Error");
+            console.error(error);
+        }
+    };
+
+    return (
+        <div id="Global">
+            <form onSubmit={handleSubmit}>
+                <table width="800" border="0" align="center" cellPadding="0" cellSpacing="0">
+                    <tr>
+                        <td colSpan={6} style={{ textAlign: "center" }}>
+                            <h2>Enregistrez votre hôpital</h2>
                         </td>
-                      </tr>
+                    </tr>
 
-                      {/* Hospital Information */}
-                      <tr>
-                        <td colSpan={6}>
-                          <table width="100%" border={0} cellSpacing={3} cellPadding={0}>
-                            <tbody>
-                              <tr style={{ backgroundColor: "#91ABE3" }}>
-                                <td colSpan={6}>
-                                  <div style={{ textAlign: "center" }}>
-                                    <span className="titre_blanc16">Informations sur l'hôpital</span>
-                                  </div>
-                                </td>
-                              </tr>
-
-                              <tr>
-                                <td>Nom de l'hôpital :</td>
-                                <td colSpan={5}>
-                                  <input
-                                    type="text"
-                                    size={30}
-                                    onChange={(e) =>
-                                      setHospitalData({
-                                        ...hospitalData,
-                                        NomHospital: e.target.value,
-                                      })
-                                    }
-                                  />
-                                  *
-                                </td>
-                              </tr>
-
-                              <tr>
-                                <td>Ville :</td>
-                                <td colSpan={5}>
-                                  <input
-                                    type="text"
-                                    size={30}
-                                    onChange={(e) =>
-                                      setHospitalData({ ...hospitalData, ville: e.target.value })
-                                    }
-                                  />
-                                  *
-                                </td>
-                              </tr>
-
-                              <tr>
-                                <td>Département :</td>
-                                <td colSpan={5}>
-                                  <input
-                                    type="text"
-                                    size={30}
-                                    onChange={(e) =>
-                                      setHospitalData({
-                                        ...hospitalData,
-                                        Departement: e.target.value,
-                                      })
-                                    }
-                                  />
-                                  *
-                                </td>
-                              </tr>
-
-                              <tr>
-                                <td>Identité Hôpital :</td>
-                                <td colSpan={5}>
-                                  <select
-                                    onChange={(e) =>
-                                      setHospitalData({
-                                        ...hospitalData,
-                                        IdentiteHopital: e.target.value,
-                                      })
-                                    }
-                                  >
-                                    <option value="">Sélectionnez</option>
-                                    <option value="CHU">CHU</option>
-                                    <option value="CHG">CHG</option>
-                                    <option value="CH">CH</option>
-                                    <option value="PSPH">PSPH</option>
-                                    <option value="Priv">Privé</option>
-                                  </select>
-                                  *
-                                </td>
-                              </tr>
-
-                              <tr>
-                                <td>Réanimation Médicale :</td>
-                                <td colSpan={5}>
-                                  <select
-                                    onChange={(e) =>
-                                      setHospitalData({
-                                        ...hospitalData,
-                                        ReanimationMedical: e.target.value,
-                                      })
-                                    }
-                                  >
-                                    <option value="">Sélectionnez</option>
-                                    <option value="Non">Non</option>
-                                    <option value="Oui">Oui</option>
-                                  </select>
-                                  *
-                                </td>
-                              </tr>
-
-                              <tr>
-                                <td>Réanimation Chirurgicale :</td>
-                                <td colSpan={5}>
-                                  <select
-                                    onChange={(e) =>
-                                      setHospitalData({
-                                        ...hospitalData,
-                                        ReanimationChirurgical: e.target.value,
-                                      })
-                                    }
-                                  >
-                                    <option value="">Sélectionnez</option>
-                                    <option value="Non">Non</option>
-                                    <option value="Oui">Oui</option>
-                                  </select>
-                                  *
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-
-                          {/* Medical Personnel */}
-                          <table width="100%" border={0} cellSpacing={3} cellPadding={0}>
-                            <tbody>
-                              <tr style={{ backgroundColor: "#91ABE3" }}>
-                                <td colSpan={6}>
-                                  <div style={{ textAlign: "center" }}>
-                                    <span className="titre_blanc16">
-                                      Personnel médical (Octobre 2009)
-                                    </span>
-                                  </div>
-                                </td>
-                              </tr>
-
-                              <tr>
-                                <td>Nombre moyen de médecins universitaires :</td>
-                                <td colSpan={5}>
-                                  <input
-                                    type="text"
-                                    size={5}
-                                    onChange={(e) =>
-                                      setHospitalData({
-                                        ...hospitalData,
-                                        NbDoctorUniv: parseInt(e.target.value),
-                                      })
-                                    }
-                                  />
-                                  *
-                                </td>
-                              </tr>
-
-                              <tr>
-                                <td>Nombre moyen de médecins hospitaliers :</td>
-                                <td colSpan={5}>
-                                  <input
-                                    type="text"
-                                    size={5}
-                                    onChange={(e) =>
-                                      setHospitalData({
-                                        ...hospitalData,
-                                        NbDoctorHosp: parseInt(e.target.value),
-                                      })
-                                    }
-                                  />
-                                  *
-                                </td>
-                              </tr>
-
-                              <tr>
-                                <td>Nombre moyen d'internes :</td>
-                                <td colSpan={5}>
-                                  <input
-                                    type="text"
-                                    size={5}
-                                    onChange={(e) =>
-                                      setHospitalData({
-                                        ...hospitalData,
-                                        NbInternal: parseInt(e.target.value),
-                                      })
-                                    }
-                                  />
-                                  *
-                                </td>
-                              </tr>
-
-                              <tr>
-                                <td>Nombre de médecins présents pendant la garde :</td>
-                                <td colSpan={5}>
-                                  <input
-                                    type="text"
-                                    size={5}
-                                    onChange={(e) =>
-                                      setHospitalData({
-                                        ...hospitalData,
-                                        NbDoctor: parseInt(e.target.value),
-                                      })
-                                    }
-                                  />
-                                  *
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-
-                          {/* Non-medical Personnel */}
-                          <table width="100%" border={0} cellSpacing={3} cellPadding={0}>
-                            <tbody>
-                              <tr style={{ backgroundColor: "#91ABE3" }}>
-                                <td colSpan={6}>
-                                  <div style={{ textAlign: "center" }}>
-                                    <span className="titre_blanc16">
-                                      Personnel non-médical (Octobre 2009)
-                                    </span>
-                                  </div>
-                                </td>
-                              </tr>
-
-                              <tr>
-                                <td>Nombre moyen d'IDE présents jour :</td>
-                                <td colSpan={5}>
-                                  <input
-                                    type="text"
-                                    size={5}
-                                    onChange={(e) =>
-                                      setHospitalData({
-                                        ...hospitalData,
-                                        NbIdeDay: parseInt(e.target.value),
-                                      })
-                                    }
-                                  />
-                                  *
-                                </td>
-                              </tr>
-
-                              <tr>
-                                <td>Nombre moyen d'IDE présents nuit :</td>
-                                <td colSpan={5}>
-                                  <input
-                                    type="text"
-                                    size={5}
-                                    onChange={(e) =>
-                                      setHospitalData({
-                                        ...hospitalData,
-                                        NbIdeNight: parseInt(e.target.value),
-                                      })
-                                    }
-                                  />
-                                  *
-                                </td>
-                              </tr>
-
-                              <tr>
-                                <td>Nombre moyen d'AS présents jour :</td>
-                                <td colSpan={5}>
-                                  <input
-                                    type="text"
-                                    size={5}
-                                    onChange={(e) =>
-                                      setHospitalData({
-                                        ...hospitalData,
-                                        NbAsDay: parseInt(e.target.value),
-                                      })
-                                    }
-                                  />
-                                  *
-                                </td>
-                              </tr>
-
-                              <tr>
-                                <td>Nombre moyen d'AS présents nuit :</td>
-                                <td colSpan={5}>
-                                  <input
-                                    type="text"
-                                    size={5}
-                                    onChange={(e) =>
-                                      setHospitalData({
-                                        ...hospitalData,
-                                        NbAsNight: parseInt(e.target.value),
-                                      })
-                                    }
-                                  />
-                                  *
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-
-                          {/* Equipment Section */}
-                          <table width="100%" border={0} cellSpacing={3} cellPadding={0}>
-                            <tbody>
-                              <tr style={{ backgroundColor: "#91ABE3" }}>
-                                <td colSpan={6}>
-                                  <div style={{ textAlign: "center" }}>
-                                    <span className="titre_blanc16">Matériel</span>
-                                  </div>
-                                </td>
-                              </tr>
-
-                              <tr>
-                                <td>Nombre de lits de réanimation ouverts :</td>
-                                <td colSpan={5}>
-                                  <input
-                                    type="text"
-                                    size={5}
-                                    onChange={(e) =>
-                                      setHospitalData({
-                                        ...hospitalData,
-                                        material: {
-                                          ...hospitalData.material,
-                                          nbBedRea: parseInt(e.target.value),
-                                        },
-                                      })
-                                    }
-                                  />
-                                  *
-                                </td>
-                              </tr>
-
-                              <tr>
-                                <td>Nombre de lits de surveillance continue :</td>
-                                <td colSpan={5}>
-                                  <input
-                                    type="text"
-                                    size={5}
-                                    onChange={(e) =>
-                                      setHospitalData({
-                                        ...hospitalData,
-                                        material: {
-                                          ...hospitalData.material,
-                                          nbBedMntr: parseInt(e.target.value),
-                                        },
-                                      })
-                                    }
-                                  />
-                                  *
-                                </td>
-                              </tr>
-
-                              <tr>
-                                <td>Accès à l'ECMO :</td>
-                                <td colSpan={5}>
-                                  <select
-                                    onChange={(e) =>
-                                      setHospitalData({
-                                        ...hospitalData,
-                                        material: {
-                                          ...hospitalData.material,
-                                          ecmo: e.target.value === "Oui",
-                                        },
-                                      })
-                                    }
-                                  >
-                                    <option value="">Sélectionnez</option>
-                                    <option value="Non">Non</option>
-                                    <option value="Oui">Oui</option>
-                                  </select>
-                                  *
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-
-                          {/* Devices Section */}
-                          <table width="100%" border={0} cellSpacing={3} cellPadding={0}>
-                            <tbody>
-                              <tr style={{ backgroundColor: "#91ABE3" }}>
-                                <td colSpan={6}>
-                                  <div style={{ textAlign: "center" }}>
-                                    <span className="titre_blanc16">Ventilateurs</span>
-                                  </div>
-                                </td>
-                              </tr>
-
-                              {hospitalData.devices.map((device, index) => (
-                                <tr key={index}>
-                                  <td>Quantité :</td>
-                                  <td colSpan={2}>
-                                    <input
-                                      type="text"
-                                      size={5}
-                                      value={device.quantity}
-                                      onChange={(e) => {
-                                        const updatedDevices = [...hospitalData.devices];
-                                        updatedDevices[index].quantity = parseInt(e.target.value);
-                                        setHospitalData({
-                                          ...hospitalData,
-                                          devices: updatedDevices,
-                                        });
-                                      }}
-                                    />
-                                    *
-                                  </td>
-                                  <td>Nom du ventilateur :</td>
-                                  <td colSpan={2}>
-                                    <input
-                                      type="text"
-                                      size={20}
-                                      value={device.name}
-                                      onChange={(e) => {
-                                        const updatedDevices = [...hospitalData.devices];
-                                        updatedDevices[index].name = e.target.value;
-                                        setHospitalData({
-                                          ...hospitalData,
-                                          devices: updatedDevices,
-                                        });
-                                      }}
-                                    />
-                                    *
-                                  </td>
-                                </tr>
-                              ))}
-
-                              <tr>
-                                <td colSpan={6}>
-                                  <button
-                                    type="button"
-                                    onClick={() =>
-                                      setHospitalData({
-                                        ...hospitalData,
-                                        devices: [
-                                          ...hospitalData.devices,
-                                          { quantity: 0, name: "" },
-                                        ],
-                                      })
-                                    }
-                                  >
-                                    Ajouter un ventilateur
-                                  </button>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
+                    {/* Hospital Information Section */}
+                    <tr>
+                        <td>Nom de l'hôpital:</td>
+                        <td colSpan={5}>
+                            <input
+                                type="text"
+                                value={hospitalData.NomHospital}
+                                onChange={(e) => setHospitalData({ ...hospitalData, NomHospital: e.target.value })}
+                                required
+                            />
                         </td>
-                      </tr>
-
-                      <tr>
-                        <td colSpan={6}>
-                          <div style={{ textAlign: "center" }}>
-                            <input type="submit" name="formGeneral" value="Valider" />
-                          </div>
+                    </tr>
+                    <tr>
+                        <td>Ville:</td>
+                        <td colSpan={5}>
+                            <input
+                                type="text"
+                                value={hospitalData.ville}
+                                onChange={(e) => setHospitalData({ ...hospitalData, ville: e.target.value })}
+                                required
+                            />
                         </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </form>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  );
+                    </tr>
+                    <tr>
+                        <td>Département:</td>
+                        <td colSpan={5}>
+                            <input
+                                type="text"
+                                value={hospitalData.Departement}
+                                onChange={(e) => setHospitalData({ ...hospitalData, Departement: e.target.value })}
+                                required
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Identité Hôpital:</td>
+                        <td colSpan={5}>
+                            <select
+                                value={hospitalData.IdentiteHopital}
+                                onChange={(e) => setHospitalData({ ...hospitalData, IdentiteHopital: e.target.value })}
+                                required
+                            >
+                                <option value="" disabled>Choisir...</option>
+                                <option value="CHU">CHU</option>
+                                <option value="CHG">CHG</option>
+                                <option value="CH">CH</option>
+                                <option value="PSPH">PSPH</option>
+                                <option value="Priv">Privé</option>
+                            </select>
+                        </td>
+                    </tr>
+
+                    {/* Type of Service Section */}
+                    <tr>
+                        <td>R&eacute;animation et/ou USC-USI m&eacute;dicale:</td>
+                        <td colSpan={5}>
+                            <select
+                                value={hospitalData.ReanimationMedical}
+                                onChange={(e) => setHospitalData({ ...hospitalData, ReanimationMedical: e.target.value })}
+                                required
+                            >
+                                <option value="" disabled>Choisir...</option>
+                                <option value="Non">Non</option>
+                                <option value="Oui">Oui</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>R&eacute;animation et/ou USC-USI-SSPI chirurgicale:</td>
+                        <td colSpan={5}>
+                            <select
+                                value={hospitalData.ReanimationChirurgical}
+                                onChange={(e) => setHospitalData({ ...hospitalData, ReanimationChirurgical: e.target.value })}
+                                required
+                            >
+                                <option value="" disabled>Choisir...</option>
+                                <option value="Non">Non</option>
+                                <option value="Oui">Oui</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Activité:</td>
+                        <td colSpan={5}>
+                            <select
+                                value={hospitalData.ReanimationChirurgical}
+                                onChange={(e) => setHospitalData({ ...hospitalData, ReanimationChirurgical: e.target.value })}
+                                required
+                            >
+                                <option value="" disabled>Choisir...</option>
+                                <option value="Non">Non</option>
+                                <option value="Oui">Oui</option>
+                            </select>
+                        </td>
+                    </tr>
+
+
+                    {/* Personnel Médical Section */}
+                    <tr>
+                        <td>Nombre moyen de médecins Universitaires(CCA,PHU,MCUPH,PUPH)présents dans le service:</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.NbDoctorUniv}
+                                onChange={(e) => setHospitalData({ ...hospitalData, NbDoctorUniv: parseInt(e.target.value) })}
+                                required
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Nombre moyen de médecins hospitaliers, non Universitaires, présents dans le service:</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.NbDoctorHosp}
+                                onChange={(e) => setHospitalData({ ...hospitalData, NbDoctorHosp: parseInt(e.target.value) })}
+                                required
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Nombre d'internes ou faisant fonction d'internes présents dans le service:</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.NbInternal}
+                                onChange={(e) => setHospitalData({ ...hospitalData, NbInternal: parseInt(e.target.value) })}
+                                required
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Nombre de médecins (internes et/ou seniors) présents pendant la garde:</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.NbInternal}
+                                onChange={(e) => setHospitalData({ ...hospitalData, NbInternal: parseInt(e.target.value) })}
+                                required
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Nombre de personnels médicaux absents 1 journée (ou plus) en raison de la grippe:</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.NbInternal}
+                                onChange={(e) => setHospitalData({ ...hospitalData, NbInternal: parseInt(e.target.value) })}
+                                required
+                            />
+                        </td>
+                    </tr>
+
+                    {/* Personnel Non Médical Section */}
+                    <tr>
+                        <td>Nombre moyen d'IDE présents la journée en réanimation:</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.NbIdeDay}
+                                onChange={(e) => setHospitalData({ ...hospitalData, NbIdeDay: parseInt(e.target.value) })}
+                                required
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Nombre moyen d'IDE présents la journée en USC et/ou USI:</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.NbIdeNight}
+                                onChange={(e) => setHospitalData({ ...hospitalData, NbIdeNight: parseInt(e.target.value) })}
+                                required
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Nombre moyen d'IDE présents la nuit en réanimation:</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.NbAsDay}
+                                onChange={(e) => setHospitalData({ ...hospitalData, NbAsDay: parseInt(e.target.value) })}
+                                required
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Nombre moyen d'IDE présents la nuit en USC et/ou USI:</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.NbAsDay}
+                                onChange={(e) => setHospitalData({ ...hospitalData, NbAsDay: parseInt(e.target.value) })}
+                                required
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Nombre moyen d'AS présents la journée en réanimation:</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.NbAsDay}
+                                onChange={(e) => setHospitalData({ ...hospitalData, NbAsDay: parseInt(e.target.value) })}
+                                required
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Nombre moyen d'AS présents la journée en USC et/ou USI:</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.NbAsDay}
+                                onChange={(e) => setHospitalData({ ...hospitalData, NbAsDay: parseInt(e.target.value) })}
+                                required
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Nombre moyen d'AS présents la nuit en réanimation:</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.NbAsDay}
+                                onChange={(e) => setHospitalData({ ...hospitalData, NbAsDay: parseInt(e.target.value) })}
+                                required
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Nombre moyen d'AS présents la nuit en USC et/ou USI:</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.NbAsDay}
+                                onChange={(e) => setHospitalData({ ...hospitalData, NbAsDay: parseInt(e.target.value) })}
+                                required
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Nombre de cadres ou faisant fonction présents la journée:</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.NbAsDay}
+                                onChange={(e) => setHospitalData({ ...hospitalData, NbAsDay: parseInt(e.target.value) })}
+                                required
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Nombre d'arrêts maladie total en cours pour les IDE:</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.NbAsDay}
+                                onChange={(e) => setHospitalData({ ...hospitalData, NbAsDay: parseInt(e.target.value) })}
+                                required
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Nombre d'arrêts maladie total en cours pour les AS:</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.NbAsDay}
+                                onChange={(e) => setHospitalData({ ...hospitalData, NbAsDay: parseInt(e.target.value) })}
+                                required
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Nombre approximatif d'IDE en renfort:<br />(Travaillant habituellement dans un autre service)<br /></td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.NbAsDay}
+                                onChange={(e) => setHospitalData({ ...hospitalData, NbAsDay: parseInt(e.target.value) })}
+                                required
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Nombre approximatif d'AS en renfort:<br />(Travaillant habituellement dans un autre service)<br /></td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.NbAsDay}
+                                onChange={(e) => setHospitalData({ ...hospitalData, NbAsDay: parseInt(e.target.value) })}
+                                required
+                            />
+                        </td>
+                    </tr>
+
+                    {/* Material Section */}
+                    <tr>
+                        <td>Nombre de lits de r&eacute;animation ouverts à ce jour:</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.material.nbBedRea}
+                                onChange={(e) => setHospitalData({ ...hospitalData, material: { ...hospitalData.material, nbBedRea: parseInt(e.target.value) } })}
+                                required
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td height="25" colSpan={5}>
+                            <div style={{ textAlign: "left" }}>
+                                Combien de ces lits de r&eacute;animation sont
+                                dans des chambres &agrave; :
+                            </div>
+                            <div style={{ textAlign: "left" }}></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Nombre de lits de surveillance continue ouverts à ce jour:</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.material.nbBedMntr}
+                                onChange={(e) => setHospitalData({ ...hospitalData, material: { ...hospitalData.material, nbBedMntr: parseInt(e.target.value) } })}
+                                required
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td height="25" colSpan={5}>
+                            <div style={{ textAlign: "left" }}>
+                                Combien de ces lits de surveillance sont
+                                dans des chambres &agrave; :
+                            </div>
+                            <div style={{ textAlign: "left" }}></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Nombre approximatif d'admissions par an:</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.material.nbAdmis}
+                                onChange={(e) => setHospitalData({ ...hospitalData, material: { ...hospitalData.material, nbAdmis: parseInt(e.target.value) } })}
+                                required
+                            />
+                        </td>
+                    </tr>
+
+                    {/* Ventilators Section */}
+                    <tr>
+                        <td>Evita 2 <br />(Drager):</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.material.ventilators.evita2}
+                                onChange={(e) => setHospitalData({ ...hospitalData, material: { ...hospitalData.material, ventilators: { ...hospitalData.material.ventilators, evita2: parseInt(e.target.value) } } })}
+                            />
+                        </td>
+                        <td colSpan={4}></td> {/* Adding colspan to balance the row */}
+                    </tr>
+                    <tr>
+                        <td>Evita IV <br />(Drager):</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.material.ventilators.evitaIV}
+                                onChange={(e) => setHospitalData({ ...hospitalData, material: { ...hospitalData.material, ventilators: { ...hospitalData.material.ventilators, evitaIV: parseInt(e.target.value) } } })}
+                            />
+                        </td>
+                        <td colSpan={4}></td> {/* Adding colspan */}
+                    </tr>
+                    <tr>
+                        <td>Evita XL <br />(Drager):</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.material.ventilators.evitaXL}
+                                onChange={(e) => setHospitalData({ ...hospitalData, material: { ...hospitalData.material, ventilators: { ...hospitalData.material.ventilators, evitaXL: parseInt(e.target.value) } } })}
+                            />
+                        </td>
+                        <td colSpan={4}></td> {/* Adding colspan */}
+                    </tr>
+                    <tr>
+                        <td>SAVINA <br />(Drager):</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.material.ventilators.evitaXL}
+                                onChange={(e) => setHospitalData({ ...hospitalData, material: { ...hospitalData.material, ventilators: { ...hospitalData.material.ventilators, evitaXL: parseInt(e.target.value) } } })}
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Evita 2 DURA <br />(Drager):</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.material.ventilators.evitaXL}
+                                onChange={(e) => setHospitalData({ ...hospitalData, material: { ...hospitalData.material, ventilators: { ...hospitalData.material.ventilators, evitaXL: parseInt(e.target.value) } } })}
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>7200 (NPB):</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.material.ventilators.evitaXL}
+                                onChange={(e) => setHospitalData({ ...hospitalData, material: { ...hospitalData.material, ventilators: { ...hospitalData.material.ventilators, evitaXL: parseInt(e.target.value) } } })}
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Galiléo<br />(Hamilton):</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.material.ventilators.evitaXL}
+                                onChange={(e) => setHospitalData({ ...hospitalData, material: { ...hospitalData.material, ventilators: { ...hospitalData.material.ventilators, evitaXL: parseInt(e.target.value) } } })}
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>G5<br />(Hamilton):</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.material.ventilators.evitaXL}
+                                onChange={(e) => setHospitalData({ ...hospitalData, material: { ...hospitalData.material, ventilators: { ...hospitalData.material.ventilators, evitaXL: parseInt(e.target.value) } } })}
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Servo 1<br />(Maquet):</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.material.ventilators.evitaXL}
+                                onChange={(e) => setHospitalData({ ...hospitalData, material: { ...hospitalData.material, ventilators: { ...hospitalData.material.ventilators, evitaXL: parseInt(e.target.value) } } })}
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Servo 900<br />(Siemens):</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.material.ventilators.evitaXL}
+                                onChange={(e) => setHospitalData({ ...hospitalData, material: { ...hospitalData.material, ventilators: { ...hospitalData.material.ventilators, evitaXL: parseInt(e.target.value) } } })}
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Bird 8400:</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.material.ventilators.evitaXL}
+                                onChange={(e) => setHospitalData({ ...hospitalData, material: { ...hospitalData.material, ventilators: { ...hospitalData.material.ventilators, evitaXL: parseInt(e.target.value) } } })}
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>T Bird:</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.material.ventilators.evitaXL}
+                                onChange={(e) => setHospitalData({ ...hospitalData, material: { ...hospitalData.material, ventilators: { ...hospitalData.material.ventilators, evitaXL: parseInt(e.target.value) } } })}
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>840<br />(Codivien):</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.material.ventilators.evitaXL}
+                                onChange={(e) => setHospitalData({ ...hospitalData, material: { ...hospitalData.material, ventilators: { ...hospitalData.material.ventilators, evitaXL: parseInt(e.target.value) } } })}
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Vela:</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.material.ventilators.evitaXL}
+                                onChange={(e) => setHospitalData({ ...hospitalData, material: { ...hospitalData.material, ventilators: { ...hospitalData.material.ventilators, evitaXL: parseInt(e.target.value) } } })}
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>740-760 (NPB):</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.material.ventilators.evitaXL}
+                                onChange={(e) => setHospitalData({ ...hospitalData, material: { ...hospitalData.material, ventilators: { ...hospitalData.material.ventilators, evitaXL: parseInt(e.target.value) } } })}
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Servo 300 (Siemens):</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.material.ventilators.evitaXL}
+                                onChange={(e) => setHospitalData({ ...hospitalData, material: { ...hospitalData.material, ventilators: { ...hospitalData.material.ventilators, evitaXL: parseInt(e.target.value) } } })}
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Extend<br />(Taema):</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.material.ventilators.evitaXL}
+                                onChange={(e) => setHospitalData({ ...hospitalData, material: { ...hospitalData.material, ventilators: { ...hospitalData.material.ventilators, evitaXL: parseInt(e.target.value) } } })}
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Horus<br />(Taema):</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.material.ventilators.evitaXL}
+                                onChange={(e) => setHospitalData({ ...hospitalData, material: { ...hospitalData.material, ventilators: { ...hospitalData.material.ventilators, evitaXL: parseInt(e.target.value) } } })}
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Elisée (Saime<br />Resmed):</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.material.ventilators.evitaXL}
+                                onChange={(e) => setHospitalData({ ...hospitalData, material: { ...hospitalData.material, ventilators: { ...hospitalData.material.ventilators, evitaXL: parseInt(e.target.value) } } })}
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Vision<br />(Respironics) ou V60:</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.material.ventilators.evitaXL}
+                                onChange={(e) => setHospitalData({ ...hospitalData, material: { ...hospitalData.material, ventilators: { ...hospitalData.material.ventilators, evitaXL: parseInt(e.target.value) } } })}
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>V500<br />(Drager):</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.material.ventilators.evitaXL}
+                                onChange={(e) => setHospitalData({ ...hospitalData, material: { ...hospitalData.material, ventilators: { ...hospitalData.material.ventilators, evitaXL: parseInt(e.target.value) } } })}
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Avea (Viasys):</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.material.ventilators.evitaXL}
+                                onChange={(e) => setHospitalData({ ...hospitalData, material: { ...hospitalData.material, ventilators: { ...hospitalData.material.ventilators, evitaXL: parseInt(e.target.value) } } })}
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Engstrom Carestation<br />(GE):</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.material.ventilators.evitaXL}
+                                onChange={(e) => setHospitalData({ ...hospitalData, material: { ...hospitalData.material, ventilators: { ...hospitalData.material.ventilators, evitaXL: parseInt(e.target.value) } } })}
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Autre:</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.material.ventilators.evitaXL}
+                                onChange={(e) => setHospitalData({ ...hospitalData, material: { ...hospitalData.material, ventilators: { ...hospitalData.material.ventilators, evitaXL: parseInt(e.target.value) } } })}
+                            />
+                        </td>
+                    </tr>
+
+
+                    {/* ECMO Access */}
+                    <tr>
+                        <td>Un accès à l'ECMO est-il possible?</td>
+                        <td>
+                            <select
+                                value={hospitalData.material.ecmo ? "Oui" : "Non"}
+                                onChange={(e) => setHospitalData({ ...hospitalData, material: { ...hospitalData.material, ecmo: e.target.value === "Oui" } })}
+                                required
+                            >
+                                <option value="Non">Non</option>
+                                <option value="Oui">Oui</option>
+                            </select>
+                        </td>
+                    </tr>
+
+                    {/* Submission */}
+                    <tr>
+                        <td colSpan={6} style={{ textAlign: "center" }}>
+                            <button type="submit">Valider</button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    );
 }
 
 export default HospitalRegister;
