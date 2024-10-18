@@ -123,7 +123,7 @@ function HospitalRegister() {
         <div id="Global">
             <div className="blue-box-title">Enregistrez votre service</div>
             <form onSubmit={handleSubmit}>
-                <table width="800" border="0" align="center" cellPadding="0" cellSpacing="0">
+                <table cellPadding="5" cellSpacing="0" style={{ width: "100%", margin: "0 auto" }}>
                     <tr>
                     </tr>
                     <td>
@@ -135,7 +135,7 @@ function HospitalRegister() {
                                 Pour un m&ecirc;me service plusieurs codes correspondant &agrave; plusieurs identit&eacute;s peuvent &ecirc;tre d&eacute;livr&eacute;s.
                             </div>
                         </div>
-                        </td>
+                    </td>
                     <tr>
                         <td>Nom de l'hôpital:</td>
                         <td colSpan={5}>
@@ -236,7 +236,7 @@ function HospitalRegister() {
                     <div className="blue-box-sub">Description du service</div>
                     <div className="blue-box-sub">Personnel médical affecté (Octobre 2009)</div>
                     <tr>
-                        <td>Nombre moyen de médecins Universitaires(CCA,PHU,MCUPH,PUPH)présents dans le service:</td>
+                        <td>Nombre moyen de médecins Universitaires<br />(CCA,PHU,MCUPH,PUPH) présents dans le service:</td>
                         <td>
                             <input
                                 type="number"
@@ -442,7 +442,7 @@ function HospitalRegister() {
                         </td>
                     </tr>
 
-                    {/* Material Section */}
+                    <div className="blue-box-sub">Matériel</div>
                     <tr>
                         <td>Nombre de lits de r&eacute;animation ouverts à ce jour:</td>
                         <td>
@@ -464,6 +464,39 @@ function HospitalRegister() {
                         </td>
                     </tr>
                     <tr>
+                        <td>1 lit:</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.material.nbBedInRoom}
+                                onChange={(e) => setHospitalData({ ...hospitalData, material: { ...hospitalData.material, nbBedInRoom: parseInt(e.target.value) } })}
+                                required
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2 lits:</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.material.nbBedInRoom}
+                                onChange={(e) => setHospitalData({ ...hospitalData, material: { ...hospitalData.material, nbBedInRoom: parseInt(e.target.value) } })}
+                                required
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Plus de 2 lits:</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.material.nbBedInRoom}
+                                onChange={(e) => setHospitalData({ ...hospitalData, material: { ...hospitalData.material, nbBedInRoom: parseInt(e.target.value) } })}
+                                required
+                            />
+                        </td>
+                    </tr>
+                    <tr>
                         <td>Nombre de lits de surveillance continue ouverts à ce jour:</td>
                         <td>
                             <input
@@ -481,6 +514,39 @@ function HospitalRegister() {
                                 dans des chambres &agrave; :
                             </div>
                             <div style={{ textAlign: "left" }}></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>1 lit:</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.material.nbBedInRoom}
+                                onChange={(e) => setHospitalData({ ...hospitalData, material: { ...hospitalData.material, nbBedInRoom: parseInt(e.target.value) } })}
+                                required
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2 lits:</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.material.nbBedInRoom}
+                                onChange={(e) => setHospitalData({ ...hospitalData, material: { ...hospitalData.material, nbBedInRoom: parseInt(e.target.value) } })}
+                                required
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Plus de 2 lits:</td>
+                        <td>
+                            <input
+                                type="number"
+                                value={hospitalData.material.nbBedInRoom}
+                                onChange={(e) => setHospitalData({ ...hospitalData, material: { ...hospitalData.material, nbBedInRoom: parseInt(e.target.value) } })}
+                                required
+                            />
                         </td>
                     </tr>
                     <tr>
@@ -505,7 +571,6 @@ function HospitalRegister() {
                                 onChange={(e) => setHospitalData({ ...hospitalData, material: { ...hospitalData.material, ventilators: { ...hospitalData.material.ventilators, evita2: parseInt(e.target.value) } } })}
                             />
                         </td>
-                        <td colSpan={4}></td> {/* Adding colspan to balance the row */}
                     </tr>
                     <tr>
                         <td>Evita IV <br />(Drager):</td>
@@ -516,7 +581,6 @@ function HospitalRegister() {
                                 onChange={(e) => setHospitalData({ ...hospitalData, material: { ...hospitalData.material, ventilators: { ...hospitalData.material.ventilators, evitaIV: parseInt(e.target.value) } } })}
                             />
                         </td>
-                        <td colSpan={4}></td> {/* Adding colspan */}
                     </tr>
                     <tr>
                         <td>Evita XL <br />(Drager):</td>
@@ -527,7 +591,6 @@ function HospitalRegister() {
                                 onChange={(e) => setHospitalData({ ...hospitalData, material: { ...hospitalData.material, ventilators: { ...hospitalData.material.ventilators, evitaXL: parseInt(e.target.value) } } })}
                             />
                         </td>
-                        <td colSpan={4}></td> {/* Adding colspan */}
                     </tr>
                     <tr>
                         <td>SAVINA <br />(Drager):</td>
@@ -755,11 +818,10 @@ function HospitalRegister() {
                             </select>
                         </td>
                     </tr>
-
-                    {/* Submission */}
+                    <div className="note"> Pour tout problème ou renseignement, vous pouvez nous contacter par mail</div>
                     <tr>
                         <td colSpan={6} style={{ textAlign: "center" }}>
-                            <button type="submit">Valider</button>
+                            <button type="submit-button">Valider</button>
                         </td>
                     </tr>
                 </table>
