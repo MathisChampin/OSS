@@ -104,7 +104,6 @@ function Register() {
                                 setUserData({ ...userData, nom: e.target.value })
                               }
                             />
-                            *
                           </td>
                         </tr>
                         <tr>
@@ -118,7 +117,6 @@ function Register() {
                                 setUserData({ ...userData, prenom: e.target.value })
                               }
                             />
-                            *
                           </td>
                         </tr>
                         <tr>
@@ -132,10 +130,8 @@ function Register() {
                                 setUserData({ ...userData, email: e.target.value })
                               }
                             />
-                            *
                           </td>
                         </tr>
-                        {/* Adding hospital-related fields here */}
                         <tr>
                           <td>Nom de l'hôpital :</td>
                           <td colSpan={5}>
@@ -147,7 +143,6 @@ function Register() {
                                 setUserData({ ...userData, NomHospital: e.target.value })
                               }
                             />
-                            *
                           </td>
                         </tr>
                         <tr>
@@ -161,7 +156,6 @@ function Register() {
                                 setUserData({ ...userData, ville: e.target.value })
                               }
                             />
-                            *
                           </td>
                         </tr>
                         <tr>
@@ -175,7 +169,6 @@ function Register() {
                                 setUserData({ ...userData, Departement: e.target.value })
                               }
                             />
-                            *
                           </td>
                         </tr>
                         <tr>
@@ -195,7 +188,6 @@ function Register() {
                               <option value="PSPH">PSPH</option>
                               <option value="Priv">Privé</option>
                             </select>
-                            *
                           </td>
                         </tr>
                         <tr>
@@ -212,7 +204,6 @@ function Register() {
                               <option value="Non">Non</option>
                               <option value="Oui">Oui</option>
                             </select>
-                            *
                           </td>
                         </tr>
                         <tr>
@@ -229,7 +220,6 @@ function Register() {
                               <option value="Non">Non</option>
                               <option value="Oui">Oui</option>
                             </select>
-                            *
                           </td>
                         </tr>
                         <tr>
@@ -246,10 +236,8 @@ function Register() {
                               <option value="Non">Non</option>
                               <option value="Oui">Oui</option>
                             </select>
-                            *
                           </td>
                         </tr>
-                        {/* End of added hospital-related fields */}
                       </table>
                     </td>
                   </tr>
