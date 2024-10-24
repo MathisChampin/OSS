@@ -10,6 +10,13 @@ function Register() {
     role: "user",
     email: "",
     password: "",
+    NomHospital: "",
+    ville: "",
+    Departement: "",
+    IdentiteHopital: "",
+    ReanimationMedical: "",
+    ReanimationChirurgical: "",
+    Activite: "",
   });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -21,6 +28,14 @@ function Register() {
         role: userData.role,
         email: userData.email,
         password: userData.password,
+        NomHospital: userData.NomHospital,
+        ville: userData.ville,
+        Departement: userData.Departement,
+        IdentiteHopital: userData.IdentiteHopital,
+        ReanimationMedical: userData.ReanimationMedical,
+        ReanimationChirurgical: userData.ReanimationChirurgical,
+        Activite: userData.Activite,
+
       });
 
       if (resUser.status === 200) {
@@ -120,6 +135,121 @@ function Register() {
                             *
                           </td>
                         </tr>
+                        {/* Adding hospital-related fields here */}
+                        <tr>
+                          <td>Nom de l'hôpital :</td>
+                          <td colSpan={5}>
+                            <input
+                              name="NomHospital"
+                              type="text"
+                              size={30}
+                              onChange={(e) =>
+                                setUserData({ ...userData, NomHospital: e.target.value })
+                              }
+                            />
+                            *
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Ville :</td>
+                          <td colSpan={5}>
+                            <input
+                              name="ville"
+                              type="text"
+                              size={30}
+                              onChange={(e) =>
+                                setUserData({ ...userData, ville: e.target.value })
+                              }
+                            />
+                            *
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Département :</td>
+                          <td colSpan={5}>
+                            <input
+                              name="Departement"
+                              type="text"
+                              size={30}
+                              onChange={(e) =>
+                                setUserData({ ...userData, Departement: e.target.value })
+                              }
+                            />
+                            *
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Identité Hôpital :</td>
+                          <td colSpan={5}>
+                            <select
+                              name="IdentiteHopital"
+                              value={userData.IdentiteHopital}
+                              onChange={(e) =>
+                                setUserData({ ...userData, IdentiteHopital: e.target.value })
+                              }
+                            >
+                              <option value="" disabled>Choisir...</option>
+                              <option value="CHU">CHU</option>
+                              <option value="CHG">CHG</option>
+                              <option value="CH">CH</option>
+                              <option value="PSPH">PSPH</option>
+                              <option value="Priv">Privé</option>
+                            </select>
+                            *
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>R&eacute;animation et/ou USC-USI m&eacute;dicale :</td>
+                          <td colSpan={5}>
+                            <select
+                              name="ReanimationMedical"
+                              value={userData.ReanimationMedical}
+                              onChange={(e) =>
+                                setUserData({ ...userData, ReanimationMedical: e.target.value })
+                              }
+                            >
+                              <option value="" disabled>Choisir...</option>
+                              <option value="Non">Non</option>
+                              <option value="Oui">Oui</option>
+                            </select>
+                            *
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>R&eacute;animation et/ou USC-USI-SSPI chirurgicale :</td>
+                          <td colSpan={5}>
+                            <select
+                              name="ReanimationChirurgical"
+                              value={userData.ReanimationChirurgical}
+                              onChange={(e) =>
+                                setUserData({ ...userData, ReanimationChirurgical: e.target.value })
+                              }
+                            >
+                              <option value="" disabled>Choisir...</option>
+                              <option value="Non">Non</option>
+                              <option value="Oui">Oui</option>
+                            </select>
+                            *
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Activité :</td>
+                          <td colSpan={5}>
+                            <select
+                              name="Activite"
+                              value={userData.Activite}
+                              onChange={(e) =>
+                                setUserData({ ...userData, Activite: e.target.value })
+                              }
+                            >
+                              <option value="" disabled>Choisir...</option>
+                              <option value="Non">Non</option>
+                              <option value="Oui">Oui</option>
+                            </select>
+                            *
+                          </td>
+                        </tr>
+                        {/* End of added hospital-related fields */}
                       </table>
                     </td>
                   </tr>
