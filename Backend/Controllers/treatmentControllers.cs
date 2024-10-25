@@ -365,5 +365,45 @@ namespace Controllers
             }
             return Ok(statistics);
         }
+
+        [HttpGet("{name}/{week}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetPercentageTreatmentByNameByWeek(int week, string name)
+        {
+            var statistics = await _treatmentService.GetPercentageTreatmentByNameByDurationAsync(week, name);
+            if (statistics == null)
+            {
+                return NotFound($"Treatment not found or no patients deceased using the treatment.");
+            }
+            return Ok(statistics);
+        }
+        [HttpGet("heal/{name}/{week}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetHealPercentageTreatmentByNameByWeek(int week, string name)
+        {
+            var statistics = await _treatmentService.GetHealPercentageByNameByDurationAsync(week, name);
+            if (statistics == null)
+            {
+                return NotFound($"Treatment not found or no patients deceased using the treatment.");
+            }
+            return Ok(statistics);
+        }
+        [HttpGet("die/{name}/{week}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetDiePercentageTreatmentByNameByWeek(int week, string name)
+        {
+            var statistics = await _treatmentService.GetDiePercentageByNameByDurationAsync(week, name);
+            if (statistics == null)
+            {
+                return NotFound($"Treatment not found or no patients deceased using the treatment.");
+            }
+            return Ok(statistics);
+        }
     }
 }

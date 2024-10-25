@@ -316,5 +316,99 @@ namespace Services
                 return new KeyValuePair<string, double>(treatmentStats.TreatmentName, treatmentStats.DiePercentage);
             return null;
         }
+
+        public async Task<Dictionary<string, double>?> GetPercentageTreatmentByNameByDurationAsync(int weeks, string name)
+        {
+            var speTreatment = await _treatmentRepository.GetByNameAsync(name);
+
+            if (speTreatment == null || !speTreatment.Any())
+                return null;
+
+            int days = weeks * 7;
+
+            var treatmentStats = speTreatment
+                .Where(t => t.DateStartTreatment.HasValue && t.DateEndTreatment.HasValue)
+                .Select(t => new 
+                {
+                    t.Status,
+                    DurationInDays = (t.DateEndTreatment.Value - t.DateStartTreatment.Value).TotalDays
+                })
+                .Where(t => t.DurationInDays >= days && t.DurationInDays < days + 7)
+                .ToList();
+
+            if (!treatmentStats.Any())
+                return null;
+
+            int totalTreatments = treatmentStats.Count();
+            int healedCount = treatmentStats.Count(t => t.Status == 2); // Statut 2 : Guéri
+            int deceasedCount = treatmentStats.Count(t => t.Status == 1); // Statut 1 : Décédé
+
+            double healPercentage = (totalTreatments > 0) ? (double)healedCount / totalTreatments * 100 : 0;
+            double diePercentage = (totalTreatments > 0) ? (double)deceasedCount / totalTreatments * 100 : 0;
+
+            return new Dictionary<string, double>
+            {
+                { "heal", healPercentage },
+                { "die", diePercentage }
+            };
+        }
+        public async Task<double?> GetHealPercentageByNameByDurationAsync(int weeks, string name)
+        {
+            var speTreatment = await _treatmentRepository.GetByNameAsync(name);
+
+            if (speTreatment == null || !speTreatment.Any())
+                return null;
+
+            int days = weeks * 7;
+
+            var treatmentStats = speTreatment
+                .Where(t => t.DateStartTreatment.HasValue && t.DateEndTreatment.HasValue)
+                .Select(t => new 
+                {
+                    t.Status,
+                    DurationInDays = (t.DateEndTreatment.Value - t.DateStartTreatment.Value).TotalDays
+                })
+                .Where(t => t.DurationInDays >= days && t.DurationInDays < days + 7)
+                .ToList();
+
+            if (!treatmentStats.Any())
+                return null;
+
+            int totalTreatments = treatmentStats.Count();
+            int healedCount = treatmentStats.Count(t => t.Status == 2); // Statut 2 : Guéri
+
+            double healPercentage = (totalTreatments > 0) ? (double)healedCount / totalTreatments * 100 : 0;
+
+            return healPercentage;
+        }
+        public async Task<double?> GetDiePercentageByNameByDurationAsync(int weeks, string name)
+        {
+            var speTreatment = await _treatmentRepository.GetByNameAsync(name);
+
+            if (speTreatment == null || !speTreatment.Any())
+                return null;
+
+            int days = weeks * 7;
+
+            var treatmentStats = speTreatment
+                .Where(t => t.DateStartTreatment.HasValue && t.DateEndTreatment.HasValue)
+                .Select(t => new 
+                {
+                    t.Status,
+                    DurationInDays = (t.DateEndTreatment.Value - t.DateStartTreatment.Value).TotalDays
+                })
+                .Where(t => t.DurationInDays >= days && t.DurationInDays < days + 7)
+                .ToList();
+
+            if (!treatmentStats.Any())
+                return null;
+
+            int totalTreatments = treatmentStats.Count();
+            int deceasedCount = treatmentStats.Count(t => t.Status == 1); // Statut 1 : Décédé
+
+            double diePercentage = (totalTreatments > 0) ? (double)deceasedCount / totalTreatments * 100 : 0;
+
+            return diePercentage;
+        }
     }
 }
