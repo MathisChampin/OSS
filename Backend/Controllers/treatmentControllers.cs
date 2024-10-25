@@ -283,5 +283,19 @@ namespace Controllers
             }
             return Ok(statistics);
         }
+
+        [HttpGet("statistics/bestTreatment")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetBestTreatment()
+        {
+            var statistics = await _treatmentService.GetBestTreatmentAsync();
+            if (statistics == null)
+            {
+                return NotFound($"Treatment not found or no patients deceased using the treatment.");
+            }
+            return Ok(statistics);
+        }
     }
 }

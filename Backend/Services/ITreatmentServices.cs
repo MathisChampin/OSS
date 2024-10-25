@@ -19,5 +19,6 @@ namespace Services
         Task<Object?> GetPercentageOfCurrentPatientsByTreatmentAsync(string name);
         Task<Object?> GetPercentageOfDiePatientsByTreatmentAsync(string name);
         Task<Object?> GetPercentageOfHealPatientsByTreatmentAsync(string name);
+        Task<KeyValuePair<string, double>?> GetBestTreatmentAsync();
     }
 }

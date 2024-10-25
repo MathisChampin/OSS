@@ -193,5 +193,33 @@ namespace Services
 
             return stats;
         }
+        public async Task<KeyValuePair<string, double>?> GetBestTreatmentAsync()
+        {
+            var allTreatments = await _treatmentRepository.GetAllAsync();
+
+            if (allTreatments == null || !allTreatments.Any())
+                return null;
+
+            var bestTreatment = allTreatments
+                .Where(t => !string.IsNullOrEmpty(t.NameTreatment)) // Filtrer les traitements sans nom
+                .GroupBy(t => t.NameTreatment)
+                .Select(group => new 
+                {
+                    TreatmentName = group.Key!,
+                    TotalPatients = group.Count(),
+                    HealedPatients = group.Count(t => t.Status == 2)
+                })
+                .Select(t => new
+                {
+                    t.TreatmentName,
+                    HealPercentage = (double)t.HealedPatients / t.TotalPatients * 100
+                })
+                .OrderByDescending(t => t.HealPercentage) // Trier par ordre décroissant
+                .FirstOrDefault(); // Prendre le premier (le meilleur)
+            
+            if (bestTreatment != null)
+                return new KeyValuePair<string, double>(bestTreatment.TreatmentName, bestTreatment.HealPercentage);
+            return null;
+        }
     }
 }
