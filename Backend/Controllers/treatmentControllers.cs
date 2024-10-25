@@ -366,6 +366,14 @@ namespace Controllers
             return Ok(statistics);
         }
 
+        // <summary>
+        // Retrieves the percentage of treatments by name over a specified duration in weeks.
+        // </summary>
+        /// <param name="week">The duration in weeks to filter the treatment statistics.</param>
+        /// <param name="name">The name of the treatment.</param>
+        // <returns>A dictionary containing the percentages of healed and deceased patients.</returns>
+        // <response code="200">Returns the treatment statistics if found.</response>
+        // <response code="404">If the treatment or patient statistics are not found.</response>
         [HttpGet("{name}/{week}")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -379,6 +387,15 @@ namespace Controllers
             }
             return Ok(statistics);
         }
+
+        // <summary>
+        // Retrieves the healing percentage of treatments by name over a specified duration in weeks.
+        // </summary>
+        /// <param name="week">The duration in weeks to filter the healing statistics.</param>
+        /// <param name="name">The name of the treatment.</param>
+        // <returns>The healing percentage of patients.</returns>
+        // <response code="200">Returns the healing percentage if found.</response>
+        // <response code="404">If the treatment or healing statistics are not found.</response>
         [HttpGet("heal/{name}/{week}")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -392,6 +409,15 @@ namespace Controllers
             }
             return Ok(statistics);
         }
+
+        // <summary>
+        // Retrieves the death percentage of treatments by name over a specified duration in weeks.
+        // </summary>
+        /// <param name="week">The duration in weeks to filter the death statistics.</param>
+        /// <param name="name">The name of the treatment.</param>
+        // <returns>The death percentage of patients.</returns>
+        // <response code="200">Returns the death percentage if found.</response>
+        // <response code="404">If the treatment or death statistics are not found.</response>
         [HttpGet("die/{name}/{week}")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
