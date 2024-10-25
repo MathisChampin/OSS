@@ -377,6 +377,56 @@ Cette section fournit une vue d'ensemble des différentes statistiques disponibl
 - **Description** : Retourne le pourcentage des patients décédés sous un traitement spécifique par rapport à tous les patients.
 - **Route** : `GET /statistics/deceased/{name}`
 
+---
+
+#### 11. Meilleur traitement (par pourcentage de guérison)
+
+- **Description** : Retourne le traitement avec le pourcentage de guérison le plus élevé parmi tous les traitements.
+- **Route** : `GET /statistics/bestTreatment`
+
+---
+
+#### 12. Pire traitement (par pourcentage de guérison)
+
+- **Description** : Retourne le traitement avec le pourcentage de guérison le plus bas parmi tous les traitements.
+- **Route** : `GET /statistics/leastTreatment`
+
+---
+
+#### 13. Meilleur traitement (par pourcentage de guérison sur une période spécifiée)
+
+- **Description** : Retourne le traitement avec le pourcentage de guérison le plus élevé sur une période de semaines spécifiée.
+- **Route** : `GET /statistics/bestTreatment/{week}`
+
+---
+
+#### 14. Pire traitement (par pourcentage de guérison sur une période spécifiée)
+
+- **Description** : Retourne le traitement avec le pourcentage de guérison le plus bas sur une période de semaines spécifiée.
+- **Route** : `GET /statistics/leastTreatment/{week}`
+
+---
+
+#### 15. Pourcentage des traitements par nom sur une période spécifiée
+
+- **Description** : Retourne le pourcentage des traitements par nom sur une période de semaines spécifiée.
+- **Route** : `GET /statistics/{name}/{week}`
+
+---
+
+#### 16. Pourcentage de guérison par traitement par nom sur une période spécifiée
+
+- **Description** : Retourne le pourcentage de guérison des patients pour un traitement spécifique sur une période de semaines spécifiée.
+- **Route** : `GET /statistics/heal/{name}/{week}`
+
+---
+
+#### 17. Pourcentage de décès par traitement par nom sur une période spécifiée
+
+- **Description** : Retourne le pourcentage de décès des patients pour un traitement spécifique sur une période de semaines spécifiée.
+- **Route** : `GET /statistics/die/{name}/{week}`
+
+
 ## Documentation Complémentaire
 
 Pour plus de détails, vous pouvez consulter la documentation au format PDF disponible ici : [Documentation PDF](./docs/OSS.drawio.pdf).
