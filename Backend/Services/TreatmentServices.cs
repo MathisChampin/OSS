@@ -201,7 +201,7 @@ namespace Services
                 return null;
 
             var bestTreatment = allTreatments
-                .Where(t => !string.IsNullOrEmpty(t.NameTreatment)) // Filtrer les traitements sans nom
+                .Where(t => !string.IsNullOrEmpty(t.NameTreatment))
                 .GroupBy(t => t.NameTreatment)
                 .Select(group => new 
                 {
@@ -214,11 +214,39 @@ namespace Services
                     t.TreatmentName,
                     HealPercentage = (double)t.HealedPatients / t.TotalPatients * 100
                 })
-                .OrderByDescending(t => t.HealPercentage) // Trier par ordre décroissant
-                .FirstOrDefault(); // Prendre le premier (le meilleur)
+                .OrderByDescending(t => t.HealPercentage)
+                .FirstOrDefault();
             
             if (bestTreatment != null)
                 return new KeyValuePair<string, double>(bestTreatment.TreatmentName, bestTreatment.HealPercentage);
+            return null;
+        }
+        public async Task<KeyValuePair<string, double>?> GetLeastTreatmentAsync()
+        {
+            var allTreatments = await _treatmentRepository.GetAllAsync();
+
+            if (allTreatments == null || !allTreatments.Any())
+                return null;
+
+            var leastTreatment = allTreatments
+                .Where(t => !string.IsNullOrEmpty(t.NameTreatment))
+                .GroupBy(t => t.NameTreatment)
+                .Select(group => new 
+                {
+                    TreatmentName = group.Key!,
+                    TotalPatients = group.Count(),
+                    DiePatients = group.Count(t => t.Status == 1)
+                })
+                .Select(t => new
+                {
+                    t.TreatmentName,
+                    DiePercentage = (double)t.DiePatients / t.TotalPatients * 100
+                })
+                .OrderByDescending(t => t.DiePercentage)
+                .FirstOrDefault();
+            
+            if (leastTreatment != null)
+                return new KeyValuePair<string, double>(leastTreatment.TreatmentName, leastTreatment.DiePercentage);
             return null;
         }
     }

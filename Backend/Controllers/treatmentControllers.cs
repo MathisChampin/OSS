@@ -284,13 +284,39 @@ namespace Controllers
             return Ok(statistics);
         }
 
-        [HttpGet("statistics/bestTreatment")]
+        // <summary>
+        // Gets the treatment with the highest healing percentage among all treatments.
+        // </summary>
+        // <returns>The name and healing percentage of the most effective treatment.</returns>
+        // <response code="200">Returns the most effective treatment and its healing percentage.</response>
+        // <response code="404">If no treatments are found or there is insufficient data.</response>
+        [HttpGet("bestTreatment")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetBestTreatment()
         {
             var statistics = await _treatmentService.GetBestTreatmentAsync();
+            if (statistics == null)
+            {
+                return NotFound($"Treatment not found or no patients deceased using the treatment.");
+            }
+            return Ok(statistics);
+        }
+
+        // <summary>
+        // Gets the treatment with the lowest healing percentage among all treatments.
+        // </summary>
+        // <returns>The name and healing percentage of the least effective treatment.</returns>
+        // <response code="200">Returns the least effective treatment and its die percentage.</response>
+        // <response code="404">If no treatments are found or there is insufficient data.</response>
+        [HttpGet("leastTreatment")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetLeastTreatment()
+        {
+            var statistics = await _treatmentService.GetLeastTreatmentAsync();
             if (statistics == null)
             {
                 return NotFound($"Treatment not found or no patients deceased using the treatment.");
