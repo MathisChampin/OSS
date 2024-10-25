@@ -35,7 +35,7 @@ namespace Controllers
         // <summary>
         // Gets a specific Treatment by Name
         // </summary>
-        // <param name="NameTreatment">Treatment Name</param>
+        /// <param name="NameTreatment">Treatment Name</param>
         // <returns>The requested Treatment</returns>
         // <response code="200">Returns the treatmen</response>
         // <response code="404">If the patient is not found</response>
@@ -55,7 +55,7 @@ namespace Controllers
         // <summary>
         // Creates a new treatment treatment
         // </summary>
-        // <param name="model">Treatment</param>
+        /// <param name="model">Treatment</param>
         // <returns>The created treatment</returns>
         // <response code="201">Returns the created treatment</response>
         // <response code="404">If the hospital is not found</response>
@@ -80,7 +80,7 @@ namespace Controllers
         // <summary>
         // Gets statistics for patients who have been healed by a specific treatment.
         // </summary>
-        // <param name="name">Treatment Name</param>
+        /// <param name="name">Treatment Name</param>
         // <returns>Statistics about the healed patients</returns>
         // <response code="200">Returns the statistics of healed patients</response>
         // <response code="404">If the treatment is not found</response>
@@ -101,7 +101,7 @@ namespace Controllers
         // <summary>
         // Gets statistics for patients who have died using a specific treatment.
         // </summary>
-        // <param name="name">Treatment Name</param>
+        /// <param name="name">Treatment Name</param>
         // <returns>Statistics about the deceased patients</returns>
         // <response code="200">Returns the statistics of deceased patients</response>
         // <response code="404">If the treatment is not found</response>
@@ -122,7 +122,7 @@ namespace Controllers
         // <summary>
         // Gets statistics for patients currently undergoing a specific treatment.
         // </summary>
-        // <param name="name">Treatment Name</param>
+        /// <param name="name">Treatment Name</param>
         // <returns>Statistics about patients currently undergoing treatment</returns>
         // <response code="200">Returns the statistics of patients currently undergoing treatment</response>
         // <response code="404">If the treatment is not found</response>
@@ -143,7 +143,7 @@ namespace Controllers
         // <summary>
         // Gets statistics for the number of patients currently undergoing a specific treatment compared to the total number of patients.
         // </summary>
-        // <param name="name">The name of the treatment for which statistics are requested.</param>
+        /// <param name="name">The name of the treatment for which statistics are requested.</param>
         // <returns>A percentage of patients currently using the treatment compared to all patients.</returns>
         // <response code="200">Returns the statistics of patients currently undergoing the specified treatment.</response>
         // <response code="404">If the treatment is not found.</response>
@@ -224,7 +224,7 @@ namespace Controllers
         // <summary>
         // Gets the percentage of patients currently undergoing a specific treatment compared to all patients.
         // </summary>
-        // <param name="name">The name of the treatment for which statistics are requested.</param>
+        /// <param name="name">The name of the treatment for which statistics are requested.</param>
         // <returns>A percentage of patients currently using the treatment compared to all patients.</returns>
         // <response code="200">Returns the percentage of patients currently undergoing the specified treatment.</response>
         // <response code="404">If the treatment is not found.</response>
@@ -245,7 +245,7 @@ namespace Controllers
         // <summary>
         // Gets the percentage of patients who have been healed using a specific treatment compared to all patients.
         // </summary>
-        // <param name="name">The name of the treatment for which statistics are requested.</param>
+        /// <param name="name">The name of the treatment for which statistics are requested.</param>
         // <returns>A percentage of patients healed using the treatment compared to all patients.</returns>
         // <response code="200">Returns the percentage of healed patients for the specified treatment.</response>
         // <response code="404">If the treatment is not found.</response>
@@ -266,7 +266,7 @@ namespace Controllers
         // <summary>
         // Gets the percentage of patients who have died while undergoing a specific treatment compared to all patients.
         // </summary>
-        // <param name="name">The name of the treatment for which statistics are requested.</param>
+        /// <param name="name">The name of the treatment for which statistics are requested.</param>
         // <returns>A percentage of patients who have died using the treatment compared to all patients.</returns>
         // <response code="200">Returns the percentage of deceased patients for the specified treatment.</response>
         // <response code="404">If the treatment is not found.</response>
@@ -317,6 +317,48 @@ namespace Controllers
         public async Task<IActionResult> GetLeastTreatment()
         {
             var statistics = await _treatmentService.GetLeastTreatmentAsync();
+            if (statistics == null)
+            {
+                return NotFound($"Treatment not found or no patients deceased using the treatment.");
+            }
+            return Ok(statistics);
+        }
+
+        // <summary>
+        // Gets the treatment with the highest percentage of healed patients over a specified number of weeks.
+        // </summary>
+        /// <param name="week">The number of weeks used to filter treatments.</param>
+        // <returns>The treatment name and the percentage of healed patients for that treatment within the specified duration.</returns>
+        // <response code="200">Returns the name and heal percentage of the most effective treatment.</response>
+        // <response code="404">If no treatment matches the criteria.</response>
+        [HttpGet("bestTreatment/{week}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetBestTreatmentByWeek(int week)
+        {
+            var statistics = await _treatmentService.GetBestTreatmentByDurationAsync(week);
+            if (statistics == null)
+            {
+                return NotFound($"Treatment not found or no patients deceased using the treatment.");
+            }
+            return Ok(statistics);
+        }
+
+        // <summary>
+        // Gets the treatment with the lowest percentage of healed patients over a specified number of weeks.
+        // </summary>
+        /// <param name="week">The number of weeks used to filter treatments.</param>
+        // <returns>The treatment name and the percentage of healed patients for that treatment within the specified duration.</returns>
+        // <response code="200">Returns the name and heal percentage of the least effective treatment.</response>
+        // <response code="404">If no treatment matches the criteria.</response>
+        [HttpGet("leastTreatment/{week}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetLeatTreatmentByWeek(int week)
+        {
+            var statistics = await _treatmentService.GetLeastTreatmentByDurationAsync(week);
             if (statistics == null)
             {
                 return NotFound($"Treatment not found or no patients deceased using the treatment.");

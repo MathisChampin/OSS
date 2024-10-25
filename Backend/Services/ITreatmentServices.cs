@@ -21,5 +21,7 @@ namespace Services
         Task<Object?> GetPercentageOfHealPatientsByTreatmentAsync(string name);
         Task<KeyValuePair<string, double>?> GetBestTreatmentAsync();
         Task<KeyValuePair<string, double>?> GetLeastTreatmentAsync();
+        Task<KeyValuePair<string, double>?> GetBestTreatmentByDurationAsync(int week);
+        Task<KeyValuePair<string, double>?> GetLeastTreatmentByDurationAsync(int weeks);
     }
 }

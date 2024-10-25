@@ -249,5 +249,72 @@ namespace Services
                 return new KeyValuePair<string, double>(leastTreatment.TreatmentName, leastTreatment.DiePercentage);
             return null;
         }
+        public async Task<KeyValuePair<string, double>?> GetBestTreatmentByDurationAsync(int weeks)
+        {
+            var allTreatments = await _treatmentRepository.GetAllAsync();
+
+            if (allTreatments == null || !allTreatments.Any())
+                return null;
+
+            int days = weeks * 7;
+            
+            var treatmentStats = allTreatments
+                .Where(t => t.DateStartTreatment.HasValue && t.DateEndTreatment.HasValue)
+                .Select(t => new 
+                {
+                    t.NameTreatment,
+                    DurationInDays = (t.DateEndTreatment.Value - t.DateStartTreatment.Value).TotalDays,
+                    Healed = t.Status == 2
+                })
+                .Where(t => t.DurationInDays >= days && t.DurationInDays < days + 7)
+                .GroupBy(t => t.NameTreatment)
+                .Select(group => new
+                {
+                    TreatmentName = group.Key!,
+                    TotalTreatments = group.Count(),
+                    HealedCount = group.Count(t => t.Healed),
+                    HealPercentage = (double)group.Count(t => t.Healed) / group.Count() * 100
+                })
+                .OrderByDescending(t => t.HealPercentage)
+                .FirstOrDefault();
+            
+            if (treatmentStats != null)
+                return new KeyValuePair<string, double>(treatmentStats.TreatmentName, treatmentStats.HealPercentage);
+            return null;
+        }
+
+        public async Task<KeyValuePair<string, double>?> GetLeastTreatmentByDurationAsync(int weeks)
+        {
+            var allTreatments = await _treatmentRepository.GetAllAsync();
+
+            if (allTreatments == null || !allTreatments.Any())
+                return null;
+
+            int days = weeks * 7;
+            
+            var treatmentStats = allTreatments
+                .Where(t => t.DateStartTreatment.HasValue && t.DateEndTreatment.HasValue)
+                .Select(t => new 
+                {
+                    t.NameTreatment,
+                    DurationInDays = (t.DateEndTreatment.Value - t.DateStartTreatment.Value).TotalDays,
+                    Die = t.Status == 1
+                })
+                .Where(t => t.DurationInDays >= days && t.DurationInDays < days + 7)
+                .GroupBy(t => t.NameTreatment)
+                .Select(group => new
+                {
+                    TreatmentName = group.Key!,
+                    TotalTreatments = group.Count(),
+                    DieCount = group.Count(t => t.Die),
+                    DiePercentage = (double)group.Count(t => t.Die) / group.Count() * 100
+                })
+                .OrderByDescending(t => t.DiePercentage)
+                .FirstOrDefault();
+            
+            if (treatmentStats != null)
+                return new KeyValuePair<string, double>(treatmentStats.TreatmentName, treatmentStats.DiePercentage);
+            return null;
+        }
     }
 }
