@@ -431,5 +431,25 @@ namespace Controllers
             }
             return Ok(statistics);
         }
+
+        // <summary>
+        // Retrieves the average duration of treatments during the pandemic in days.
+        // </summary>
+        // <returns>The average treatment duration in days.</returns>
+        // <response code="200">Returns the average treatment duration if found.</response>
+        // <response code="404">If no valid treatments are found or data is missing.</response>
+        [HttpGet("duration")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetAveragePandemicDuration()
+        {
+            var statistics = await _treatmentService.GetAveragePandemicDurationAsync();
+            if (statistics == null)
+            {
+                return NotFound($"Treatment not found or no patients deceased using the treatment.");
+            }
+            return Ok(statistics);
+        }
     }
 }

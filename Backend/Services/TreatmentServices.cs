@@ -410,5 +410,26 @@ namespace Services
 
             return diePercentage;
         }
+        public async Task<int?> GetAveragePandemicDurationAsync()
+        {
+            var allTreatments = await _treatmentRepository.GetAllAsync();
+
+            if (allTreatments == null || !allTreatments.Any())
+                return null;
+
+            var validTreatments = allTreatments
+                .Where(t => t.DateStartTreatment.HasValue && t.DateEndTreatment.HasValue)
+                .ToList();
+
+            if (!validTreatments.Any())
+                return null;
+
+            var pandemicStartDate = validTreatments.Min(t => t.DateStartTreatment.Value);
+            var pandemicEndDate = validTreatments.Max(t => t.DateEndTreatment.Value);
+
+            var totalPandemicDurationInDays = (pandemicEndDate - pandemicStartDate).TotalDays;
+
+            return (int)totalPandemicDurationInDays;
+        }
     }
 }
