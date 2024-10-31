@@ -1,26 +1,27 @@
 import { useState } from "react";
 import './screening_quotidien.css';
 
-interface HospitalData {
-    hospitalName: string;
-    screeningDate: string;
-    openICUBeds: number;
-    openUSCBeds: number;
-    fluConfirmedPatientsRefused: number;
-    nonFluPatientsRefused: number;
-    lackOfEquipmentRefused: number;
-    geoIsolationRefused: number;
-}
+function ScreeningQuotidien() {
+    // Placeholder data instead of reading from the database
+    const placeholderHospitalData = {
+        hospitalName: "Hôpital Saint-Jean",
+        screeningDate: "2024-10-17",
+        openICUBeds: 10,
+        openUSCBeds: 5,
+        fluConfirmedPatientsRefused: 3,
+        nonFluPatientsRefused: 2,
+        lackOfEquipmentRefused: 1,
+        geoIsolationRefused: 0,
+    };
 
-function ScreeningQuotidien({ hospitalData }: { hospitalData: HospitalData }) {
-    const [hospitalName, setHospitalName] = useState<string>(hospitalData.hospitalName || "Hôpital");
-    const [screeningDate, setScreeningDate] = useState<string>(hospitalData.screeningDate || "2024-10-17");
-    const [openICUBeds, setOpenICUBeds] = useState<number>(hospitalData.openICUBeds || 10);
-    const [openUSCBeds, setOpenUSCBeds] = useState<number>(hospitalData.openUSCBeds || 5);
-    const [fluConfirmedPatientsRefused, setFluConfirmedPatientsRefused] = useState<number>(hospitalData.fluConfirmedPatientsRefused || 3);
-    const [nonFluPatientsRefused, setNonFluPatientsRefused] = useState<number>(hospitalData.nonFluPatientsRefused || 2);
-    const [lackOfEquipmentRefused, setLackOfEquipmentRefused] = useState<number>(hospitalData.lackOfEquipmentRefused || 1);
-    const [geoIsolationRefused, setGeoIsolationRefused] = useState<number>(hospitalData.geoIsolationRefused || 0);
+    const [hospitalName, setHospitalName] = useState<string>(placeholderHospitalData.hospitalName);
+    const [screeningDate, setScreeningDate] = useState<string>(placeholderHospitalData.screeningDate);
+    const [openICUBeds, setOpenICUBeds] = useState<number>(placeholderHospitalData.openICUBeds);
+    const [openUSCBeds, setOpenUSCBeds] = useState<number>(placeholderHospitalData.openUSCBeds);
+    const [fluConfirmedPatientsRefused, setFluConfirmedPatientsRefused] = useState<number>(placeholderHospitalData.fluConfirmedPatientsRefused);
+    const [nonFluPatientsRefused, setNonFluPatientsRefused] = useState<number>(placeholderHospitalData.nonFluPatientsRefused);
+    const [lackOfEquipmentRefused, setLackOfEquipmentRefused] = useState<number>(placeholderHospitalData.lackOfEquipmentRefused);
+    const [geoIsolationRefused, setGeoIsolationRefused] = useState<number>(placeholderHospitalData.geoIsolationRefused);
 
     const [currentWeek, setCurrentWeek] = useState<number>(1);
 
@@ -72,7 +73,7 @@ function ScreeningQuotidien({ hospitalData }: { hospitalData: HospitalData }) {
                 </div>
 
                 <div className="red-text">
-                    Screening des malades refusés semaine 44 du <b>26/10/2009 au 01/11/2009</b>
+                    Screening des malades refusés semaine 44 du <b>26/10/2024 au 01/11/2024</b>
                 </div>
 
                 <div className="form-group">
