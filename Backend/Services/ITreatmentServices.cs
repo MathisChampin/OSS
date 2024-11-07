@@ -27,5 +27,6 @@ namespace Services
         Task<double?> GetHealPercentageByNameByDurationAsync(int weeks, string name);
         Task<double?> GetDiePercentageByNameByDurationAsync(int weeks, string name);
         Task<int?> GetAveragePandemicDurationAsync();
+        Task<int?> GetAverageTreatmentDurationAsync(string name);
     }
 }
