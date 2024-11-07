@@ -34,7 +34,11 @@ Assurez-vous que les paramètres de connexion PostgreSQL (comme l’hôte, le po
 définis dans le fichier de configuration (appsettings.json ou une autre configuration dédiée) du projet.
 
 4. Migrations de la Base de Données:
-Si vous n'avez pas encore initialisé la base de données, vous devrez peut-être appliquer des migrations avec dotnet ef database update pour que les tables soient correctement créées dans PostgreSQL.
+Si vous n'avez pas encore initialisé la base de données, vous devrez peut-être appliquer des migrations avec
+``` shell 
+    dotnet ef database update
+```
+pour que les tables soient correctement créées dans PostgreSQL.
 
 
 ### <u>Étapes d'Exécution du Frontend</u>
