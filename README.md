@@ -11,7 +11,7 @@ Le projet OneScientificStudy (OSS V2 2024) est une application visant à gérer 
 Pour démarrer l’application, vous devrez exécuter indépendamment le backend et le frontend de l'application.
 
 ### Étapes d'Exécution du Backend
-=================================
+---------------------------------
 Le backend est configuré dans un projet .NET Core avec ASP.NET Core 7.0. Voici comment le lancer :
 
 1. Accédez au dossier du projet backend depuis votre terminal ou votre invite de commandes.
@@ -31,7 +31,7 @@ Si vous n'avez pas encore initialisé la base de données, vous devrez peut-êtr
 
 
 ### Étapes d'Exécution du Frontend
-==================================
+----------------------------------
 Le frontend est développé avec React. Pour lancer l'interface utilisateur:
 
 1. Accédez au dossier du projet frontend depuis votre terminal ou votre invite de commandes.
