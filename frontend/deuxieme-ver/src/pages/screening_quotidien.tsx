@@ -14,8 +14,8 @@ function ScreeningQuotidien() {
         geoIsolationRefused: 0,
     };
 
-    const [hospitalName, setHospitalName] = useState<string>(placeholderHospitalData.hospitalName);
-    const [screeningDate, setScreeningDate] = useState<string>(placeholderHospitalData.screeningDate);
+    const [hospitalName] = useState<string>(placeholderHospitalData.hospitalName);
+    const [screeningDate] = useState<string>(placeholderHospitalData.screeningDate);
     const [openICUBeds, setOpenICUBeds] = useState<number>(placeholderHospitalData.openICUBeds);
     const [openUSCBeds, setOpenUSCBeds] = useState<number>(placeholderHospitalData.openUSCBeds);
     const [fluConfirmedPatientsRefused, setFluConfirmedPatientsRefused] = useState<number>(placeholderHospitalData.fluConfirmedPatientsRefused);

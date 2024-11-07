@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import img from '../assets/images/OSS_2.png';
 import text from '../assets/images/Text.png';

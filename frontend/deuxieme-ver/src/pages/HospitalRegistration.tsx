@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { postHospital, postPersonelMdeical, postPnoMedical, postMaterial } from "../api/hospital.requests";
 import "./style.css";
-import { Activity, HospitalDataType } from "../utils/hospital";
+import { Activity, HospitalDataType } from "../utils/hospital.d";
 
 function HospitalRegister() {
     const [hospitalData, setHospitalData] = useState<HospitalDataType>({
@@ -130,7 +130,7 @@ function HospitalRegister() {
                 <table cellPadding="5" cellSpacing="0" style={{ width: "100%", margin: "0 auto" }}>
                     <tbody>
                         <tr>
-                            <td colSpan="2">
+                            <td colSpan={2}>
                                 <div className="yellow-background">
                                     <div className="note">
                                         Si vous &ecirc;tes impliqu&eacute; dans le suivi de ce registre veuillez renseigner les champs suivants&nbsp;
@@ -142,12 +142,12 @@ function HospitalRegister() {
                             </td>
                         </tr>
                         <tr>
-                            <td colSpan="2">
+                            <td colSpan={2}>
                                 <div className="blue-box-sub">Description du service</div>
                             </td>
                         </tr>
                         <tr>
-                            <td colSpan="2">
+                            <td colSpan={2}>
                                 <div className="blue-box-sub">Personnel médical affecté (Octobre 2009)</div>
                             </td>
                         </tr>

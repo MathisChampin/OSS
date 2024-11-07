@@ -1,8 +1,7 @@
-import React from 'react';
 import leftImage from '../assets/images/left.jpg';
 import './layout.css';
 
-const Layout = ({ children }) => {
+const Layout = ({ children }: any) => {
   return (
     <div className="layout">
       <img src={leftImage} alt="Left Decoration" className="left-decoration" />
