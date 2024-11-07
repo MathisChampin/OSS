@@ -426,6 +426,15 @@ Cette section fournit une vue d'ensemble des différentes statistiques disponibl
 - **Description** : Retourne le pourcentage de décès des patients pour un traitement spécifique sur une période de semaines spécifiée.
 - **Route** : `GET /statistics/die/{name}/{week}`
 
+#### 18. Durée de la pandémie
+
+- **Description** : Retourne le temps que la pandémie a existé.
+- **Route** : `GET api/treatment/duration`
+
+#### 19. Durée en moyenne d'un traitement
+
+- **Description** : Retourne la durée moyenne pour une traitement spécifique.
+- **Route** : `GET api/treatment/duration/{name}`
 
 ## Documentation Complémentaire
 

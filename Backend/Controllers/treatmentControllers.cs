@@ -452,10 +452,11 @@ namespace Controllers
             return Ok(statistics);
         }
         // <summary>
-        // Retrieves the average duration of treatments during the pandemic in days.
+        // Retrieves the average duration of treatments specific during the pandemic in days.
         // </summary>
-        // <returns>The average treatment duration in days.</returns>
-        // <response code="200">Returns the average treatment duration if found.</response>
+        /// <param name="name">The name of the treatment.</param>
+        // <returns>The average treatment specific duration in days.</returns>
+        // <response code="200">Returns the average treatment duration specific if found.</response>
         // <response code="404">If no valid treatments are found or data is missing.</response>
         [HttpGet("duration/{name}")]
         [Authorize]
