@@ -1,0 +1,26 @@
+.layout {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  position: relative;
+}
+
+.left-decoration,
+.right-decoration {
+  height: auto;
+  width: 200px;
+}
+
+.left-decoration {
+  margin-right: -100px;
+}
+
+.right-decoration {
+  margin-left: -100px;
+  transform: scaleX(-1);
+}
+  
+.content {
+  max-width: 800px;
+  width: 100%;
+}

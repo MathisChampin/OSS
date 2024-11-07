@@ -44,3 +44,21 @@
   border-radius: 4px;
   cursor: pointer;
 }
+
+.register-link {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.register-link p {
+  font-size: 0.9rem;
+}
+
+.register-link a {
+  color: #0056b3;
+  text-decoration: none;
+}
+
+.register-link a:hover {
+  text-decoration: underline;
+}

@@ -18,16 +18,14 @@ const Navbar = () => {
                     <tbody>
                         <tr>
                             <td>
-                                <Link to="/" className="nav-link">Home</Link>
+                                <Link to="/" className="nav-link">Accueil</Link>
                             </td>
                             <td>
-                                <a href="http://www.srlf.org/Data/ModuleGestionDeContenu/PagesGenerees/Biblioth%C3%A8que%20-%20R%C3%A9f%C3%A9rentiels/R%C3%A9f%C3%A9rentiels/Recommandations/autres/632.asp" target="_blank" rel="noopener noreferrer" className="nav-link">
-                                    SRLF Grippe
-                                </a>
+                                <Link to="/screening_quotidien" className="nav-link">Screening</Link>
                             </td>
                             <td>
                                 <a href="http://www.sfar.org/t/spip.php?article454" target="_blank" rel="noopener noreferrer" className="nav-link">
-                                    SFAR Grippe
+                                    Statistiques
                                 </a>
                             </td>
                         </tr>

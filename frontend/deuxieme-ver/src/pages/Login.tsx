@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
-import './login.css'; // Assuming you have or will create a separate CSS file for styles
+import { Link } from 'react-router-dom';
+import './login.css';
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = (event) => {
     event.preventDefault();
-    
     console.log('Attempting to login with:', username, password);
   };
 
   return (
     <div className="login-container">
       <form onSubmit={handleLogin} className="login-form">
-        <h2>Login</h2>
+        <h2>Connexion</h2>
         <div className="form-group">
           <label htmlFor="email">Email</label>
           <input
@@ -26,7 +26,7 @@ function Login() {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="password">Password</label>
+          <label htmlFor="password">Mot de passe</label>
           <input
             type="password"
             id="password"
@@ -36,6 +36,9 @@ function Login() {
           />
         </div>
         <button type="submit" className="login-button">Log In</button>
+        <div className="register-link">
+          <p>Pas encore enregistré ? <Link to="/register">Faites le ici</Link></p>
+        </div>
       </form>
     </div>
   );

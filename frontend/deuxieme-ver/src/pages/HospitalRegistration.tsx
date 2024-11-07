@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { postHospital, postPersonelMdeical, postPnoMedical, postMaterial } from "../api/hospital.requests";
-import "./style.css"; // Assuming this has the required styles
+import "./style.css";
+import { Activity } from "../utils/hospital";
 
 function HospitalRegister() {
     const [hospitalData, setHospitalData] = useState({
@@ -10,6 +11,8 @@ function HospitalRegister() {
         IdentiteHopital: "",
         ReanimationMedical: "",
         ReanimationChirurgical: "",
+        Activite: Activity.ADULT,
+        Active: "",
         NbDoctorUniv: 0,
         NbDoctorHosp: 0,
         NbInternal: 0,
@@ -72,6 +75,7 @@ function HospitalRegister() {
                 IdentiteHopital: hospitalData.IdentiteHopital,
                 ReanimationMedical: hospitalData.ReanimationMedical,
                 ReanimationChirurgical: hospitalData.ReanimationChirurgical,
+                Activite: hospitalData.Activite,
             });
 
             const resPmedical = await postPersonelMdeical({
