@@ -263,7 +263,9 @@ namespace Services
                 .Select(t => new 
                 {
                     t.NameTreatment,
-                    DurationInDays = (t.DateEndTreatment.Value - t.DateStartTreatment.Value).TotalDays,
+                    DurationInDays = (t.DateEndTreatment.HasValue && t.DateStartTreatment.HasValue)
+                        ? (t.DateEndTreatment.Value - t.DateStartTreatment.Value).TotalDays
+                        : 0,
                     Healed = t.Status == 2
                 })
                 .Where(t => t.DurationInDays >= days && t.DurationInDays < days + 7)
@@ -297,7 +299,9 @@ namespace Services
                 .Select(t => new 
                 {
                     t.NameTreatment,
-                    DurationInDays = (t.DateEndTreatment.Value - t.DateStartTreatment.Value).TotalDays,
+                    DurationInDays = (t.DateEndTreatment.HasValue && t.DateStartTreatment.HasValue)
+                        ? (t.DateEndTreatment.Value - t.DateStartTreatment.Value).TotalDays
+                        : 0,
                     Die = t.Status == 1
                 })
                 .Where(t => t.DurationInDays >= days && t.DurationInDays < days + 7)
@@ -331,7 +335,9 @@ namespace Services
                 .Select(t => new 
                 {
                     t.Status,
-                    DurationInDays = (t.DateEndTreatment.Value - t.DateStartTreatment.Value).TotalDays
+                    DurationInDays = (t.DateEndTreatment.HasValue && t.DateStartTreatment.HasValue)
+                        ? (t.DateEndTreatment.Value - t.DateStartTreatment.Value).TotalDays
+                        : 0,
                 })
                 .Where(t => t.DurationInDays >= days && t.DurationInDays < days + 7)
                 .ToList();
@@ -340,8 +346,8 @@ namespace Services
                 return null;
 
             int totalTreatments = treatmentStats.Count();
-            int healedCount = treatmentStats.Count(t => t.Status == 2); // Statut 2 : Guéri
-            int deceasedCount = treatmentStats.Count(t => t.Status == 1); // Statut 1 : Décédé
+            int healedCount = treatmentStats.Count(t => t.Status == 2);
+            int deceasedCount = treatmentStats.Count(t => t.Status == 1);
 
             double healPercentage = (totalTreatments > 0) ? (double)healedCount / totalTreatments * 100 : 0;
             double diePercentage = (totalTreatments > 0) ? (double)deceasedCount / totalTreatments * 100 : 0;
@@ -366,7 +372,9 @@ namespace Services
                 .Select(t => new 
                 {
                     t.Status,
-                    DurationInDays = (t.DateEndTreatment.Value - t.DateStartTreatment.Value).TotalDays
+                    DurationInDays = (t.DateEndTreatment.HasValue && t.DateStartTreatment.HasValue)
+                        ? (t.DateEndTreatment.Value - t.DateStartTreatment.Value).TotalDays
+                        : 0,
                 })
                 .Where(t => t.DurationInDays >= days && t.DurationInDays < days + 7)
                 .ToList();
@@ -395,7 +403,9 @@ namespace Services
                 .Select(t => new 
                 {
                     t.Status,
-                    DurationInDays = (t.DateEndTreatment.Value - t.DateStartTreatment.Value).TotalDays
+                    DurationInDays = (t.DateEndTreatment.HasValue && t.DateStartTreatment.HasValue)
+                        ? (t.DateEndTreatment.Value - t.DateStartTreatment.Value).TotalDays
+                        : 0,
                 })
                 .Where(t => t.DurationInDays >= days && t.DurationInDays < days + 7)
                 .ToList();
@@ -424,8 +434,9 @@ namespace Services
             if (!validTreatments.Any())
                 return null;
 
-            var pandemicStartDate = validTreatments.Min(t => t.DateStartTreatment.Value);
-            var pandemicEndDate = validTreatments.Max(t => t.DateEndTreatment.Value);
+            
+            var pandemicStartDate = validTreatments.Min(t => t.DateStartTreatment ?? DateTime.MinValue);
+            var pandemicEndDate = validTreatments.Max(t => t.DateEndTreatment ?? DateTime.MaxValue);
 
             var totalPandemicDurationInDays = (pandemicEndDate - pandemicStartDate).TotalDays;
 
@@ -446,7 +457,9 @@ namespace Services
                 return null;
 
             var totalTreatmentDurationInDays = validTreatments
-                .Select(t => (t.DateEndTreatment.Value - t.DateStartTreatment.Value).TotalDays)
+                .Select(t => (t.DateEndTreatment.HasValue && t.DateStartTreatment.HasValue)
+                        ? (t.DateEndTreatment.Value - t.DateStartTreatment.Value).TotalDays
+                        : 0)
                 .Sum();
 
             var averageTreatmentDurationInDays = totalTreatmentDurationInDays / speTreatments.Count;
