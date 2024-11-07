@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { postHospital, postPersonelMdeical, postPnoMedical, postMaterial } from "../api/hospital.requests";
 import "./style.css";
-import { Activity } from "../utils/hospital";
+import { Activity, HospitalDataType } from "../utils/hospital";
 
 function HospitalRegister() {
-    const [hospitalData, setHospitalData] = useState({
+    const [hospitalData, setHospitalData] = useState<HospitalDataType>({
         NomHospital: "",
         ville: "",
         Departement: "",
@@ -62,6 +62,7 @@ function HospitalRegister() {
                 avea: 0,
                 engstrom: 0,
             },
+            devices: [],
         },
     });
 
@@ -103,17 +104,16 @@ function HospitalRegister() {
             });
 
             const resMaterial = await postMaterial({
-                material: {
-                    nbBedRea: hospitalData.material.nbBedRea,
-                    nbBedInRoom: hospitalData.material.nbBedInRoom,
-                    nbBedMntr: hospitalData.material.nbBedMntr,
-                    nbAdmis: hospitalData.material.nbAdmis,
-                    nbPersonalAbs: hospitalData.material.nbPersonalAbs,
-                    ecmo: hospitalData.material.ecmo,
-                    ventilators: hospitalData.material.ventilators,
-                },
+                nbBedRea: hospitalData.material.nbBedRea,
+                nbBedInRoom: hospitalData.material.nbBedInRoom,
+                nbBedMntr: hospitalData.material.nbBedMntr,
+                nbAdmis: hospitalData.material.nbAdmis,
+                nbPersonalAbs: hospitalData.material.nbPersonalAbs,
+                ecmo: hospitalData.material.ecmo,
+                ventilators: hospitalData.material.ventilators,
+                devices: hospitalData.material.devices,
             });
-
+            
             if (resHospital.status === 200 && resPmedical.status === 200 && resPnoMedical.status === 200 && resMaterial.status === 200) {
                 alert("Hospital registered successfully!");
             }
