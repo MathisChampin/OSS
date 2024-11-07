@@ -431,5 +431,27 @@ namespace Services
 
             return (int)totalPandemicDurationInDays;
         }
+        public async Task<int?> GetAverageTreatmentDurationAsync(string name)
+        {
+            var speTreatments = await _treatmentRepository.GetByNameAsync(name);
+
+            if (speTreatments == null || !speTreatments.Any())
+                return null;
+
+            var validTreatments = speTreatments
+                .Where(t => t.DateStartTreatment.HasValue && t.DateEndTreatment.HasValue)
+                .ToList();
+
+            if (!validTreatments.Any())
+                return null;
+
+            var totalTreatmentDurationInDays = validTreatments
+                .Select(t => (t.DateEndTreatment.Value - t.DateStartTreatment.Value).TotalDays)
+                .Sum();
+
+            var averageTreatmentDurationInDays = totalTreatmentDurationInDays / speTreatments.Count;
+
+            return (int)averageTreatmentDurationInDays;
+        }
     }
 }
