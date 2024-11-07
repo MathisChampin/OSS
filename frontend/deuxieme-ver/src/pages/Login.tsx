@@ -6,7 +6,7 @@ function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = (event) => {
+  const handleLogin = (event: any) => {
     event.preventDefault();
     console.log('Attempting to login with:', username, password);
   };
