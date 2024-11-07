@@ -66,6 +66,12 @@ export type UserRegister = {
     prenom: string;
     role: string;
     email: string;
+    ville: string;
+    Departement: string;
+    IdentiteHopital: string;
+    ReanimationMedical: string;
+    ReanimationChirurgical: string;
+    Activite: string;
     password: string;
     NomHospital: string;
 }

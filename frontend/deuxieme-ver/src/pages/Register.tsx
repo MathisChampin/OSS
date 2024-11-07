@@ -41,9 +41,9 @@ function Register() {
       if (resUser.status === 200) {
         redirect("/");
       }
-    } catch (error) {
+    } catch (error: unknown) {
       alert("Internal Server Error");
-      throw new Error(error);
+      throw new Error(error as string);
     }
   };
 
