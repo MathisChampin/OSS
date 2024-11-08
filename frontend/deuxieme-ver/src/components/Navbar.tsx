@@ -19,9 +19,7 @@ const Navbar = () => {
             <div className="nav-links">
                 <Link to="/" className="nav-link"><FaHome /> Accueil</Link>
                 <Link to="/screening_quotidien" className="nav-link"><FaChartBar /> Screening</Link>
-                <a href="http://www.sfar.org/t/spip.php?article454" target="_blank" rel="noopener noreferrer" className="nav-link">
-                    Statistiques
-                </a>
+                <Link to="/statistics" className="nav-link">Statistiques</Link>
             </div>
         </div>
     );

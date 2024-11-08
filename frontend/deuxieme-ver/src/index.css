@@ -81,6 +81,7 @@ body::after {
     right: 0;
     width: 750px;
     height: 750px;
-    opacity: 0.5;
+    opacity: 0.3;
     pointer-events: none;
+    z-index: -1;
 }
