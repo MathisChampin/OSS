@@ -44,6 +44,7 @@ namespace Services
             if (existingTreatment == null)
                 return null;
 
+            existingTreatment.NameTreatment = model.NameTreatment;
             existingTreatment.DateStartTreatment = model.DateStartTreatment;
             existingTreatment.DateEndTreatment = model.DateEndTreatment;
             existingTreatment.Status = model.Status;
