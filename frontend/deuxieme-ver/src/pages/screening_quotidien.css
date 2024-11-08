@@ -1,0 +1,131 @@
+.screening-container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #f8f8f8;
+    width: 600px;
+    margin: 0 auto;
+    border: 1px solid #ccc;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+}
+
+.header {
+    background-color: #ececec;
+    padding: 15px;
+    border-bottom: 2px solid #b3b3b3;
+    margin-bottom: 20px;
+}
+
+.header h1 {
+    font-size: 22px;
+    margin: 0;
+    color: #333;
+}
+
+.header p {
+    font-size: 14px;
+    color: #555;
+    margin: 10px 0;
+}
+
+.hospital-info {
+    color: #333;
+}
+
+.form-section {
+    background-color: #ffffff;
+    padding: 15px;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+}
+
+.form-section h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    font-size: 14px;
+    color: #333;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.input-field {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.red-text {
+    color: black;
+    font-size: 14px;
+    margin: 15px 0;
+    text-align: left;
+}
+
+.submit-button {
+    padding: 10px 20px;
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.submit-button:hover {
+    background-color: #004494;
+}
+
+.week-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.week-nav-button {
+    padding: 8px 16px;
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.week-nav-button:hover {
+    background-color: #004494;
+}
+
+.current-week {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
+.board-section {
+    margin-top: 20px;
+}
+
+.week-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.week-table th, .week-table td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    font-size: 14px;
+}
+
+.week-table th {
+    background-color: #ececec;
+}

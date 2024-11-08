@@ -1,3 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+    background: linear-gradient(135deg, #e3eff6, #f9fbfd);
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #3a506b;
+    position: relative;
+}
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    justify-content: space-between;
+}
+
+.form-container {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+.form-header {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #607ea6;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.form-group input, 
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #cdd9e5;
+    border-radius: 8px;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus, 
+.form-group select:focus {
+    border-color: #9cb5da;
+    outline: none;
+}
+
+.primary-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #b0d4f1;
+    color: #3a506b;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.125rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+.primary-button:hover {
+    background-color: #a3c8e4;
+}
+
+body::after {
+    content: "";
+    background-image: url('./assets/images/background.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 750px;
+    height: 750px;
+    opacity: 0.5;
+    pointer-events: none;
+}
