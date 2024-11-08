@@ -77,7 +77,13 @@ namespace Controllers
             }
         }
 
-        // PUT: api/treatment/{id}
+        // <summary>
+        // Update a existing treatment
+        // </summary>
+        /// <param name="id, model">Treatment</param>
+        // <returns>The updated treatment</returns>
+        // <response code="201">Returns the updated treatment</response>
+        // <response code="404">If the treatment is not found</response>
         [HttpPut("{id}")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -101,7 +107,13 @@ namespace Controllers
             }
         }
 
-        // DELETE: api/treatment/{id}
+        // <summary>
+        // Delete a existing treatment
+        // </summary>
+        /// <param name="id">Treatment</param>
+        // <returns>The deleted treatment</returns>
+        // <response code="201">Returns the deleted treatment</response>
+        // <response code="404">If the treatment is not found</response>
         [HttpDelete("{id}")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
