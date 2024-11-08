@@ -15,7 +15,28 @@ services:
     networks:
       - oss-networks
 
+  oss_backend:
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+    ports:
+      - "5058:5058"
+    volumes:
+      - .:/Backend
+    restart:  always
+    env_file:
+      - ./Backend/.env
+    environment:
+      - NODE_ENV=production
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+    networks:
+      - oss-networks
 
 networks:
   oss-networks:
     driver: bridge
+
