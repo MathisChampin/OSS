@@ -56,3 +56,9 @@
 .nav-link:hover {
     background-color: #9cb5da;
 }
+
+.text {
+    font-size: 1.125rem;
+    color: #3a506b;
+    margin-top: 20px;
+}

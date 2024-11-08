@@ -12,6 +12,10 @@ const Navbar = () => {
                 <img src={text} alt="Text" className="text-image" />
             </div>
 
+            <div className="text">
+                <p>Pandémie de grippe H1N1</p>
+            </div>
+
             <div className="nav-links">
                 <Link to="/" className="nav-link"><FaHome /> Accueil</Link>
                 <Link to="/screening_quotidien" className="nav-link"><FaChartBar /> Screening</Link>
