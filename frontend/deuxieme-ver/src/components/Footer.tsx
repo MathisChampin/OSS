@@ -1,4 +1,3 @@
-// Footer.js
 import './Footer.css';
 import logo from '../assets/images/OSS_2.png';
 

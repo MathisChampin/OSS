@@ -2,34 +2,22 @@ import { Link } from 'react-router-dom';
 import img from '../assets/images/OSS_2.png';
 import text from '../assets/images/Text.png';
 import './Navbar.css';
+import { FaHome, FaChartBar } from 'react-icons/fa';
 
 const Navbar = () => {
     return (
         <div id="Global">
             <div className="logo-section">
                 <img src={img} alt="Logo" className="logo-image" />
-
                 <img src={text} alt="Text" className="text-image" />
             </div>
 
             <div className="nav-links">
-                <table>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <Link to="/" className="nav-link">Accueil</Link>
-                            </td>
-                            <td>
-                                <Link to="/screening_quotidien" className="nav-link">Screening</Link>
-                            </td>
-                            <td>
-                                <a href="http://www.sfar.org/t/spip.php?article454" target="_blank" rel="noopener noreferrer" className="nav-link">
-                                    Statistiques
-                                </a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <Link to="/" className="nav-link"><FaHome /> Accueil</Link>
+                <Link to="/screening_quotidien" className="nav-link"><FaChartBar /> Screening</Link>
+                <a href="http://www.sfar.org/t/spip.php?article454" target="_blank" rel="noopener noreferrer" className="nav-link">
+                    Statistiques
+                </a>
             </div>
         </div>
     );
