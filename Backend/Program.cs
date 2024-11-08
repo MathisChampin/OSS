@@ -10,10 +10,17 @@ using DotNetEnv;
 
 var builder = WebApplication.CreateBuilder(args);
 
-Env.Load();
+Env.Load(".env");
 
+string? dbHost = Environment.GetEnvironmentVariable("DB_HOST");
+string? dbPort = Environment.GetEnvironmentVariable("DB_PORT");
+string? dbName = Environment.GetEnvironmentVariable("DB_NAME");
+string? dbUser = Environment.GetEnvironmentVariable("DB_USER");
+string? dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD");
+
+string connectionString = $"Host={dbHost};Port={dbPort};Database={dbName};Username={dbUser};Password={dbPassword}";
 builder.Services.AddDbContext<DataContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(connectionString));
 
 builder.Services.AddCors(options =>
 {
