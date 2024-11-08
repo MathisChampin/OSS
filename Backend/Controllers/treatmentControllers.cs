@@ -76,5 +76,50 @@ namespace Controllers
                 return StatusCode(500, "Erreur interne du serveur : " + ex.Message);
             }
         }
+
+        // PUT: api/treatment/{id}
+        [HttpPut("{id}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> UpdateTreatment(int id, [FromBody] Treatment model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            try
+            {
+                var updatedTreatment = await _treatmentService.UpdateTreatmentAsync(id, model);
+                if (updatedTreatment == null)
+                    return NotFound($"Treatment with id '{id}' not found.");
+
+                return Ok(updatedTreatment);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Erreur interne du serveur : " + ex.Message);
+            }
+        }
+
+        // DELETE: api/treatment/{id}
+        [HttpDelete("{id}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> DeleteTreatment(int id)
+        {
+            try
+            {
+                var deleted = await _treatmentService.DeleteTreatmentAsync(id);
+                if (!deleted)
+                    return NotFound($"Treatment with id '{id}' not found.");
+
+                return Ok($"Treatment with id '{id}' deleted successfully.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Erreur interne du serveur : " + ex.Message);
+            }
+        }
     }
 }

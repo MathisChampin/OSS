@@ -24,6 +24,10 @@ namespace Services
         {
             return await _treatmentRepository.GetByNameAsync(name);
         }
+        public async Task<Treatment?> GetTreatmentByIdAsync(int id)
+        {
+            return await _treatmentRepository.GetByIdAsync(id);
+        }
         public async Task<Treatment> CreateTreatmentAsync(Treatment model)
         {   
             if (model.DateStartTreatment.HasValue)
@@ -33,6 +37,27 @@ namespace Services
 
             var createdTreatment = await _treatmentRepository.CreateAsync(model);
             return createdTreatment;
+        }
+        public async Task<Treatment?> UpdateTreatmentAsync(int id, Treatment model)
+        {
+            var existingTreatment = await _treatmentRepository.GetByIdAsync(id);
+            if (existingTreatment == null)
+                return null;
+
+            existingTreatment.DateStartTreatment = model.DateStartTreatment;
+            existingTreatment.DateEndTreatment = model.DateEndTreatment;
+            existingTreatment.Status = model.Status;
+
+            return await _treatmentRepository.UpdateAsync(existingTreatment);
+        }
+
+        public async Task<bool> DeleteTreatmentAsync(int id)
+        {
+            var treatment = await _treatmentRepository.GetByIdAsync(id);
+            if (treatment == null)
+                return false;
+
+            return await _treatmentRepository.DeleteAsync(id);
         }
         public async Task<Object?> GetTreatmentStatisticsByNameCurrentAsync(string name)
         {

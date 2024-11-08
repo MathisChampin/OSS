@@ -8,7 +8,10 @@ namespace Services
     {
         Task<List<Treatment>> GetAllTreatmentsAsync();
         Task<List<Treatment>> GetTreatmentByNameAsync(string name);
+        Task<Treatment?> GetTreatmentByIdAsync(int id);
         Task<Treatment> CreateTreatmentAsync(Treatment model);
+        Task<Treatment?> UpdateTreatmentAsync(int id, Treatment model);
+        Task<bool> DeleteTreatmentAsync(int id);
         Task<Object?> GetTreatmentStatisticsByNameCurrentAsync(string name);
         Task<Object?> GetTreatmentStatisticsByNameDieAsync(string name);
         Task<Object?> GetTreatmentStatisticsByNameHealAsync(string name);
